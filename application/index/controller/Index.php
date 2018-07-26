@@ -5,11 +5,30 @@ class Index
 {
     public function index()
     {
-        return '<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; } body{ background: #fff; font-family: "Century Gothic","Microsoft yahei"; color: #333;font-size:18px;} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 42px }</style><div style="padding: 24px 48px;"> <h1>:) </h1><p> ThinkPHP V5.1<br/><span style="font-size:30px">12载初心不改（2006-2018） - 你值得信赖的PHP框架</span></p></div><script type="text/javascript" src="https://tajs.qq.com/stats?sId=64890268" charset="UTF-8"></script><script type="text/javascript" src="https://e.topthink.com/Public/static/client.js"></script><think id="eab4b9f840753f8e7"></think>';
+        return 'server running.';
     }
 
-    public function hello($name = 'ThinkPHP5')
-    {
-        return 'hello,' . $name;
+    // 接入微信公众平台开发
+    public function access(){
+        // 获取微信服务器传递的参数
+        $signature=input('get.signature');
+        $timestamp=input('get.timestamp');
+        $nonce=input('get.nonce');
+        $echostr=input('get.echostr');
+
+        // 自定义一个token
+        $token = 'rehack';
+
+        // 将token、timestamp、nonce三个参数进行字典序排序
+        $arr = [$token,$nonce,$timestamp];
+        sort($arr);
+
+        // 将三个参数字符串拼接成一个字符串进行sha1加密
+        $str = sha1(implode($arr));
+
+        // 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
+        if($str == $signature){
+            echo $echostr;
+        }
     }
 }
