@@ -16,22 +16,14 @@ class Index extends Controller
 
     // 用户同意授权，获取code
     public function getUserCode(){
-        // 判断用户是否登录过
-        $openid = session('openid');
-        if($openid){
-            $userInfo = UsersInfoModel::where('openid',$openid)->select();
-            $this->assign('data',$userInfo);
-            return $this->fetch();
-            // return $userInfo;
-        }
         // echo 1;exit;
         $appid = config('wechat.app_id');
         
-        $redirect_uri=urlencode("http://192.168.1.253/wx_bargain_api/index/getUserDetail");
+        $redirect_uri=urlencode("http://192.168.3.2/wx_bargain_api/index/getUserDetail");
         // echo $app_secret;
         $scope='snsapi_userinfo';
         // 获取code
-        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=$appid&redirect_uri=$redirect_uri&response_type=code&scope=$scope&state=STATE#wechat_redirect";//接口地址
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$redirect_uri}&response_type=code&scope={$scope}&state=STATE#wechat_redirect";//接口地址
         // echo $url;
         // header('location',$url);
 
@@ -47,23 +39,33 @@ class Index extends Controller
         $code = input('get.code');//code只能使用一次，5分钟未被使用自动过期 每次用户授权带上的code将不一样
 
         // echo $code;exit;
-        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appid&secret=$app_secret&code=$code&grant_type=authorization_code";
+        // 通过code获取access_token和openid
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$app_secret}&code={$code}&grant_type=authorization_code";
         // echo $url;exit;
-        // 获取用户openid
         $res = $this->http_curl($url,'get','array');
-
-        // dump($res);
+        // dump($res);exit;
         $access_token=$res['access_token'];
         $openid=$res['openid'];
+        if(!$openid){
+            $this->error('授权失败，稍后请重试!');
+        }
+
+        // 根据用户openid查看用户在数据库是否存在
+        $user = UsersInfoModel::where('openid',$openid)->find();
+        // 存在则直接登陆
+        if($user){
+            session('openid',$openid);
+            return '已经有openid';
+        }
 
         // 根据access_token和openid获取用户详细信息
-        $url="https://api.weixin.qq.com/sns/userinfo?access_token=$access_token&openid=$openid&lang=zh_CN";
+        $url="https://api.weixin.qq.com/sns/userinfo?access_token={$access_token}&openid={$openid}&lang=zh_CN";
 
         $detail = $this->http_curl($url,'get','array');
-        // dump($detail);
+        // dump($detail);exit;
         $validate = new AddUser();
         if (!$validate->check($detail)) {
-            session('openid',$detail['openid']);
+            // session('openid',$detail['openid']);
             throw new UserException([
                 'msg'=>$validate->getError(),
                 'errorCode'=>60000
