@@ -2,6 +2,9 @@
 namespace app\wx_bargain_api\controller;
 
 use \think\Controller;
+use app\wx_bargain_api\model\UsersInfo as UsersInfoModel;
+use app\wx_bargain_api\validate\AddUser;
+use app\lib\exception\UserException;
 
 class Index extends Controller
 {
@@ -13,6 +16,14 @@ class Index extends Controller
 
     // 用户同意授权，获取code
     public function getUserCode(){
+        // 判断用户是否登录过
+        $openid = session('openid');
+        if($openid){
+            $userInfo = UsersInfoModel::where('openid',$openid)->select();
+            $this->assign('data',$userInfo);
+            return $this->fetch();
+            // return $userInfo;
+        }
         // echo 1;exit;
         $appid = config('wechat.app_id');
         
@@ -49,7 +60,19 @@ class Index extends Controller
         $url="https://api.weixin.qq.com/sns/userinfo?access_token=$access_token&openid=$openid&lang=zh_CN";
 
         $detail = $this->http_curl($url,'get','array');
-        dump($detail);
+        // dump($detail);
+        $validate = new AddUser();
+        if (!$validate->check($detail)) {
+            session('openid',$detail['openid']);
+            throw new UserException([
+                'msg'=>$validate->getError(),
+                'errorCode'=>60000
+            ]);
+        }
+        $userInfo = UsersInfoModel::create($detail);
+        $openid = $userInfo->openid;
+        session('openid',$openid);
+        return $userInfo;
     }
     
 
