@@ -11,37 +11,47 @@ class Index extends Controller
     }
 
 
-    public function getBaseInfo(){
+    // 用户同意授权，获取code
+    public function getUserCode(){
         // echo 1;exit;
         $appid = config('wechat.app_id');
         
-        $redirect_uri=urlencode("http://127.0.0.1/wx_bargain_api/index/getUserOpenId");
+        $redirect_uri=urlencode("http://192.168.1.253/wx_bargain_api/index/getUserDetail");
         // echo $app_secret;
-
+        $scope='snsapi_userinfo';
         // 获取code
-        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";//接口地址
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=$appid&redirect_uri=$redirect_uri&response_type=code&scope=$scope&state=STATE#wechat_redirect";//接口地址
         // echo $url;
         // header('location',$url);
+
+        // 重定向
         $this->redirect($url,302);
     }
 
-
-    public function getUserOpenId(){
+    // 获取用户详细信息
+    public function getUserDetail(){
         // echo 1;exit;
         $appid = config('wechat.app_id');
         $app_secret = config('wechat.app_secret');
-        $code = input('get.code');
+        $code = input('get.code');//code只能使用一次，5分钟未被使用自动过期 每次用户授权带上的code将不一样
 
         // echo $code;exit;
-        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$app_secret."&code=".$code."&grant_type=authorization_code";
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appid&secret=$app_secret&code=$code&grant_type=authorization_code";
         // echo $url;exit;
         // 获取用户openid
         $res = $this->http_curl($url,'get','array');
 
-        dump($res);
+        // dump($res);
+        $access_token=$res['access_token'];
+        $openid=$res['openid'];
+
+        // 根据access_token和openid获取用户详细信息
+        $url="https://api.weixin.qq.com/sns/userinfo?access_token=$access_token&openid=$openid&lang=zh_CN";
+
+        $detail = $this->http_curl($url,'get','array');
+        dump($detail);
     }
     
-
 
 
 
