@@ -17,11 +17,11 @@ class Index extends Controller
     // 用户同意授权，获取code
     public function getUserCode(){
         // echo 1;exit;
-        $appid = config('wechat.app_id');
-        
+        $appid = config('wechat.app_id');        
         $redirect_uri=urlencode("http://192.168.3.2/wx_bargain_api/index/getUserDetail");
-        // echo $app_secret;
+
         $scope='snsapi_userinfo';
+
         // 获取code
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$redirect_uri}&response_type=code&scope={$scope}&state=STATE#wechat_redirect";//接口地址
         // echo $url;
