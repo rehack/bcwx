@@ -9,12 +9,9 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-Route::get('think', function () {
-    return 'hello,ThinkPHP5!';
-});
 
-Route::get('hello/:name', 'index/hello');
+Route::get('bargian_api/login', 'wx_bargain_api/index/getUserCode')
+->header('Access-Control-Allow-Origin','http://192.168.3.2:8080')
+->header('Access-Control-Allow-Credentials', 'true')
+->allowCrossDomain();
 
-return [
-
-];

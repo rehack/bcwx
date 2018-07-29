@@ -14,7 +14,7 @@ class Index extends Controller
     }
 
 
-    // 用户同意授权，获取code
+    // 用户同意授权，获取code，微信授权引导页面
     public function getUserCode(){
         // echo 1;exit;
         $appid = config('wechat.app_id');        
@@ -31,7 +31,7 @@ class Index extends Controller
         $this->redirect($url,302);
     }
 
-    // 获取用户详细信息
+    // 获取用户详细信息，此页面是微信授权页面的回调地址
     public function getUserDetail(){
         // echo 1;exit;
         $appid = config('wechat.app_id');
@@ -45,6 +45,8 @@ class Index extends Controller
         $res = $this->http_curl($url,'get','array');
         // dump($res);exit;
         $access_token=$res['access_token'];
+        // 缓存
+        // S('access_token',$token,3600);
         $openid=$res['openid'];
         if(!$openid){
             $this->error('授权失败，稍后请重试!');
