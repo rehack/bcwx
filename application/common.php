@@ -11,7 +11,7 @@
 
 // 应用公共文件
 // curl封装
-public function http_curl($url,$type='get',$resType='json',$arr=''){
+function http_curl($url,$type='get',$resType='json',$arr=''){
     // 1.初始化curl
     $ch = curl_init();
     // 2.设置curl参数
