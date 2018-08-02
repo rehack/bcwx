@@ -1,6 +1,7 @@
 <?php
 namespace app\lib\exception;
 
+// 微信接口调用异常
 class WechatException extends BaseException{
     public $code=400;//http状态码
     public $msg='微信服务器接口调用失败';//错误具体信息

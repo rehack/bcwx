@@ -5,20 +5,49 @@ use \think\Controller;
 use app\wx_bargain_api\model\UsersInfo as UsersInfoModel;
 use app\wx_bargain_api\validate\AddUser;
 use app\lib\exception\UserException;
+use think\facade\Env;
 
-class Index extends Controller
-{
-    public function index()
-    {
-        return 'wxapi';
+class Index extends Controller{
+    public function __construct(){
+        parent::__construct();
+        // echo Env::get('runtime_path').'session/';
+
+        // 初始化session
+        session([
+            'path' => Env::get('runtime_path').'session/',
+            // 'expire' => 3600*24*1,//过期时间1天
+            'expire' => 20,
+        ]);
     }
 
 
-    // 用户同意授权，获取code，微信授权引导页面
+    public function index()
+    {
+        return 'index';
+    }
+
+
+    // 用户同意授权，获取code
     public function getUserCode(){
-        // echo 1;exit;
-        $appid = config('wechat.app_id');        
-        $redirect_uri=urlencode("http://192.168.3.2/wx_bargain_api/index/getUserDetail");
+        // echo 3;exit;
+        
+        // session('test','eeee');
+        // return session('test');
+        // exit;
+        if(session('openid')){
+            // return session('openid');
+            // exit;
+            // 显示商品列表
+            $user = $this->getUserByOpenId(session('openid'));
+            // $user = $user->toArray();
+            $this->assign('user', [$user,'ss'=>1]);
+            return $this->fetch('goodslist');
+            exit;
+        }
+        // echo 1;
+        $appid = config('wechat.app_id');
+        $domain = config('wechat.domain');
+        $redirect_uri=urlencode("{$domain}/wx_bargain_api/index/getUserDetail");
 
         $scope='snsapi_userinfo';
 
@@ -31,12 +60,15 @@ class Index extends Controller
         $this->redirect($url,302);
     }
 
-    // 获取用户详细信息，此页面是微信授权页面的回调地址
+    // 获取用户详细信息
     public function getUserDetail(){
         // echo 1;exit;
         $appid = config('wechat.app_id');
         $app_secret = config('wechat.app_secret');
         $code = input('get.code');//code只能使用一次，5分钟未被使用自动过期 每次用户授权带上的code将不一样
+        if(!$code){
+            return '网络错误，请稍后重试！';
+        }
 
         // echo $code;exit;
         // 通过code获取access_token和openid
@@ -44,20 +76,27 @@ class Index extends Controller
         // echo $url;exit;
         $res = $this->http_curl($url,'get','array');
         // dump($res);exit;
+        if(isset($res['errcode'])){
+            return '网络错误';
+            exit;
+        }
         $access_token=$res['access_token'];
-        // 缓存
-        // S('access_token',$token,3600);
         $openid=$res['openid'];
         if(!$openid){
             $this->error('授权失败，稍后请重试!');
         }
 
         // 根据用户openid查看用户在数据库是否存在
-        $user = UsersInfoModel::where('openid',$openid)->find();
+        $user = $this->getUserByOpenId($openid);
+        // $user=$user->toArray();
         // 存在则直接登陆
         if($user){
             session('openid',$openid);
-            return '已经有openid';
+            // 显示商品列表
+            // dump($user);exit;
+            $this->assign('user', $user);
+            return $this->fetch('goodslist');
+            exit;
         }
 
         // 根据access_token和openid获取用户详细信息
@@ -73,10 +112,14 @@ class Index extends Controller
                 'errorCode'=>60000
             ]);
         }
-        $userInfo = UsersInfoModel::create($detail);
-        $openid = $userInfo->openid;
+        $user = UsersInfoModel::create($detail);
+        $user = $user->toArray();
+        // $openid = $user->openid;
         session('openid',$openid);
-        return $userInfo;
+        // return $user;
+        // 显示商品列表
+        $this->assign('user', $user);
+        return $this->fetch('goodslist');
     }
     
 
@@ -117,5 +160,11 @@ class Index extends Controller
             return json_decode($output,true);
         }
         return $output;
+    }
+
+    // 通过openid获取用户信息
+    private function getUserByOpenId($openid){
+        $user = UsersInfoModel::where('openid',$openid)->find();
+        return $user;
     }
 }
