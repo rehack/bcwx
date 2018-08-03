@@ -30,6 +30,7 @@ export default {
             // this.code=this.$route.query.code
             // let url = window.location.search
             let code = this.getUrlParam('code')
+            
             this.code=code
             if(code){
 
@@ -39,7 +40,10 @@ export default {
 
         getToken(){
             window.console.log('axios')
-            axios.get('http://127.0.0.1/wx_bargain_api/Token/getToken/',{params: { code: this.code }})
+            let protocol = window.location.protocol
+            let host = window.location.host
+
+            axios.get(`${protocol}//${host}/wx_bargain_api/Token/getToken/`,{params: { code: this.code }})
                 .then(resopnse=>{
                     window.console.log(resopnse)
                     this.token=resopnse.data

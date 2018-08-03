@@ -12,7 +12,7 @@ https://github.com/raychenfj/v-wechat-auth
 http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html
 -->
     <div id="app">
-        <img src="./assets/logo.png">
+        <!-- <img src="./assets/logo.png"> -->
         <router-view></router-view>
     </div>
 </template>
