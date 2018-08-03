@@ -4,11 +4,12 @@ namespace app\wx_bargain_api\controller;
 use \think\Controller;
 use app\wx_bargain_api\service\UserToken;
 
-class Token{
+class Token extends Controller{
     // 用户同意授权，获取code，微信授权引导页面
     public function login(){
         $appid = config('wechat.app_id');        
-        $redirect_uri=urlencode("http://192.168.3.2/wx_bargain_api/index/callback");
+        $host = config('setting.host');
+        $redirect_uri=urlencode("{$host}/wx_bargain_api/Token/callback");
 
         $scope='snsapi_userinfo';
 
@@ -27,9 +28,11 @@ class Token{
         
         // 拿到code交给UserToken层去处理（获取access_token和openid->获取用户详细信息->生成token令牌）
         $ut = new UserToken($code);
-        $token = $ut->get();
+        $token = $ut->returnToken();
 
         // 生成token后返回给客户端
-        return $token;
+        return json([
+            'token'=>$token
+        ]);
     }
 }
