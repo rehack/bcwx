@@ -1,7 +1,7 @@
 <?php
 namespace app\wx_bargain_api\service;
 
-use app\lib\WechatException;
+use app\lib\exception\WechatException;
 use app\wx_bargain_api\model\UsersInfo as UsersInfoModel;
 use think\Exception;
 

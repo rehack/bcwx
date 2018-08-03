@@ -13,37 +13,16 @@ http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html
 -->
     <div id="app">
         <img src="./assets/logo.png">
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 export default {
     name: "app",
-    data(){
-        return{
 
-        }
-    },
-
-    created(){
-        const url = 'https://bcwx.rehack.cn/bargain_api/login';
-        /* Axios({
-            method:"get",
-            url:'https://bcwx.rehack.cn/wx_bargain_api/index/getUserCode',
-            data:{
-                
-            },
-            then(data){
-                console.log(data)
-            }
-        }) */
-        axios
-        .get(url)
-        .then(response=>{
-            window.console.log(response.data)
-        });
-    }
+   
     
 };
 </script>

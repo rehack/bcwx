@@ -11,7 +11,7 @@
 
 
 Route::get('bargian_api/login', 'wx_bargain_api/Token/login');
-// ->header('Access-Control-Allow-Origin','http://192.168.3.2:8080')
-// ->header('Access-Control-Allow-Credentials', 'true')
-// ->allowCrossDomain();
+/* ->header('Access-Control-Allow-Origin','http://192.168.1.253:8080')
+->header('Access-Control-Allow-Credentials', 'true')
+->allowCrossDomain(); */
 

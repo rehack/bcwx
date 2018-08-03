@@ -25,6 +25,8 @@ class Token extends Controller{
     // 此接口是微信授权页面的回调地址，获取微信服务器通过get方式传递来的code参数
     public function callback(){
         $code = input('get.code');//code只能使用一次，5分钟未被使用自动过期 每次用户授权带上的code将不一样
+        // 用户拒接 不会有code参数
+
         
         // 拿到code交给UserToken层去处理（获取access_token和openid->获取用户详细信息->生成token令牌）
         $ut = new UserToken($code);
