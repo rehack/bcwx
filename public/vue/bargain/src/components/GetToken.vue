@@ -31,12 +31,15 @@ export default {
             // let url = window.location.search
             let code = this.getUrlParam('code')
             this.code=code
-            this.getToken();
+            if(code){
+
+                this.getToken();
+            }
         },
 
         getToken(){
             window.console.log('axios')
-            axios.get('http://192.168.1.253/wx_bargain_api/Token/callback/',{params: { code: this.code }})
+            axios.get('http://127.0.0.1/wx_bargain_api/Token/getToken/',{params: { code: this.code }})
                 .then(resopnse=>{
                     window.console.log(resopnse)
                     this.token=resopnse.data

@@ -21,7 +21,7 @@ export default {
         let appid = 'wx150347fed55855dd';
         // let redirect_uri = 'http://192.168.1.253/wx_bargain_api/Token/callback'
         // let redirect_uri = encodeURIComponent('http://192.168.1.253/test/#/token/?')
-        let redirect_uri = encodeURIComponent('http://192.168.1.253/test/#/token/')
+        let redirect_uri = encodeURIComponent('http://127.0.0.1/bargain/#/token/')
         // let redirect_uri = encodeURIComponent(window.location.href.split('#')[0]+'#');
         let scope='snsapi_userinfo';
         let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}&state=STATE#wechat_redirect`
