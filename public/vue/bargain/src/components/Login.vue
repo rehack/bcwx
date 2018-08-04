@@ -1,5 +1,6 @@
 <template>
-    <div>dasd
+    <div>
+        授权中。。。
 
         <!-- 参考https://www.jb51.net/article/138007.htm
         https://ask.csdn.net/questions/679367 
@@ -21,13 +22,14 @@ export default {
         let appid = 'wx150347fed55855dd';
         let protocol = window.location.protocol
         let host = window.location.host
+        // window.console.log(this.$route)
 
-        // let redirect_uri = 'http://192.168.1.253/wx_bargain_api/Token/callback'
-        // let redirect_uri = encodeURIComponent('http://192.168.1.253/test/#/token/?')
-        let redirect_uri = encodeURIComponent(`${protocol}//${host}/bargain/#/token/`)
-        // let redirect_uri = encodeURIComponent(window.location.href.split('#')[0]+'#');
-        let scope='snsapi_userinfo';
-        let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}&state=STATE#wechat_redirect`
+
+        // 重定向地址，跳转后会带一个code参数
+        let redirect_uri = encodeURIComponent(`${protocol}//${host}/#/token/`)
+        window.localStorage.setItem('flag', true)
+        let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+
         window.location.href=url;
     }
 }

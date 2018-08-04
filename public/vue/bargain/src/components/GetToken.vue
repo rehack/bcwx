@@ -1,8 +1,10 @@
 <template>
     <div>
+        token page
         <p>{{token}}</p>
         <p>{{code}}</p>
-        <!-- 参考https://www.jb51.net/article/138007.htm
+        <!-- 
+            参考https://www.jb51.net/article/138007.htm   router.beforeEach
         https://ask.csdn.net/questions/679367 
         https://www.v2ex.com/t/420936
         -->
@@ -14,7 +16,6 @@
 import axios from 'axios'
 
 export default {
-    name:"GetToken",
     data(){
         return{
             code:'',
@@ -31,22 +32,26 @@ export default {
             // let url = window.location.search
             let code = this.getUrlParam('code')
             
-            this.code=code
             if(code){
-
+                this.code=code
                 this.getToken();
             }
         },
 
         getToken(){
-            window.console.log('axios')
-            let protocol = window.location.protocol
-            let host = window.location.host
+            // let protocol = window.location.protocol
+            // let host = window.location.host
 
-            axios.get(`${protocol}//${host}/wx_bargain_api/Token/getToken/`,{params: { code: this.code }})
+            // let url = `${protocol}//${host}/wx_bargain_api/Token/getToken/`
+            // 后台code换token接口
+            let url = 'http://192.168.3.2/bargian_api/gettoken'
+
+            axios.get(url,{params: { code: this.code }})
                 .then(resopnse=>{
                     window.console.log(resopnse)
-                    this.token=resopnse.data
+                    let token = resopnse.data.token
+                    this.token=token
+                    window.localStorage.setItem('user_token',token)
                 })
 
         },

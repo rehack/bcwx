@@ -6,6 +6,12 @@ use app\wx_bargain_api\service\UserToken;
 use app\wx_bargain_api\validate\TokenGet;
 
 class Token extends Controller{
+    public function index(){
+        return 'index';
+    }
+    
+
+    
     // 用户同意授权，获取code，微信授权引导页面
     public function login(){
         $appid = config('wechat.app_id');        
