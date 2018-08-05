@@ -4,6 +4,7 @@ namespace app\wx_bargain_api\service;
 use app\lib\exception\WechatException;
 use app\wx_bargain_api\model\UsersInfo as UsersInfoModel;
 use think\Exception;
+use app\lib\enum\ScopeEnum;
 
 class UserToken extends BaseToken{
     private $code;
@@ -89,7 +90,7 @@ class UserToken extends BaseToken{
     private function prepareCachedData($wxResult,$uid){
         $cachedValue = $wxResult;
         $cachedValue['uid'] = $uid;
-        $cachedValue['scope'] = 16;
+        $cachedValue['scope'] = ScopeEnum::User;//普通客户权限
         return $cachedValue;
     }
 
@@ -97,7 +98,7 @@ class UserToken extends BaseToken{
     private function saveToCache($cachedValue){
         // 生成一个token
         $token = self::generateToken();
-        return $token;exit;
+        // return $token;exit;
         $key = $token;
         $value = json_encode($cachedValue);
         $cache_expire_in = config('setting.cache_expire_in');//缓存过期时间

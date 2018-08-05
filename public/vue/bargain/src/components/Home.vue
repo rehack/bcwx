@@ -4,14 +4,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   name: 'Home',
-  /* created(){
-      axios.get('http://127.0.0.1/test/index').then(response=>{
-          window.console.log(response.data)
-      })
-  } */
+  created(){
+    //   console.log(this.$route)
+  }
   
 }
 </script>

@@ -4,6 +4,7 @@ import Home from '@/components/Home';
 // import GetToken from '@/components/GetToken';
 import Login from '@/components/Login';
 import List from '@/components/List';
+import GoodsDetail from '@/components/GoodsDetail';
 
 Vue.use(Router)
 
@@ -39,6 +40,22 @@ const router = new Router({
             meta: {
                 title: '砍价商品列表'
             }
+        },
+        {
+            path:'/detail',
+            name:'detail',
+            component:GoodsDetail,
+            meta: {
+                title: '分享砍价'
+            }
+        },
+        {
+            // 访问路由表中不存在的路由，进入list，默认路由
+            path: '*',
+            component: List,
+            meta: {
+                title: '砍价商品列表'
+            }
         }
     ],
 })
@@ -51,7 +68,6 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     let token = window.localStorage.getItem("user_token")
 
-    document.title = to.meta.title
     if(token || to.path == '/login'){
         // 用户已经授权过或正在授权
         next()
@@ -60,13 +76,14 @@ router.beforeEach((to, from, next) => {
         next('/login')
         return false
     }
-
-    if(token && to.path == '/login'){
+    
+    if((token && to.path == '/login') || (token && to.path == '/')) {
         // 用户使用后退返回到授权页，则默认回到list
         next('/list')
         return false
     }
-    
+    // 设置路由title
+    document.title = to.meta.title
     next()
 })
 

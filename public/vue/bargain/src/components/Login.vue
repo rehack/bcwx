@@ -32,7 +32,7 @@ export default {
         let appid = 'wx150347fed55855dd';
         let protocol = window.location.protocol
         let host = window.location.host
-        window.console.log(this.$route)
+        // window.console.log(this.$route)
         // let path = this.$route.path
 
         // 重定向地址，跳转后会带一个code参数
@@ -43,8 +43,10 @@ export default {
 
         let code = this.getUrlParam('code')
         if(code){
+            // alert('code:'+code)
             this.getToken(code)
         }else{
+            // alert('nocode')
             window.location.href=url;
         }
     },
@@ -56,8 +58,8 @@ export default {
 
             // let url = `${protocol}//${host}/wx_bargain_api/Token/getToken/`
             // 后台code换token接口
-            let url = 'http://192.168.3.2/bargian_api/gettoken'
-
+            let url = this.lib.APIHOST+'/bargian_api/gettoken'
+           
             axios.get(url,{params: { code: code }})
                 .then(resopnse=>{
                     window.console.log(resopnse)
@@ -75,6 +77,7 @@ export default {
                     this.message = error.response.data
                     // console.log(error)
                 })
+
 
         },
         /*通过正则获取url中的参数*/
