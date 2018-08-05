@@ -50,24 +50,6 @@ const router = new Router({
 // 登陆验证拦截
 router.beforeEach((to, from, next) => {
     let token = window.localStorage.getItem("user_token")
-    // let flag = window.localStorage.getItem("flag")
-    /* if (token) {
-        next()
-    } else {
-        if (flag) {
-            next()
-        } else {
-            if(to.path=='/login'){ //如果是登录页面路径，就直接next()
-                next()
-            } else if(to.path=='/token' && !token){
-                next('/login')
-            }
-            else { //不然就跳转到登录；
-                next('/login')
-            }
-        }
-    } */
-
 
     document.title = to.meta.title
     if(token || to.path == '/login'){

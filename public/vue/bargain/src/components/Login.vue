@@ -8,7 +8,7 @@
 
         https://blog.csdn.net/weixin_32697945/article/details/78318615
         VUE开发SPA之较舒服的微信授权登录
-        
+
         
         #号问题  https://www.cnblogs.com/manman04/p/6129464.html
         
@@ -64,6 +64,7 @@ export default {
                     let token = resopnse.data.token
                     if(token){
                         window.localStorage.setItem('user_token',token)
+                        // 获取到token后跳转到商品列表
                         this.$router.push({name:'list'})
                     }else{
                         this.message = resopnse.data

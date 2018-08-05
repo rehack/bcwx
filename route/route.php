@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-
+// 获取token
 Route::get('bargian_api/gettoken', 'wx_bargain_api/Token/getToken')
 ->header('Access-Control-Allow-Origin','*')
 ->allowCrossDomain();
@@ -17,3 +17,7 @@ Route::get('bargian_api/gettoken', 'wx_bargain_api/Token/getToken')
 ->header('Access-Control-Allow-Credentials', 'true')
 ->allowCrossDomain(); */
 
+// 获取所有商品
+Route::get('bargian_api/goods', 'wx_bargain_api/Goods/getGoods')
+->header('Access-Control-Allow-Origin','*')
+->allowCrossDomain();
