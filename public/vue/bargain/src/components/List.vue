@@ -13,11 +13,11 @@
                     </div>
                     <div class="info">
                         <div class="tit">{{item.goods_name}}</div>
-                        <!-- <div class="btn" @click="toDetail" :data-id="item.goods_id">点击砍价</div>
-                         -->
-                        <div class="btn">
+                        <div class="btn" @click="startBargain(item.id)">立即砍价</div>
+                        
+                        <!-- <div class="btn">
                             <router-link :to="{ name: 'detail', query: item}">立即砍价</router-link>
-                        </div>
+                        </div> -->
                         <div class="price">
                             <s>原价{{item.original_price}}元</s>
                             <span>现价{{item.activity_money}}元</span>
@@ -54,14 +54,49 @@ export default {
             axios
             .get(this.lib.APIHOST+"/bargian_api/goods")
             .then(response => {
-                window.console.log(response.data);
+                // window.console.log(response.data);
                 this.listData = response.data
             })
             .catch(error => {
                 window.console.log(error);
             });
         },
-
+        // 发起砍价
+        startBargain(id){
+            // https://bbs.heirui.cn/thread-16419-1-1.html UI设计参考
+            /* axios.get(this.lib.APIHOST+'/bargian_api/startbargain?goods_id='+id)
+                .then(response=>{
+                    window.console.log(response.data)
+                })
+                .catch(error=>{
+                    window.console.log(error.response.data)
+                }) */
+            axios({
+                method:'GET',
+                url:this.lib.APIHOST+'/bargian_api/startbargain',
+                params:{goods_id:id},
+                headers:{
+                    "Access-Token":window.localStorage.getItem('user_token')
+                }
+            })
+            .then(response=>{
+                window.console.log(response.data)
+                // let data = response.data
+                // console.log(data.msg)
+                
+            })
+            .catch(error=>{
+                window.console.log(error.response.data)
+                let data = error.response.data
+                if(data.msg == 'token已过期或无效token'){
+                    
+                    window.localStorage.removeItem('user_token')
+                    // 跳转去后url存在原code
+                    // this.$router.push({name:'login'})
+                    window.location.href='http://192.168.1.253:8080/#/login'
+                }
+            }) 
+        }
         
     }
 };
@@ -115,7 +150,7 @@ export default {
 .main .list li .info .tit{
     font-size: 0.27rem;
 }
-.main .list li .info .btn a{
+.main .list li .info .btn{
     color: #fff;
     background-color: red;
     width: 40%;

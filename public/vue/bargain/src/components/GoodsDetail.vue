@@ -23,7 +23,7 @@ export default {
         getItem(){
             let item = this.$route.query;
             this.itemData = item
-            console.log(item)
+            window.console.log(item)
         }
     }
 
