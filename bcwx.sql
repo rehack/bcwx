@@ -1,9 +1,8 @@
 /*
 SQLyog Ultimate v12.08 (64 bit)
-MySQL - 5.5.56 : Database - bcwx
+MySQL - 5.5.53 : Database - bcwx
 *********************************************************************
-*/
-
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -24,14 +23,14 @@ DROP TABLE IF EXISTS `bargain_goods`;
 CREATE TABLE `bargain_goods` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `product_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品ID',
-  `product_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '商品名称',
+  `goods_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '商品名称',
   `img_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品图片id',
   `activity_money` decimal(7,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '活动价,最低砍价',
   `original_price` decimal(7,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '原价',
   `bargain_section` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '砍价区间',
   `bargain_section2` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '砍价区间2【用户线上砍价(新用户砍价区间)】',
   `join_count` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '参与人数',
-  `product_desc` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '活动商品描述',
+  `goods_desc` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '活动商品描述',
   `attr1_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'attr1属性',
   `attr2_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'attr2属性',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0是线上，1是地推',
@@ -40,7 +39,11 @@ CREATE TABLE `bargain_goods` (
   KEY `attr2_id` (`attr2_id`),
   KEY `attr1_id` (`attr1_id`),
   KEY `type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+/*Data for the table `bargain_goods` */
+
+insert  into `bargain_goods`(`id`,`product_id`,`goods_name`,`img_id`,`activity_money`,`original_price`,`bargain_section`,`bargain_section2`,`join_count`,`goods_desc`,`attr1_id`,`attr2_id`,`type`) values (3,0,'种植牙',3,'4999.00','8999.00','','',0,'种植牙1234',0,0,0),(4,0,'美容冠',4,'5000.00','9888.00','','',0,'',0,0,0);
 
 /*Table structure for table `bargain_helpers` */
 
@@ -57,6 +60,8 @@ CREATE TABLE `bargain_helpers` (
   KEY `bargain_id` (`order_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
+/*Data for the table `bargain_helpers` */
+
 /*Table structure for table `bargain_images` */
 
 DROP TABLE IF EXISTS `bargain_images`;
@@ -65,7 +70,11 @@ CREATE TABLE `bargain_images` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `img_path` varchar(100) NOT NULL COMMENT '图片路径',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+/*Data for the table `bargain_images` */
+
+insert  into `bargain_images`(`id`,`img_path`) values (3,'/static/bargain/images/1.jpg'),(4,'/static/bargain/images/2.jpg');
 
 /*Table structure for table `bargain_order` */
 
@@ -92,6 +101,8 @@ CREATE TABLE `bargain_order` (
   KEY `is_addorder` (`is_addorder`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
+/*Data for the table `bargain_order` */
+
 /*Table structure for table `bargain_users_info` */
 
 DROP TABLE IF EXISTS `bargain_users_info`;
@@ -110,6 +121,8 @@ CREATE TABLE `bargain_users_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE` (`openid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+/*Data for the table `bargain_users_info` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

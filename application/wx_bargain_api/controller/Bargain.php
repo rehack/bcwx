@@ -12,7 +12,7 @@ class Bargain extends BaseController{
     ];
 
     // 发起砍价
-    public function startBargain(){
+    public function createBargain(){
         (new BargainValidate())->goCheck();
 
         $uid = BaseToken::getCurrentUid();

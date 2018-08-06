@@ -20,14 +20,10 @@ function http_curl($url,$type='get',$resType='json',$arr=''){
     
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查
-
-
-
     if($type=='post'){
         curl_setopt($ch,CURLOPT_POST,1);
         curl_setopt($ch,CURLOPT_POSTFIELDS,$arr);
     }
-
     // 3.采集
     $output = curl_exec($ch);
     // dump($url);
@@ -41,24 +37,17 @@ function http_curl($url,$type='get',$resType='json',$arr=''){
     }
     return $output;
 }
-
-
 // 生成随机字符串
 function getRandChar($length)
 {
     $str = null;
     $strPol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
     $max = strlen($strPol) - 1;
-
     for ($i = 0;$i < $length;$i++) {
         $str .= $strPol[rand(0, $max)];
     }
-
     return $str;
 }
-
-
-
 function fromArrayToModel($m , $array)
 {
     foreach ($array as $key => $value)

@@ -73,10 +73,10 @@ export default {
                 }) */
             axios({
                 method:'GET',
-                url:this.lib.APIHOST+'/bargian_api/startbargain',
+                url:this.lib.APIHOST+'/bargian_api/createbargain',
                 params:{goods_id:id},
                 headers:{
-                    "Access-Token":window.localStorage.getItem('user_token')
+                    "Authorization":window.localStorage.getItem('user_token')
                 }
             })
             .then(response=>{

@@ -22,7 +22,7 @@ class BaseToken{
     // 通过token从缓存中获取指定的值
     public static function getCurrentVarByToken($key){
         // 从客户的请求头信息里获取token
-        $token = Request::header('Access-Token');
+        $token = Request::header('Authorization');
         $values = Cache::get($token);
 
         // 如果缓存过期或不存在
