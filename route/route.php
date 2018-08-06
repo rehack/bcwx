@@ -39,3 +39,11 @@ Route::post('bargian_api/createbargain', 'wx_bargain_api/Bargain/createBargain')
 ->header('Access-Control-Allow-Headers','Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With,Access-Token')
 // ->header('Access-Control-Expose-Headers','*')
 ->allowCrossDomain(); */
+
+// 获取砍价订单详情
+Route::get('bargian_api/bargaindetail', 'wx_bargain_api/Bargain/getDetail')
+->allowCrossDomain();
+
+// 返回微信分享需要的参数
+Route::get('bargian_api/wxshare', 'wx_bargain_api/Wx/wxShare')
+->allowCrossDomain();

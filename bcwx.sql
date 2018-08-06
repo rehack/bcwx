@@ -24,7 +24,7 @@ CREATE TABLE `bargain_bargain_order` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '砍价商品发起的用户ID',
   `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '参与活动的商品',
-  `activity_bargain_id` int(10) unsigned NOT NULL COMMENT 'activity_prodcuts主键id',
+  `bargain_sn` varchar(20) NOT NULL COMMENT '砍价订单编号',
   `attr1_id` smallint(5) unsigned NOT NULL COMMENT 'attr1属性id',
   `attr2_id` smallint(5) unsigned NOT NULL COMMENT 'attr2属性id',
   `bargain_count` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '被砍价次数',
@@ -33,15 +33,17 @@ CREATE TABLE `bargain_bargain_order` (
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0是线上，1是地推',
   `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '发起时间',
   PRIMARY KEY (`id`),
-  KEY `activity_bargain_id` (`activity_bargain_id`),
+  KEY `activity_bargain_id` (`bargain_sn`),
   KEY `attr1_id` (`attr1_id`),
   KEY `attr2_id` (`attr2_id`),
   KEY `product_id` (`goods_id`),
   KEY `user_id` (`uid`),
   KEY `is_addorder` (`is_addorder`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `bargain_bargain_order` */
+
+insert  into `bargain_bargain_order`(`id`,`uid`,`goods_id`,`bargain_sn`,`attr1_id`,`attr2_id`,`bargain_count`,`deal_money`,`is_addorder`,`type`,`create_time`) values (1,1,3,'62TT2018080697554854',0,0,0,'4999.00',0,0,1533553114),(2,1,1,'KFMQ2018080610148551',0,0,0,'5000.00',0,0,1533553118);
 
 /*Table structure for table `bargain_goods` */
 
@@ -66,7 +68,7 @@ CREATE TABLE `bargain_goods` (
   KEY `attr2_id` (`attr2_id`),
   KEY `attr1_id` (`attr1_id`),
   KEY `type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `bargain_goods` */
 
@@ -85,7 +87,7 @@ CREATE TABLE `bargain_helpers` (
   PRIMARY KEY (`id`),
   KEY `assistor_id` (`assistor_id`),
   KEY `bargain_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `bargain_helpers` */
 
@@ -120,11 +122,11 @@ CREATE TABLE `bargain_users_info` (
   `update_time` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE` (`openid`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `bargain_users_info` */
 
-insert  into `bargain_users_info`(`id`,`openid`,`nickname`,`sex`,`city`,`province`,`country`,`headimgurl`,`create_time`,`update_time`) values (4,'oNKC-0TJuJ8e_LJhsor1tVzqFHD8','Rehack',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIN6ICAamJIEKIyk9gAllcicicWcp8Ut1NJ5CakaaD29zLSq2HNL5p6FiaxibHC6ZibHydgOBsfn0K5IbQ/132',1533529622,1533529622);
+insert  into `bargain_users_info`(`id`,`openid`,`nickname`,`sex`,`city`,`province`,`country`,`headimgurl`,`create_time`,`update_time`) values (1,'oNKC-0TJuJ8e_LJhsor1tVzqFHD8','Rehack',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIN6ICAamJIEKIyk9gAllcicicWcp8Ut1NJ5CakaaD29zLSq2HNL5p6FiaxibHC6ZibHydgOBsfn0K5IbQ/132',1533553012,1533553012);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

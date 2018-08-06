@@ -2,7 +2,6 @@
     <div class="main">
         <div class="banner"></div>
         <div class="headimg">
-            <img src="{$user[0]['headimgurl']}" alt="">
             
         </div>
         <div class="list">
@@ -97,7 +96,7 @@ export default {
                     // this.$router.push({name:'login'})
                     window.location.href='http://192.168.1.253:8080/#/login'
                 }else{
-                    alert('发送错误')
+                    alert(error.response.data.msg)
                 }
             }) 
         }

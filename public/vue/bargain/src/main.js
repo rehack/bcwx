@@ -5,6 +5,7 @@ import './assets/css/base.css'
 import lib from './lib/config.js'
 
 
+
 Vue.config.productionTip = false
 
 // vue全局变量
