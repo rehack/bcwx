@@ -9,7 +9,7 @@ import GoodsDetail from '@/components/GoodsDetail';
 Vue.use(Router)
 
 const router = new Router({
-    // mode:'history',
+    mode:'history',
     routes:[
         {
             path:'/',
@@ -18,13 +18,6 @@ const router = new Router({
                 title: '首页'
             }
         },
-        /* {
-            path:'/token',
-            component:GetToken,
-            meta: {
-                title: '砍价商品'
-            }
-        }, */
         {
             path:'/login',
             name:'login',

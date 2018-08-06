@@ -64,29 +64,31 @@ export default {
         // 发起砍价
         startBargain(id){
             // https://bbs.heirui.cn/thread-16419-1-1.html UI设计参考
-            /* axios.get(this.lib.APIHOST+'/bargian_api/startbargain?goods_id='+id)
-                .then(response=>{
-                    window.console.log(response.data)
-                })
-                .catch(error=>{
-                    window.console.log(error.response.data)
-                }) */
+
             axios({
-                method:'GET',
+                method:'POST',
                 url:this.lib.APIHOST+'/bargian_api/createbargain',
-                params:{goods_id:id},
                 headers:{
                     "Authorization":window.localStorage.getItem('user_token')
-                }
+                },
+                data:{"goods_id":id},
+                
             })
             .then(response=>{
                 window.console.log(response.data)
-                // let data = response.data
-                // console.log(data.msg)
+                let sn = response.data.bargainSn
+                if(sn){
+                    this.$router.push({
+                        path: 'detail', 
+                        query: { no: sn }
+                    })
+                }else{
+                    alert('发生错误')
+                }
                 
             })
             .catch(error=>{
-                window.console.log(error.response.data)
+                // window.console.log(error.response.data)
                 let data = error.response.data
                 if(data.msg == 'token已过期或无效token'){
                     
@@ -94,6 +96,8 @@ export default {
                     // 跳转去后url存在原code
                     // this.$router.push({name:'login'})
                     window.location.href='http://192.168.1.253:8080/#/login'
+                }else{
+                    alert('发送错误')
                 }
             }) 
         }

@@ -29,40 +29,54 @@ export default {
         }
     },
     created(){
-        let appid = 'wx150347fed55855dd';
-        let protocol = window.location.protocol
-        let host = window.location.host
-        // window.console.log(this.$route)
-        // let path = this.$route.path
-
-        // 重定向地址，跳转后会带一个code参数
-        let redirect_uri = encodeURIComponent(`${protocol}//${host}/#/login`)
-        // let redirect_uri = encodeURIComponent(path)
-        // window.localStorage.setItem('flag', true)
-        let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
-
-        let code = this.getUrlParam('code')
-        if(code){
-            // alert('code:'+code)
-            this.getToken(code)
+        if(this.isWechat()){
+            this.login()
         }else{
-            // alert('nocode')
-            window.location.href=url;
+            this.message='请在微信中打开...'
         }
     },
 
     methods:{
-        getToken(code){
-            // let protocol = window.location.protocol
-            // let host = window.location.host
 
-            // let url = `${protocol}//${host}/wx_bargain_api/Token/getToken/`
-            // 后台code换token接口
+        // 判断是否是微信环境
+        isWechat(){
+            let ua = window.navigator.userAgent.toLowerCase();
+            return ua.match(/MicroMessenger/i) == 'micromessenger';
+        },
+        // 微信网页授权
+        login(){
+            let appid = 'wx150347fed55855dd';
+            let protocol = window.location.protocol
+            let host = window.location.host
+            // window.console.log(this.$route)
+            // let path = this.$route.path
+
+            // 重定向地址，跳转后会带一个code参数
+            // let redirect_uri = encodeURIComponent(`${protocol}//${host}/#/login`)
+            let redirect_uri = encodeURIComponent(`${protocol}//${host}/login`)//history模式
+            // let redirect_uri = encodeURIComponent(path)
+            // window.localStorage.setItem('flag', true)
+            let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+
+            // let code = this.getUrlParam('code');
+            let code = this.$route.query.code
+            if(code){
+                // alert('code:'+code)
+                this.getToken(code)
+            }else{
+                // alert('nocode')
+                window.location.href=url;
+            }
+        },
+
+        // 通过code换取token
+        getToken(code){
+
             let url = this.lib.APIHOST+'/bargian_api/gettoken'
            
             axios.get(url,{params: { code: code }})
                 .then(resopnse=>{
-                    window.console.log(resopnse)
+                    // window.console.log(resopnse)
                     let token = resopnse.data.token
                     if(token){
                         window.localStorage.setItem('user_token',token)

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img :src="lib.APIHOST+itemData.images.img_path" alt="">
+        <!-- <img :src="lib.APIHOST+itemData.images.img_path" alt=""> -->
     </div>
 
 </template>

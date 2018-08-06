@@ -18,14 +18,22 @@
 ##技术点：
 1.采用前后端分离模式进行开发，前端采用vue2+vue-cli3,后端采用tp5.1,API采用restfull标准设计，公众号为认证的服务号
 2.采用token机制来授权接口，用户第一次进入会颁发一个token(同时存入服务端缓存文件)给客户，然后存入客户端，客户每次请求都要带上这个token(放headers里)，服务端拿到token后，从缓存中通过token读取用户信息
+3.为防止token被盗，所以后端缓存token的过期时间不能设置太长
 3.分享链接只携带订单编号
 
 
 ##采坑：
-1.前端微信网页授权获取code的过程中使用了router.beforeEach()路由拦截机制，判断window.localStorage.getItem("user_token")，没有就跳转到/login路由，有就进入/list路由。/login路由里面的redirect_uri回调地址最好设置成当前的/login路由地址，否则会出现路由死循环。同时判断/login路由有无code参数，有就取到code，提交给后台，后台拿到code返回token,url没有code参数就打开微信授权接口链接
+1.前端微信网页授权获取code的过程中使用了router.beforeEach()路由拦截机制，无论使用哪个url进入网站都会先触发router.beforeEach钩子，在router.beforeEach钩子中判断用户当前登录状态，判断window.localStorage.getItem("user_token")，没有就跳转到/login路由，有就进入/list路由。/login路由里面的redirect_uri回调地址最好设置成当前的/login路由地址，否则会出现路由死循环。同时判断/login路由有无code参数，有就取到code，提交给后台，后台拿到code返回token,url没有code参数就打开微信授权接口链接
 
 2.采用前后端分离，所以会产生跨域问题，在tp5路由配置里添加allowCrossDomain()，但是发现当前端用axios把token放到headers里面，然后提交给后台的时候还是存在跨域。找到了两种方法解决：A.在nginx里添加
 add_header 'Access-Control-Allow-Headers'  'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With,Access-Token';
 Access-Token就是axios Headers里面的参数
 B.既然Reopnse Headers里面的Access-Control-Allow-Headers不存在Access-Token这一项，但存在Authorization，所以就就把token值放到Authorization里传递到后端，至此Access-Control-Allow-Headers的跨域问题得到解决
 
+还遇到一个奇怪的跨域问题，用var_dump打印一个模型查询结果,代码有问题也会出现No 'Access-Control-Allow-Origin' header is present on the requested resource跨域错误，有空再追踪tp5源码
+
+3.vue history模式和hash模式
+当采用hash模式的时候，微信重定向到redirect_uri上的时候,redirect_uri路由被破坏，原本的xxx.com:8080/#/login 变成了xxx.com:8080/?code=xxxx&state=xxx#/login
+后面使用this.$router.push()方法的时候，路由地址始终是这样，有个code参数在上面，hash值在所有参数后面，这种链接分享出去不是很友好，在ios下也会出现问题（这种路由中带了参数的url是没法签名校验成功的）
+
+我的解决办法是采用history模式，但history模式在前后端分离的项目中打包上线后会出现404情况，需要nginx配合

@@ -16,6 +16,33 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`bcwx` /*!40100 DEFAULT CHARACTER SET ut
 
 USE `bcwx`;
 
+/*Table structure for table `bargain_bargain_order` */
+
+DROP TABLE IF EXISTS `bargain_bargain_order`;
+
+CREATE TABLE `bargain_bargain_order` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '砍价商品发起的用户ID',
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '参与活动的商品',
+  `activity_bargain_id` int(10) unsigned NOT NULL COMMENT 'activity_prodcuts主键id',
+  `attr1_id` smallint(5) unsigned NOT NULL COMMENT 'attr1属性id',
+  `attr2_id` smallint(5) unsigned NOT NULL COMMENT 'attr2属性id',
+  `bargain_count` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '被砍价次数',
+  `deal_money` decimal(7,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '最终交易价格',
+  `is_addorder` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否下单购买(0:未下单，1已下单)',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0是线上，1是地推',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '发起时间',
+  PRIMARY KEY (`id`),
+  KEY `activity_bargain_id` (`activity_bargain_id`),
+  KEY `attr1_id` (`attr1_id`),
+  KEY `attr2_id` (`attr2_id`),
+  KEY `product_id` (`goods_id`),
+  KEY `user_id` (`uid`),
+  KEY `is_addorder` (`is_addorder`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+/*Data for the table `bargain_bargain_order` */
+
 /*Table structure for table `bargain_goods` */
 
 DROP TABLE IF EXISTS `bargain_goods`;
@@ -43,7 +70,7 @@ CREATE TABLE `bargain_goods` (
 
 /*Data for the table `bargain_goods` */
 
-insert  into `bargain_goods`(`id`,`product_id`,`goods_name`,`img_id`,`activity_money`,`original_price`,`bargain_section`,`bargain_section2`,`join_count`,`goods_desc`,`attr1_id`,`attr2_id`,`type`) values (3,0,'种植牙',3,'4999.00','8999.00','','',0,'种植牙1234',0,0,0),(4,0,'美容冠',4,'5000.00','9888.00','','',0,'',0,0,0);
+insert  into `bargain_goods`(`id`,`product_id`,`goods_name`,`img_id`,`activity_money`,`original_price`,`bargain_section`,`bargain_section2`,`join_count`,`goods_desc`,`attr1_id`,`attr2_id`,`type`) values (1,0,'美容冠',4,'5000.00','9888.00','','',0,'',0,0,0),(3,0,'种植牙',3,'4999.00','8999.00','','',0,'种植牙1234',0,0,0);
 
 /*Table structure for table `bargain_helpers` */
 
@@ -76,33 +103,6 @@ CREATE TABLE `bargain_images` (
 
 insert  into `bargain_images`(`id`,`img_path`) values (3,'/static/bargain/images/1.jpg'),(4,'/static/bargain/images/2.jpg');
 
-/*Table structure for table `bargain_order` */
-
-DROP TABLE IF EXISTS `bargain_order`;
-
-CREATE TABLE `bargain_order` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `activity_bargain_id` int(10) unsigned NOT NULL COMMENT 'activity_prodcuts主键id',
-  `product_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '参与活动的商品',
-  `attr1_id` smallint(5) unsigned NOT NULL COMMENT 'attr1属性id',
-  `attr2_id` smallint(5) unsigned NOT NULL COMMENT 'attr2属性id',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '砍价商品发起的用户ID',
-  `bargain_count` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '被砍价次数',
-  `deal_money` decimal(7,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '最终交易价格',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '发起时间',
-  `is_addorder` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否下单购买(0:未下单，1已下单)',
-  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0是线上，1是地推',
-  PRIMARY KEY (`id`),
-  KEY `activity_bargain_id` (`activity_bargain_id`),
-  KEY `attr1_id` (`attr1_id`),
-  KEY `attr2_id` (`attr2_id`),
-  KEY `product_id` (`product_id`),
-  KEY `user_id` (`user_id`),
-  KEY `is_addorder` (`is_addorder`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-
-/*Data for the table `bargain_order` */
-
 /*Table structure for table `bargain_users_info` */
 
 DROP TABLE IF EXISTS `bargain_users_info`;
@@ -120,9 +120,11 @@ CREATE TABLE `bargain_users_info` (
   `update_time` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE` (`openid`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `bargain_users_info` */
+
+insert  into `bargain_users_info`(`id`,`openid`,`nickname`,`sex`,`city`,`province`,`country`,`headimgurl`,`create_time`,`update_time`) values (4,'oNKC-0TJuJ8e_LJhsor1tVzqFHD8','Rehack',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIN6ICAamJIEKIyk9gAllcicicWcp8Ut1NJ5CakaaD29zLSq2HNL5p6FiaxibHC6ZibHydgOBsfn0K5IbQ/132',1533529622,1533529622);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
