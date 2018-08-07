@@ -1,13 +1,23 @@
 <template>
-    <div>
+    <div v-if="bargainData.goods" class="main">
+        <div class="banner">
+            <img  :src="lib.APIHOST+bargainData.goods.img2_id" alt="">
+        </div>
+        <div class="tit-wrap">
+            <span class="tit">{{bargainData.goods.goods_name}}</span>
+        </div>
+        <div class="des" v-html="bargainData.goods.goods_desc"></div>
+        <div class="price">原价:￥{{bargainData.goods.original_price}}</div>
         <!-- <img :src="lib.APIHOST+bargainData.goods.images.img_path" alt="">
         <h2>{{bargainData.goods.goods_name}}￥56.3</h2> -->
-        <div>
+        <!-- <div>
             <span>已坎3.2</span>
             <span>还差52.6元</span>
         </div>
-        <div>还剩1天23：40：02：01过期 快来砍价吧</div>
-        <div>点击右上角分享到朋友圈或好友</div>
+        <div>还剩1天23：40：02：01过期 快来砍价吧</div> -->
+        <footer>
+            <div @click="share" class="sharebtn">点击右上角分享出去帮我砍价</div>
+        </footer>
     </div>
 
 </template>
@@ -30,14 +40,14 @@ export default {
         return {
             bargainData: {},
             images: {},
-            shareData: []
+            configData: []
         };
     },
     created() {
         //   console.log(this.$route)
         
         this.getDetail();
-        this.getWxShareParams();
+        // this.getWxShareParams();
     },
     methods: {
         // 通过bargain单号获取详情
@@ -49,8 +59,11 @@ export default {
                 params: { no }
             })
             .then(response => {
-                // window.console.log(response.data);
+                window.console.log(response.data);
                 this.bargainData = response.data;
+            })
+            .then(()=>{
+                this.getWxShareParams();
             })
             .catch(error => {
                 alert(error.response.data.msg);
@@ -66,29 +79,29 @@ export default {
                 params:{currentUrl}
             }).then(response => {
                 window.console.log(response.data);
-                let shareData = response.data;
-                this.shareData = shareData;
-                this.wxInit(shareData);
+                let configData = response.data;
+                this.configData = configData;
+                this.wxInit(configData);
             });
         },
 
         //微信分享使用方法
-        wxInit(sd) {
+        wxInit(conf) {
             /* alert(window.location.href) 
             return false */
             let no = this.$route.query.no
             // return false
             // let links = window.location.href+'&flag=share'; //分享出去的链接
             let links = window.location.protocol+"//"+window.location.host+'/login?flag=share&no='+no; //分享出去的链接
-            let title = "种植牙"; //分享的标题
-            let desc = "关注有新活动通知您"; //分享的详情介绍
-            let imgUrl = '';
+            let title = this.bargainData.goods.goods_name; //分享的标题
+            let desc = this.bargainData.goods.goods_desc; //分享的详情介绍
+            let imgUrl = this.lib.APIHOST+this.bargainData.goods.img1_id;
             wx.config({
-                debug: true,
-                appId: sd.appId,
-                timestamp: sd.timestamp,
-                nonceStr: sd.nonceStr,
-                signature: sd.signature,
+                debug: false,
+                appId: conf.appId,
+                timestamp: conf.timestamp,
+                nonceStr: conf.nonceStr,
+                signature: conf.signature,
                 jsApiList: [
                     "onMenuShareTimeline",
                     "onMenuShareAppMessage"
@@ -122,7 +135,6 @@ export default {
                     imgUrl: imgUrl, // 分享图标
                     success: function() {
                         alert("成功分享给朋友")
-                        alert(links)
                         /* Toast({
                             message: "成功分享给朋友"
                         }); */
@@ -135,15 +147,74 @@ export default {
                     }
                 });
             });
-            /* wx.error(function(res) {
-                // alert(res)
+            wx.error(function(res) {
+                alert(res)
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-            }); */
-        }
+            });
+        },
+
+        // 点击分享
+        // https://bbs.heirui.cn/thread-16419-1-1.html UI设计参考
+        share(){
+            // this.getWxShareParams();
+        },
+
+        
     }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.main{background: #eee;padding-bottom: 0.8rem;}
+.banner img{
+    width: 100%;
+}
+.tit-wrap{
+
+    display: inline-block;
+    color: #313131;
+    border:15px solid rgba(253, 231, 40, 0.3);
+    margin: 15px 0;
+}
+.tit-wrap .tit{
+    font-size: 0.3rem;
+    font-weight: bold;
+    background: #fde727;
+    padding: 5px 15px;
+}
+.des{
+    width: 80%;
+    margin: 0 auto;
+    text-align: left;
+    color: #515151;
+    font-size: 0.23rem;
+    line-height: 0.5rem;
+}
+.price{
+    font-size: 0.32rem;
+    color: red;
+    margin: 8px 0;
+}
+footer{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    font-size: 0.3rem;
+    background: #ccc;
+    align-items: center;
+    justify-content: space-around;
+    height: 0.8rem;
+}
+footer div{
+    background: #d7b150;
+    color: #fff;
+    font-size: 0.3rem;
+    border-radius: 5px;
+    padding: 5px 10px;
+
+}
+
 </style>

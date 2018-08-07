@@ -1,26 +1,18 @@
 <template>
     <div class="main">
-        <div class="banner"></div>
-        <div class="headimg">
-            
+        <div class="banner">
+            <img :src="this.lib.APIHOST+'/static/bargain/images/banner_01.jpg'" alt="">
         </div>
         <div class="list">
             <ul>
                 <li v-for="item in listData" :key="item.id">
                     <div class="pic">
-                        <img :src="lib.APIHOST+item.images.img_path" alt="">
+                        <img :src="lib.APIHOST+item.img1_id" alt="">
                     </div>
                     <div class="info">
-                        <div class="tit">{{item.goods_name}}</div>
+                        <span>原价{{item.original_price}}元</span>
                         <div class="btn" @click="startBargain(item.id)">立即砍价</div>
-                        
-                        <!-- <div class="btn">
-                            <router-link :to="{ name: 'detail', query: item}">立即砍价</router-link>
-                        </div> -->
-                        <div class="price">
-                            <s>原价{{item.original_price}}元</s>
-                            <span>现价{{item.activity_money}}元</span>
-                        </div>
+
                     </div>
                 </li>
             </ul>
@@ -53,7 +45,7 @@ export default {
             axios
             .get(this.lib.APIHOST+"/bargian_api/goods")
             .then(response => {
-                // window.console.log(response.data);
+                window.console.log(response.data);
                 this.listData = response.data
             })
             .catch(error => {
@@ -62,7 +54,7 @@ export default {
         },
         // 发起砍价
         startBargain(id){
-            // https://bbs.heirui.cn/thread-16419-1-1.html UI设计参考
+            
 
             axios({
                 method:'POST',
@@ -113,67 +105,57 @@ export default {
     margin: 0 auto;
     overflow: hidden;
 }
+img{
+    display: block;
+}
 .main .banner{
     width: 100%;
-    height: 50px;
-    background: #1dddd3;
 }
-.main .headimg{
+.main .banner img{
+    width: 100%;
+}
+
+
+.main .list ul{
     display: flex;
-    align-items: center
-}
-.main .headimg img{
-    border-radius: 100%;
-    width: 1rem;
-    height: 1rem;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-}
-.main .list{
-    margin-top: 20px;
-    border-top: 1px solid #ccc;
+    justify-content: space-around;
 }
 .main .list li{
     display: flex;
+    width: 48%;
     margin-top: 20px;
-    border-bottom: 1px dashed #666;
+    flex-direction: column;
+    /* border-bottom: 1px dashed #666; */
 }
 .main .list li .pic{
-    width: 40%;
+    /* width: 40%; */
 }
 .main .list li .pic img{
     width: 100%;
 }
 .main .list li .info{
-    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    background: #5919be;
+    padding: 10px 0;
+    border-right: 3px solid #fff;
 }
-.main .list li .info .tit{
+.main .list li .info span{
     font-size: 0.27rem;
+    color: #fff600;
 }
 .main .list li .info .btn{
-    color: #fff;
-    background-color: red;
-    width: 40%;
+    color: #ed1d79;
+    background-color: #fcfcfc;
+    font-size: 0.32rem;
     margin: 0 auto;
     text-align: center;
     padding: 5px 10px;
-    font-size: 0.22rem;
     border-radius: 5px;
+    margin-top: 5px;
 }
-.main .list li .info .price{
-    display: flex;
-    justify-content: space-around;
-}
-.main .list li .info .price s{
-    color: #666;
-    margin-right: 5px;
-}
-.main .list li .info .price span{
-    color: red;
-}
+
 
 footer{
     width: 100%;

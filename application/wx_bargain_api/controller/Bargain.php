@@ -66,7 +66,7 @@ class Bargain extends BaseController{
         $bargainNo = input('get.no');
         // return $bargainNo;
         if($bargainNo){
-            $bargainOrder = BargainOrderModel::with('goods.images')->where('bargain_sn',$bargainNo)->find();
+            $bargainOrder = BargainOrderModel::with('goods')->where('bargain_sn',$bargainNo)->find();
             if($bargainOrder){
                 return json($bargainOrder);
             }else{

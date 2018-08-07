@@ -8,7 +8,7 @@ class Goods{
 
     public function getGoods(){
         // return GoodsModel::all();exit;
-        $goods = GoodsModel::with('images')->all();
+        $goods = GoodsModel::all();
         return $goods;
     }
 }

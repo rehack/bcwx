@@ -7,7 +7,7 @@ class Goods extends Model{
     // 关联图片表
     public function images()
     {
-        return $this->belongsTo('Images','img_id');
+        return $this->hasMany('Images','img1_id');
     }
 
     public static function getDetailById($id){
