@@ -7,7 +7,7 @@
             <span>还差52.6元</span>
         </div>
         <div>还剩1天23：40：02：01过期 快来砍价吧</div>
-        <div>分享好友砍一刀</div>
+        <div>点击右上角分享到朋友圈或好友</div>
     </div>
 
 </template>
@@ -35,7 +35,7 @@ export default {
     },
     created() {
         //   console.log(this.$route)
-        alert(location.href.split('#')[0])
+        
         this.getDetail();
         this.getWxShareParams();
     },
@@ -48,19 +48,22 @@ export default {
                 url: this.lib.APIHOST + "/bargian_api/bargaindetail",
                 params: { no }
             })
-                .then(response => {
-                    window.console.log(response.data);
-                    this.bargainData = response.data;
-                })
-                .catch(error => {
-                    alert(error.response.data.msg);
-                });
+            .then(response => {
+                // window.console.log(response.data);
+                this.bargainData = response.data;
+            })
+            .catch(error => {
+                alert(error.response.data.msg);
+            });
         },
 
         getWxShareParams() {
+            // let currentUrl = encodeURIComponent(window.location.href.split('#')[0])
+            let currentUrl = window.location.href.split('#')[0]
             axios({
                 method: "get",
-                url: this.lib.APIHOST + "/bargian_api/wxshare"
+                url: this.lib.APIHOST + "/bargian_api/wxshare",
+                params:{currentUrl}
             }).then(response => {
                 window.console.log(response.data);
                 let shareData = response.data;
@@ -71,23 +74,24 @@ export default {
 
         //微信分享使用方法
         wxInit(sd) {
-            // alert(window.location.href)
-            let links = window.location.href; //分享出去的链接
-            let title = "向您推荐：的活动微站"; //分享的标题
+            /* alert(window.location.href) 
+            return false */
+            let no = this.$route.query.no
+            // return false
+            // let links = window.location.href+'&flag=share'; //分享出去的链接
+            let links = window.location.protocol+"//"+window.location.host+'/login?flag=share&no='+no; //分享出去的链接
+            let title = "种植牙"; //分享的标题
             let desc = "关注有新活动通知您"; //分享的详情介绍
             let imgUrl = '';
             wx.config({
-                debug: false,
+                debug: true,
                 appId: sd.appId,
                 timestamp: sd.timestamp,
                 nonceStr: sd.nonceStr,
                 signature: sd.signature,
                 jsApiList: [
                     "onMenuShareTimeline",
-                    "onMenuShareAppMessage",
-                    "onMenuShareQQ",
-                    "onMenuShareWeibo",
-                    "onMenuShareQZone"
+                    "onMenuShareAppMessage"
                 ]
             });
             wx.ready(function() {
@@ -97,16 +101,17 @@ export default {
                     link: links, // 分享链接
                     imgUrl: imgUrl, // 分享图标
                     success: function() {
-                        // alert("分享到朋友圈成功")
-                        Toast({
+                        alert("分享到朋友圈成功")
+                        
+                        /* Toast({
                             message: "成功分享到朋友圈"
-                        });
+                        }); */
                     },
                     cancel: function() {
-                        // alert("分享失败,您取消了分享!")
-                        Toast({
+                        alert("分享失败,您取消了分享!")
+                        /* Toast({
                             message: "分享失败,您取消了分享!"
-                        });
+                        }); */
                     }
                 });
                 //微信分享菜单测试
@@ -116,78 +121,24 @@ export default {
                     link: links, // 分享链接
                     imgUrl: imgUrl, // 分享图标
                     success: function() {
-                        // alert("成功分享给朋友")
-                        Toast({
+                        alert("成功分享给朋友")
+                        alert(links)
+                        /* Toast({
                             message: "成功分享给朋友"
-                        });
+                        }); */
                     },
                     cancel: function() {
-                        // alert("分享失败,您取消了分享!")
-                        Toast({
+                        alert("分享失败,您取消了分享!")
+                        /* Toast({
                             message: "分享失败,您取消了分享!"
-                        });
-                    }
-                });
-
-                wx.onMenuShareQQ({
-                    title: title, // 分享标题
-                    desc: desc, // 分享描述
-                    link: links, // 分享链接
-                    imgUrl: imgUrl, // 分享图标
-                    success: function() {
-                        // alert("成功分享给QQ")
-                        Toast({
-                            message: "成功分享到QQ"
-                        });
-                    },
-                    cancel: function() {
-                        // alert("分享失败,您取消了分享!")
-                        Toast({
-                            message: "分享失败,您取消了分享!"
-                        });
-                    }
-                });
-                wx.onMenuShareWeibo({
-                    title: title, // 分享标题
-                    desc: desc, // 分享描述
-                    link: links, // 分享链接
-                    imgUrl: imgUrl, // 分享图标
-                    success: function() {
-                        // alert("成功分享给朋友")
-                        Toast({
-                            message: "成功分享到腾讯微博"
-                        });
-                    },
-                    cancel: function() {
-                        // alert("分享失败,您取消了分享!")
-                        Toast({
-                            message: "分享失败,您取消了分享!"
-                        });
-                    }
-                });
-                wx.onMenuShareQZone({
-                    title: title, // 分享标题
-                    desc: desc, // 分享描述
-                    link: links, // 分享链接
-                    imgUrl: imgUrl, // 分享图标
-                    success: function() {
-                        // alert("成功分享给朋友")
-                        Toast({
-                            message: "成功分享到QQ空间"
-                        });
-                    },
-                    cancel: function() {
-                        // alert("分享失败,您取消了分享!")
-                        Toast({
-                            message: "分享失败,您取消了分享!"
-                        });
+                        }); */
                     }
                 });
             });
-            wx.error(function(res) {
-                // alert("error")
+            /* wx.error(function(res) {
+                // alert(res)
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-            });
+            }); */
         }
     }
 };

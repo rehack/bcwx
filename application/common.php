@@ -74,3 +74,16 @@ function create_order_id()
 
     return $re.date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
 }
+
+
+// 产生随机砍价金额
+function randomFloat($min, $max,$c) {
+    $n = $min + mt_rand() / mt_getrandmax() * ($max - $min);
+    $fnum = round($n,2);
+    while ($fnum > $c) {
+        $fnum =randomFloat($min, $max,$c);
+    }
+    if($fnum){
+        return $fnum;
+    }
+}

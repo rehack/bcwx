@@ -46,23 +46,27 @@ export default {
         // 微信网页授权
         login(){
             let appid = 'wx150347fed55855dd';
-            let protocol = window.location.protocol
-            let host = window.location.host
+            /* let protocol = window.location.protocol
+            let host = window.location.host */
             // window.console.log(this.$route)
             // let path = this.$route.path
 
             // 重定向地址，跳转后会带一个code参数
             // let redirect_uri = encodeURIComponent(`${protocol}//${host}/#/login`)
-            let redirect_uri = encodeURIComponent(`${protocol}//${host}/login`)//history模式
+            // let redirect_uri = encodeURIComponent(`${protocol}//${host}/login`)//history模式
+            let redirect_uri = encodeURIComponent(window.location.href)//history模式
             // let redirect_uri = encodeURIComponent(path)
             // window.localStorage.setItem('flag', true)
             let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
 
             // let code = this.getUrlParam('code');
             let code = this.$route.query.code
+            let from = this.$route.query.flag//判断是否来自分享页
+            let no = this.$route.query.no
+            // http://192.168.1.253:8080/login?flag=share&no=FI8V2018080710154975
             if(code){
                 // alert('code:'+code)
-                this.getToken(code)
+                this.getToken(code,from,no)
             }else{
                 // alert('nocode')
                 window.location.href=url;
@@ -70,7 +74,7 @@ export default {
         },
 
         // 通过code换取token
-        getToken(code){
+        getToken(code,from,no){
 
             let url = this.lib.APIHOST+'/bargian_api/gettoken'
            
@@ -80,8 +84,12 @@ export default {
                     let token = resopnse.data.token
                     if(token){
                         window.localStorage.setItem('user_token',token)
-                        // 获取到token后跳转到商品列表
-                        this.$router.push({name:'list'})
+                        // 获取到token后跳转到对应页面
+                        if(from == 'share' && no){
+                            this.$router.push({name:'dobargain',query: { no }})
+                        }else{
+                            this.$router.push({name:'list'})
+                        }
                     }else{
                         this.message = resopnse.data
                     }

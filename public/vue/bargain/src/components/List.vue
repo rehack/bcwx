@@ -94,7 +94,7 @@ export default {
                     window.localStorage.removeItem('user_token')
                     // 跳转去后url存在原code
                     // this.$router.push({name:'login'})
-                    window.location.href='http://192.168.1.253:8080/#/login'
+                     this.$router.push({name:'login'})
                 }else{
                     alert(error.response.data.msg)
                 }

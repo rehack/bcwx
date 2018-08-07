@@ -11,6 +11,11 @@ class UsersInfo extends Model{
     }
 
 
+    // 一个用户可以参与帮助多个砍价，不同的砍价单
+    public function helpers(){
+        return $this->hasMany('Helpers','helper_id');
+    }
+
     public static function getUserByOpenId($openid){
         $user = self::where('openid','=' , $openid)->find();
         return $user;

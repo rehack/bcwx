@@ -37,3 +37,15 @@ B.既然Reopnse Headers里面的Access-Control-Allow-Headers不存在Access-Toke
 后面使用this.$router.push()方法的时候，路由地址始终是这样，有个code参数在上面，hash值在所有参数后面，这种链接分享出去不是很友好，在ios下也会出现问题（这种路由中带了参数的url是没法签名校验成功的）
 
 我的解决办法是采用history模式，但history模式在前后端分离的项目中打包上线后会出现404情况，需要nginx配合
+
+3.调用微信js-sdk分享接口的时候 签名校验失败invalid signature
+微信开发文档里说的是"用location.href.split('#')[0]获取,而且需要encodeURIComponent",而我在vue history模式下使用encodeURIComponent对当前URL编码然后提交给后台，反而出现invalid signature错误
+去掉encodeURIComponent就好了
+location.href.split('#')[0]获取的地址需要带?后的参数，'#'hash部分不需要
+
+出现invalid signature还有一种情况在测试号管理下的JS接口安全域名一定要带上端口号,vue开启的服务端口号一般是8080，所以js接口域名要配置成192.168.1.253:8080这种
+如果还是签名校验失败就去https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign检测一下生成的signature是否正确，大多数情况都是问题出在url上
+
+
+4.类似这种错误[Vue warn]: Error in render: "TypeError: Cannot read property 'images' of undefined"
+渲染数据的时候要加v-if="Data.xxx"

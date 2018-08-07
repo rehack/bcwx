@@ -51,28 +51,27 @@ class Wx{
     }
 
     // 获取随机字符串
-    private function getRandStr($num=16){
-        $charts = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz0123456789";
-        $max = strlen($charts);
-        $noncestr = "";
-        for($i = 0; $i < $num; $i++)
+    private function getRandStr($length=16){
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $str = "";
+        for($i = 0; $i < $length; $i++)
         {
-            $noncestr .= $charts[mt_rand(0, $max)];
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
         }
  
  
-        return $noncestr;
+        return $str;
 
     }
 
     // 返回分享接口需要的参数
-    public function wxShareParams(){
+    public function wxShareParams($currentUrl){
         // $at = $this->getAccessToken();
         $appid = config('wechat.app_id');
         $timestamp = time();
         $nonceStr = $this->getRandStr();
         $jsapi_ticket = $this->getJsapiTicket();
-        $url = 'http://192.168.1.253:8080/detail?no=0OZ72018080610210052';//当前网页
+        $url = $currentUrl;//当前前端发起分享的网页
 
         $str = "jsapi_ticket={$jsapi_ticket}&noncestr={$nonceStr}&timestamp={$timestamp}&url={$url}";
 
@@ -81,7 +80,9 @@ class Wx{
             'appId'=>$appid,
             'timestamp'=>$timestamp,
             'nonceStr'=>$nonceStr,
-            'signature'=>$signature
+            'signature'=>$signature,
+            /* 'jsapi_ticket'=>$jsapi_ticket,
+            'str'=>$str */
         ];
     }
 }
