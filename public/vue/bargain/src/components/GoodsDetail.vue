@@ -15,8 +15,12 @@
             <span>还差52.6元</span>
         </div>
         <div>还剩1天23：40：02：01过期 快来砍价吧</div> -->
-        <footer>
+        
             <div @click="share" class="sharebtn">点击右上角分享出去帮我砍价</div>
+        
+        <footer>
+            <router-link to="/list">活动商品</router-link>
+            <router-link to="/mybargain">我的砍价</router-link>
         </footer>
     </div>
 
@@ -59,7 +63,7 @@ export default {
                 params: { no }
             })
             .then(response => {
-                window.console.log(response.data);
+                // window.console.log(response.data);
                 this.bargainData = response.data;
             })
             .then(()=>{
@@ -148,7 +152,8 @@ export default {
                 });
             });
             wx.error(function(res) {
-                alert(res)
+                // window.console.log(res)
+                alert(res.errMsg)
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
             });
         },
@@ -166,7 +171,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.main{background: #eee;padding-bottom: 0.8rem;}
+.main{background: #eee;padding-bottom: 1rem;}
 .banner img{
     width: 100%;
 }
@@ -196,25 +201,26 @@ export default {
     color: red;
     margin: 8px 0;
 }
+.sharebtn{
+    font-size: 0.26rem;
+    color: rgb(4, 79, 82);
+}
 footer{
     width: 100%;
     margin: 0 auto;
     display: flex;
     position: fixed;
     bottom: 0;
-    font-size: 0.3rem;
-    background: #ccc;
+    background: #eee;
     align-items: center;
     justify-content: space-around;
     height: 0.8rem;
 }
-footer div{
+footer a{
     background: #d7b150;
     color: #fff;
-    font-size: 0.3rem;
+    font-size: 0.26rem;
     border-radius: 5px;
     padding: 5px 10px;
-
 }
-
 </style>

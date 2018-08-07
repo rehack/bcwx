@@ -43,6 +43,10 @@ Route::post('bargian_api/createbargain', 'wx_bargain_api/Bargain/createBargain')
 Route::post('bargian_api/dobargain', 'wx_bargain_api/Bargain/doBargain')
 ->allowCrossDomain();
 
+//我的砍价单
+Route::get('bargian_api/bargainorders', 'wx_bargain_api/Bargain/getBargainOrder')
+->allowCrossDomain();
+
 // 获取砍价订单详情
 Route::get('bargian_api/bargaindetail', 'wx_bargain_api/Bargain/getDetail')
 ->allowCrossDomain();

@@ -10,6 +10,7 @@ use app\wx_bargain_api\model\Helpers as HelpersModel;
 use app\lib\exception\UserException;
 use app\lib\exception\SuccessMessage;
 use app\lib\exception\BargainException;
+use think\Db;
 
 class Bargain extends BaseController{
     
@@ -148,21 +149,79 @@ class Bargain extends BaseController{
         }
 
 
-        // 通过判断后存入bargain_helpers表
-        $data = [
-            'order_id' => $bargainOrderId,
-            'bargain_money' => $randMoney
-        ];
-        $res = $helper->helpers()->save($data);
-        if($res){
+        
+        // 启动事务
+        Db::startTrans();
+        try{
+            // 通过判断后存入bargain_helpers表
+            $data = [
+                'order_id' => $bargainOrderId,
+                'bargain_money' => $randMoney
+            ];
+            $res = $helper->helpers()->save($data);
+
+            if($res){
+                // 此次砍掉的金额
+                // 1/0;
+                $helpMoney = $res->bargain_money;
+                // 当前动态金额
+                $now_deal_money = $bargainOrder->deal_money;
+                // 计算后的deal_money
+                $rerult = (float)$now_deal_money - (float)($helpMoney);
+                $bargainOrder->deal_money = $rerult;
+                $bargainOrder->save();
+                
+                
+            }
+            // 提交事务
+            Db::commit();
             return json([
                 'msg'=>'ok',
-                'money' => $res->bargain_money
+                'kjmoney' =>  $helpMoney,
+                'deal_money' => $bargainOrder->deal_money
+            ]);
+          
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            // throw $e;
+            throw new BargainException([
+                'code'=>'401',
+                'msg'=>'砍价失败，请重试！'.$e,
+                'errorCode'=>60000
             ]);
         }
 
 
         // 对订单当前价格进行修改
+
+
+    }
+
+    // 查询当前用户的所有砍价单
+    public function getBargainOrder(){
+        //当前用户uid
+        $currentUid = BaseToken::getCurrentUid();
+        $currentUser = UsersInfoModel::get($currentUid);
+        if(!$currentUser){
+            throw new UserException([
+                'code' => 404,
+                'msg' => '该用户不存在',
+                'errorCode' => 60001
+            ]);
+        }
+
+        // 当前用户的所有砍价单
+        $bargainOrders = $currentUser->bargainOrders()->with('goods')->select();
+        if($bargainOrders){
+            return json($bargainOrders);
+        }else{
+            throw new BargainException([
+                'msg'=>'您还没有参与过任何一款产品的砍价活动',
+                'code' =>404,
+                'errorCode'=>60005
+            ]);
+        }
 
     }
 }

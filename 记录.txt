@@ -43,6 +43,8 @@ B.既然Reopnse Headers里面的Access-Control-Allow-Headers不存在Access-Toke
 去掉encodeURIComponent就好了
 location.href.split('#')[0]获取的地址需要带?后的参数，'#'hash部分不需要
 
+清理服务器缓存
+
 出现invalid signature还有一种情况在测试号管理下的JS接口安全域名一定要带上端口号,vue开启的服务端口号一般是8080，所以js接口域名要配置成192.168.1.253:8080这种
 如果还是签名校验失败就去https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign检测一下生成的signature是否正确，大多数情况都是问题出在url上
 

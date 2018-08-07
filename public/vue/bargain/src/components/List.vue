@@ -17,12 +17,7 @@
                 </li>
             </ul>
         </div>
-        <footer>
-            <ul>
-                <li>砍价商品</li>
-                <li>我的砍价</li>
-            </ul>
-        </footer>
+        
     </div>
 
 </template>

@@ -9,8 +9,10 @@
         </div>
         <div class="des" v-html="bargainData.goods.goods_desc"></div>
         <div class="price">原价:￥{{bargainData.goods.original_price}}</div>
+        <div class="bargian-monry" v-if="bargainRresult">我帮他砍了：{{bargainRresult.kjmoney}}元</div>
+        <div v-if="bargainRresult">当前价格：￥{{bargainRresult.deal_money}}</div>
         <footer>
-            <div @click="meto" class="div">我也参加</div>
+            <div @click="meto" class="div">我也要参加</div>
             <div @click="doBargain" class="sharebtn">帮TA砍一刀</div>
         </footer>
 
@@ -25,7 +27,8 @@ export default {
     data(){
         return{
             no:'',
-            bargainData:{}
+            bargainData:{},
+            bargainRresult:null,//砍价结果
         }
     },
     created() {
@@ -48,9 +51,11 @@ export default {
                 this.bargainData = bargainData
             })
             .catch(error=>{
-                window.console.log(error)
+                alert(error.resoponse.data.msg)
             })
         },
+
+        // 帮TA砍一刀
         doBargain(){
             // alert(1)
             let no = this.no
@@ -63,9 +68,11 @@ export default {
                 data:{no}
             })
             .then(resoponse=>{
-                let bargainData = resoponse.data
-                window.console.log(bargainData)
-                this.bargainData = bargainData
+                let result = resoponse.data
+                window.console.log(result)
+                this.bargainRresult = result
+                alert('您成功帮你的好友砍了'+result.kjmoney+'元!')
+                // 可以继续分享
             })
             .catch(error=>{
                 // window.console.log()
@@ -76,7 +83,7 @@ export default {
                 }else if(msg != 'token已过期或无效token'){
                     alert(msg)
                 }else{
-                    alert('发送错误')
+                    alert('发生错误')
                 }
                 // alert(error.resoponse)
             })
@@ -93,12 +100,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.main{background: #eee;padding-bottom: 0.8rem;}
+.main{background: #eee;padding-bottom: 1rem;}
 .banner img{
     width: 100%;
 }
 .tit-wrap{
-
     display: inline-block;
     color: #313131;
     border:15px solid rgba(253, 231, 40, 0.3);
@@ -123,24 +129,26 @@ export default {
     color: red;
     margin: 8px 0;
 }
+.bargian-monry{
+    font-size: 0.25rem;
+    color: rgb(192, 133, 4);
+}
 footer{
     width: 100%;
     margin: 0 auto;
     display: flex;
     position: fixed;
     bottom: 0;
-    font-size: 0.3rem;
-    background: #ccc;
+    background: #eee;
     align-items: center;
     justify-content: space-around;
     height: 0.8rem;
 }
-footer div{
+footer div,footer a{
     background: #d7b150;
     color: #fff;
-    font-size: 0.3rem;
+    font-size: 0.26rem;
     border-radius: 5px;
     padding: 5px 10px;
-
 }
 </style>

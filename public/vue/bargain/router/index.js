@@ -6,6 +6,7 @@ import Login from '@/components/Login';
 import List from '@/components/List';
 import GoodsDetail from '@/components/GoodsDetail';
 import Dobargain from '@/components/Dobargain';
+import MyBargain from '@/components/MyBargain';
 
 Vue.use(Router)
 
@@ -49,6 +50,14 @@ const router = new Router({
             component: Dobargain,
             meta: {
                 title: '帮TA砍一刀吧！'
+            }
+        },
+        {
+            path: '/mybargain',
+            name:'mybargain',
+            component: MyBargain,
+            meta: {
+                title: '我的砍价单'
             }
         },
         {
