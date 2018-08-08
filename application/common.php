@@ -76,14 +76,10 @@ function create_order_id()
 }
 
 
-// 产生随机砍价金额
-function randomFloat($min, $max,$c) {
+// 产生指定返回内的随机小数
+function randomFloat($min, $max) {
     $n = $min + mt_rand() / mt_getrandmax() * ($max - $min);
-    $fnum = round($n,2);
-    while ($fnum > $c) {
-        $fnum =randomFloat($min, $max,$c);
-    }
-    if($fnum){
-        return $fnum;
-    }
+    $num = round($n,2);
+    return $num;
 }
+

@@ -49,8 +49,6 @@ export default {
         },
         // 发起砍价
         startBargain(id){
-            
-
             axios({
                 method:'POST',
                 url:this.lib.APIHOST+'/bargian_api/createbargain',

@@ -7,8 +7,8 @@
                         <img :src="lib.APIHOST+item.goods.img1_id" alt="">
                     </div>
                     <div class="info">
-                        <p class="goods-name">{{item.goods.goods_name}}</p>
-                        <div class="old-price">原价：￥{{item.goods.original_price}}</div>
+                        <p class="goods-name">{{item.goods.goods_name}}<span>(￥{{item.goods.original_price}})</span></p>
+                        <!-- <div class="old-price">原价：￥{{item.goods.original_price}}</div> -->
                         <div class="old-price">当前价：￥{{item.deal_money}}</div>
                         <div class="order-sn">单号：{{item.bargain_sn}}</div>
                         <div class="time">砍价单日期：{{item.create_time}}</div>
@@ -72,14 +72,17 @@ export default {
 <style scoped>
 .main{padding-bottom: 1rem;}
 .list li{
-    margin-top: 15px;
+    margin-top: 10px;
+    margin-bottom: 30px;
     border-bottom: 1px dashed #666;
+    padding-bottom: 5px;
 }
 .list li .goods-info{
     display: flex;
     text-align: left;
     justify-content: space-around;
     font-size: 0.22rem;
+    
 }
 .list li .goods-info .pic{
     width: 36%;
@@ -87,16 +90,31 @@ export default {
 .list li .goods-info img{
     width: 100%;
 }
+.list li .goods-info .info{
+    width: 60%;
+    line-height: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
 .list li .goods-info .info .goods-name{
     font-size: 0.26rem;
     color: red;
     font-weight: bold;
 }
+.list li .goods-info .info .goods-name span{
+    font-size: 0.18rem;
+}
 .list li .goods-info .info .link{
     border-radius: 5px;
     background: rgb(236, 61, 61);
     color: #fff;
-    padding: 3px 7px;
+    /* padding: 3px 7px; */
+    height: 0.4rem;
+    line-height: 0.4rem;
+    text-align:center;
+    font-size: 0.23rem;
 }
 footer{
     width: 100%;

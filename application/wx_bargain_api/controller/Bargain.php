@@ -4,6 +4,7 @@ namespace app\wx_bargain_api\controller;
 use app\wx_bargain_api\model\Goods as GoodsModel;
 use app\wx_bargain_api\validate\Bargain as BargainValidate;
 use app\wx_bargain_api\service\BaseToken;
+use app\wx_bargain_api\service\Bargain as BargainService;
 use app\wx_bargain_api\model\UsersInfo as UsersInfoModel;
 use app\wx_bargain_api\model\BargainOrder as BargainOrderModel;
 use app\wx_bargain_api\model\Helpers as HelpersModel;
@@ -27,9 +28,21 @@ class Bargain extends BaseController{
 
         $goods_id = input('post.goods_id');
 
+        // 判断活动时间
+        $nowTime = time();
+        $activity_time = strtotime(config('setting.activity_time'));
+
+        if($nowTime>$activity_time){
+            throw new BargainException([
+                'msg' => '本次活动已结束，感谢您的参与!',
+                'code' => 403,
+                'errorCode' => 60004
+            ]);
+        }
+
         // 当前商品的活动价
         $currentGoods = GoodsModel::get($goods_id);
-        $deal_money = $currentGoods->original_price;
+        // $deal_money = $currentGoods->original_price;
 
         
         // return $uid;
@@ -48,7 +61,7 @@ class Bargain extends BaseController{
         // return create_order_id();
         $data = [
             'goods_id' => $goods_id,
-            'deal_money' => $deal_money,//最终交易价格 动态变化
+            // 'deal_money' => $deal_money,//最终交易价格 动态变化
             'bargain_sn' => create_order_id(),//唯一订单号
         ];
         if(!$userBargain){
@@ -78,6 +91,9 @@ class Bargain extends BaseController{
 
     // 好友帮助砍价
     public function doBargain(){
+
+        
+
         $no = input('post.no');
         if(!$no){
             throw new BargainException([
@@ -92,28 +108,55 @@ class Bargain extends BaseController{
         $bargainOrder = BargainOrderModel::where('bargain_sn',$no)->find();
         // return $bargainOrder;
         $bargainOrderId = $bargainOrder->id;//订单id号
+        $goods_id = $bargainOrder->goods_id;//商品id
+
         if(!$bargainOrder){
             throw new BargainException();
         }
 
+        
 
         
 
-        // 判断活动时间
-        $settingTime = strtotime(config('setting.time'));
+        // 判断倒计时时间
+        $bargain_time = config('setting.bargain_time');
+        $bargain_order_time = $bargainOrder->getData('create_time');//砍价单创建时间 获取原始数据
+        
+        // 当前砍价单的截止时间
+        $bargain_order_over_time = strtotime($bargain_time,$bargain_order_time);
+        // return $bargain_order_over_time;
 
         $nowTime = time();
 
-        if($nowTime>$settingTime){
-            // 活动过期
+        if($nowTime>$bargain_order_over_time){
+            // 砍价过期
             throw new BargainException([
-                'msg' => '当前活动已经过期',
+                'msg' => '当前砍价已经结束',
                 'code' => 403,
                 'errorCode' => 60004
             ]);
         }
 
-        // 判断是否已经最低价
+
+        // 判断当前用户是否已经帮助过砍价
+        $helperId = BaseToken::getCurrentUid();
+
+        $helper = UsersInfoModel::get($helperId);
+        $helpBargain = $helper->helpers()->where('order_id',$bargainOrderId)->find();
+        // return $helpBargain;
+
+        if($helpBargain){
+            throw new BargainException([
+                'msg' => '谢谢！您已经帮助TA砍过价了',
+                'code' => 403,
+                'errorCode' => 60003
+            ]);
+        }
+
+
+
+
+        /* // 判断是否已经最低价
         // 当前的价格
         $nowPrice = $bargainOrder->deal_money;
         
@@ -131,27 +174,49 @@ class Bargain extends BaseController{
                 'code' => 403,
                 'errorCode' => 60004
             ]);
-        }
-        // return $randMoney;
+        } */
+
+
+        // 获得砍价金额
+        $bs = new BargainService();
+        // 获取当前订单号的砍价人数
+        $pNum1 = HelpersModel::where('order_id',$bargainOrderId)->count();
+
+        $kjMoney = $bs->returnMoney($pNum1,$bargainOrderId,$goods_id);
+
         
-        // 判断当前用户是否已经帮助过砍价
-        $helperId = BaseToken::getCurrentUid();
 
-        $helper = UsersInfoModel::get($helperId);
-        $helpBargain = $helper->helpers()->where('order_id',$bargainOrderId)->find();
+        // 再次查询人数
+        $pNum2 = HelpersModel::where('order_id',$bargainOrderId)->count();
+        
+        if($pNum2 == $pNum1){
+            $kjMoney = $kjMoney;
+        }else{
+            $kjMoney = $bs->returnMoney($pNum2,$goods_id);
+        }
 
-        if($helpBargain){
-            throw new BargainException([
-                'msg' => '谢谢！您已经帮助TA砍过价了',
-                'code' => 403,
-                'errorCode' => 60003
+        // return $kjMoney;exit;
+        
+        
+        // 通过判断后存入bargain_helpers表
+        $data = [
+            'order_id' => $bargainOrderId,
+            'bargain_money' => $kjMoney
+        ];
+        $res = $helper->helpers()->save($data);
+
+        if($res){
+            return json([
+                'msg'=>'ok',
+                'kjmoney' =>  $res->bargain_money,
+                // 'deal_money' => $bargainOrder->deal_money
             ]);
         }
-
+        
 
         
         // 启动事务
-        Db::startTrans();
+        /* Db::startTrans();
         try{
             // 通过判断后存入bargain_helpers表
             $data = [
@@ -190,10 +255,9 @@ class Bargain extends BaseController{
                 'msg'=>'砍价失败，请重试！'.$e,
                 'errorCode'=>60000
             ]);
-        }
+        } */
 
 
-        // 对订单当前价格进行修改
 
 
     }
