@@ -39,11 +39,11 @@ CREATE TABLE `bargain_bargain_order` (
   KEY `product_id` (`goods_id`),
   KEY `user_id` (`uid`),
   KEY `is_addorder` (`is_addorder`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `bargain_bargain_order` */
 
-insert  into `bargain_bargain_order`(`id`,`uid`,`goods_id`,`bargain_sn`,`attr1_id`,`attr2_id`,`bargain_count`,`deal_money`,`is_addorder`,`type`,`create_time`) values (1,1,1,'PM8L2018080849505153',0,0,0,'0.00',0,0,1533734993);
+insert  into `bargain_bargain_order`(`id`,`uid`,`goods_id`,`bargain_sn`,`attr1_id`,`attr2_id`,`bargain_count`,`deal_money`,`is_addorder`,`type`,`create_time`) values (1,1,1,'NFD72018080949541005',0,0,0,'0.00',0,0,1533744001),(2,1,2,'W6VP2018080951541025',0,0,0,'0.00',0,0,1533744115);
 
 /*Table structure for table `bargain_data` */
 
@@ -103,11 +103,9 @@ CREATE TABLE `bargain_helpers` (
   PRIMARY KEY (`id`),
   KEY `assistor_id` (`helper_id`),
   KEY `bargain_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `bargain_helpers` */
-
-insert  into `bargain_helpers`(`id`,`helper_id`,`order_id`,`create_time`,`bargain_money`) values (1,1,1,0,'51.15');
 
 /*Table structure for table `bargain_images` */
 
@@ -142,7 +140,7 @@ CREATE TABLE `bargain_users_info` (
 
 /*Data for the table `bargain_users_info` */
 
-insert  into `bargain_users_info`(`id`,`openid`,`nickname`,`sex`,`city`,`province`,`country`,`headimgurl`,`create_time`,`update_time`) values (1,'oNKC-0TJuJ8e_LJhsor1tVzqFHD8','Rehack',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIN6ICAamJIEKIyk9gAllcicicWcp8Ut1NJ5CakaaD29zLSq2HNL5p6FiaxibHC6ZibHydgOBsfn0K5IbQ/132',1533734967,1533734967);
+insert  into `bargain_users_info`(`id`,`openid`,`nickname`,`sex`,`city`,`province`,`country`,`headimgurl`,`create_time`,`update_time`) values (1,'oNKC-0TJuJ8e_LJhsor1tVzqFHD8','Rehack',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIN6ICAamJIEKIyk9gAllcicicWcp8Ut1NJ5CakaaD29zLSq2HNL5p6FiaxibHC6ZibHydgOBsfn0K5IbQ/132',1533743982,1533743982);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

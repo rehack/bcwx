@@ -12,7 +12,10 @@
                         <div class="old-price">当前价：￥{{item.deal_money}}</div>
                         <div class="order-sn">单号：{{item.bargain_sn}}</div>
                         <div class="time">砍价单日期：{{item.create_time}}</div>
-                        <router-link class="link" :to="{path:'detail',query:{no:item.bargain_sn}}">继续砍价</router-link>
+                        <div>
+                            倒计时：{{`${day}天${hr}小时${min}分钟${sec}秒`}}
+                            <router-link class="link" :to="{path:'detail',query:{no:item.bargain_sn}}">继续砍价</router-link>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -32,12 +35,21 @@ export default {
     name: "mybargain",
     data(){
         return{
-            bargainOrdersData:null
+            bargainOrdersData:null,
+            day: 0, hr: 0, min: 0, sec: 0,
         }
     },
     created() {
         this.getBargainOrders()
     },
+    mounted: function () {
+            this._interval = setInterval(() => {
+                this.countdown();
+            }, 1000)
+        },
+         destroyed () {
+            clearInterval(this._interval)
+        },
     methods:{
         getBargainOrders(){
             axios({
@@ -63,7 +75,33 @@ export default {
                     alert('发生错误')
                 }
             })
-        }
+        },
+
+        // 倒计时
+        countdown: function () {
+                const end = Date.parse(new Date(this.bargainOrdersData[0].over_time));
+                const now = Date.parse(new Date());
+                const msec = end - now;
+                let day = parseInt(msec / 1000 / 60 / 60 / 24);
+                let hr = parseInt(msec / 1000 / 60 / 60 % 24);
+                let min = parseInt(msec / 1000 / 60 % 60);
+                let sec = parseInt(msec / 1000 % 60);
+                this.day = day;
+                this.hr = hr > 9 ? hr : '0' + hr;
+                this.min = min > 9 ? min : '0' + min;
+                this.sec = sec > 9 ? sec : '0' + sec;
+               
+                // const that = this;
+                // console.log(this.day===0 && this.hr===‘00‘ && this.min===‘00‘&& this.sec===‘00‘);
+                // if(this.day===0 && this.hr=== ‘00‘ && this.min===‘00‘&& this.sec ===‘00‘){
+                //     console.log(1234566)
+                //     return
+                // }
+                // setTimeout(function () {
+                //     that.countdown()
+                // }, 1000)
+            }
+
     }
 };
 </script>

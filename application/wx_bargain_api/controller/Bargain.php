@@ -41,7 +41,7 @@ class Bargain extends BaseController{
         }
 
         // 当前商品的活动价
-        $currentGoods = GoodsModel::get($goods_id);
+        // $currentGoods = GoodsModel::get($goods_id);
         // $deal_money = $currentGoods->original_price;
 
         
@@ -82,7 +82,9 @@ class Bargain extends BaseController{
         if($bargainNo){
             $bargainOrder = BargainOrderModel::with('goods')->where('bargain_sn',$bargainNo)->find();
             if($bargainOrder){
-                return json($bargainOrder);
+                // return json($bargainOrder->over_time);
+                // return json($bargainOrder);
+                return json($bargainOrder->append(['over_time']));//追加字段
             }else{
                 throw new BargainException();
             }
@@ -278,7 +280,7 @@ class Bargain extends BaseController{
         // 当前用户的所有砍价单
         $bargainOrders = $currentUser->bargainOrders()->with('goods')->select();
         if($bargainOrders){
-            return json($bargainOrders);
+            return json($bargainOrders->append(['over_time']));//追加字段
         }else{
             throw new BargainException([
                 'msg'=>'您还没有参与过任何一款产品的砍价活动',
