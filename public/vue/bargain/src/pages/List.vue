@@ -62,10 +62,12 @@ export default {
                 window.console.log(response.data)
                 let sn = response.data.bargainSn
                 if(sn){
-                    this.$router.push({
+                    /* this.$router.push({
                         path: 'detail', 
                         query: { no: sn }
-                    })
+                    }) */
+                    // 解决iOS系统url不变的bug,不用路由跳转
+                    window.location.href='/bargain/detail?no='+sn
                 }else{
                     alert('发生错误')
                 }
@@ -119,9 +121,6 @@ img{
     margin-top: 20px;
     flex-direction: column;
     /* border-bottom: 1px dashed #666; */
-}
-.main .list li .pic{
-    /* width: 40%; */
 }
 .main .list li .pic img{
     width: 100%;

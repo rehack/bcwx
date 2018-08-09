@@ -1,28 +1,26 @@
 <template>
     <div class="main">
+        <!-- {{bargainOrdersData.bargain_orders}} -->
         <ul class="list">
-            <li v-for="item of bargainOrdersData" v-bind:key="item.id">
+            <li v-for="order in bargainOrdersData" v-bind:key="order.id" >
                 <div class="goods-info">
                     <div class="pic">
-                        <img :src="lib.APIHOST+item.goods.img1_id" alt="">
+                        <img :src="lib.APIHOST+order.goods.img1_id" alt="">
                     </div>
                     <div class="info">
-                        <p class="goods-name">{{item.goods.goods_name}}<span>(￥{{item.goods.original_price}})</span></p>
-                        <!-- <div class="old-price">原价：￥{{item.goods.original_price}}</div> -->
-                        <div class="old-price">当前价：￥{{item.deal_money}}</div>
-                        <div class="order-sn">单号：{{item.bargain_sn}}</div>
-                        <div class="time">砍价单日期：{{item.create_time}}</div>
-                        <div>
-                            倒计时：{{`${day}天${hr}小时${min}分钟${sec}秒`}}
-                            <router-link class="link" :to="{path:'detail',query:{no:item.bargain_sn}}">继续砍价</router-link>
-                        </div>
+                        <p class="goods-name">{{order.goods.goods_name}}<span>(￥{{order.goods.original_price}})</span></p>
+                        <div class="old-price">当前价：￥{{order.goods.original_price-order.helpers_sum}}</div>
+                        <div class="order-sn">单号：{{order.bargain_sn}}</div>
+                        <div><countdown :endtime='order.over_time'></countdown></div>
+                        <router-link class="link" v-if="(new Date(order.over_time) - Date.parse(new Date()))>0" :to="{path:'/bargain/detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
+                        <div class="link" v-else>当前砍价已结束</div>
                     </div>
                 </div>
             </li>
         </ul>
         <footer>
-            <router-link to="/list">活动商品</router-link>
-            <router-link to="/mybargain">我的砍价</router-link>
+            <router-link to="/bargain/list">活动商品</router-link>
+            <router-link to="/bargain/mybargain">我的砍价</router-link>
         </footer>
     </div>
 
@@ -31,25 +29,22 @@
 
 <script>
 import axios from 'axios'
+import countdown from './components/Countdown.vue';
 export default {
     name: "mybargain",
+    components:{
+		countdown
+	},
     data(){
         return{
-            bargainOrdersData:null,
-            day: 0, hr: 0, min: 0, sec: 0,
+            bargainOrdersData:{},
+            istimeover:null,
         }
     },
     created() {
         this.getBargainOrders()
+        this.istimeover = Date.parse(new Date(this.bargainOrdersData.overtime)) - Date.parse(new Date())
     },
-    mounted: function () {
-            this._interval = setInterval(() => {
-                this.countdown();
-            }, 1000)
-        },
-         destroyed () {
-            clearInterval(this._interval)
-        },
     methods:{
         getBargainOrders(){
             axios({
@@ -77,30 +72,7 @@ export default {
             })
         },
 
-        // 倒计时
-        countdown: function () {
-                const end = Date.parse(new Date(this.bargainOrdersData[0].over_time));
-                const now = Date.parse(new Date());
-                const msec = end - now;
-                let day = parseInt(msec / 1000 / 60 / 60 / 24);
-                let hr = parseInt(msec / 1000 / 60 / 60 % 24);
-                let min = parseInt(msec / 1000 / 60 % 60);
-                let sec = parseInt(msec / 1000 % 60);
-                this.day = day;
-                this.hr = hr > 9 ? hr : '0' + hr;
-                this.min = min > 9 ? min : '0' + min;
-                this.sec = sec > 9 ? sec : '0' + sec;
-               
-                // const that = this;
-                // console.log(this.day===0 && this.hr===‘00‘ && this.min===‘00‘&& this.sec===‘00‘);
-                // if(this.day===0 && this.hr=== ‘00‘ && this.min===‘00‘&& this.sec ===‘00‘){
-                //     console.log(1234566)
-                //     return
-                // }
-                // setTimeout(function () {
-                //     that.countdown()
-                // }, 1000)
-            }
+        
 
     }
 };

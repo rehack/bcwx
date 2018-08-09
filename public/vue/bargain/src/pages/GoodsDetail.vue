@@ -19,8 +19,8 @@
             <div @click="share" class="sharebtn">点击右上角分享出去帮我砍价</div>
         
         <footer>
-            <router-link to="/list">活动商品</router-link>
-            <router-link to="/mybargain">我的砍价</router-link>
+            <router-link to="/bargain/list">活动商品</router-link>
+            <router-link to="/bargain/mybargain">我的砍价</router-link>
         </footer>
     </div>
 
@@ -49,9 +49,15 @@ export default {
     },
     created() {
         //   console.log(this.$route)
-        
-        this.getDetail();
+        if(window.localStorage.getItem('iosurl')){
+
+            window.localStorage.removeItem('iosurl')
+            window.location=window.location
+        }
         // this.getWxShareParams();
+    },
+    mounted(){
+        this.getDetail();//不能放created，否则签名可能会失败
     },
     methods: {
         // 通过bargain单号获取详情
@@ -70,22 +76,44 @@ export default {
                 this.getWxShareParams();
             })
             .catch(error => {
-                alert(error.response.data.msg);
+                // alert(error.response.data.msg);
+                alert('用户身份校验失败，请刷新后再分享'+error);
             });
         },
 
         getWxShareParams() {
-            // let currentUrl = encodeURIComponent(window.location.href.split('#')[0])
-            let currentUrl = window.location.href.split('#')[0]
+            // 判断iOS
+            // var u = navigator.userAgent;
+            // var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            // var isios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            // alert('是否是Android：'+isAndroid);
+            // alert('是否是iOS：'+isiOS);
+            // var currentUrl =''
+            // return false;
+            /* if(isios){
+                // window.location.href=window.location.href
+                let iosurl = window.localStorage.getItem('iosurl');
+                currentUrl = encodeURIComponent(iosurl)
+                alert('local:'+iosurl)
+            }else{
+                currentUrl = encodeURIComponent(window.location.href.split('#')[0])
+            } */
+            let currentUrl = encodeURIComponent(window.location.href.split('#')[0])
+
+            // alert('当前url:'+window.location.href.split('#')[0])
             axios({
                 method: "get",
                 url: this.lib.APIHOST + "/bargian_api/wxshare",
                 params:{currentUrl}
             }).then(response => {
                 window.console.log(response.data);
+                // alert(JSON.stringify(response.data))
+                // alert(response.data)
+                // return false
                 let configData = response.data;
                 this.configData = configData;
                 this.wxInit(configData);
+                // alert('houtaiUrl'+configData.url)
             });
         },
 
@@ -96,7 +124,7 @@ export default {
             let no = this.$route.query.no
             // return false
             // let links = window.location.href+'&flag=share'; //分享出去的链接
-            let links = window.location.protocol+"//"+window.location.host+'/login?flag=share&no='+no; //分享出去的链接
+            let links = window.location.protocol+"//"+window.location.host+'/bargain/login?flag=share&no='+no; //分享出去的链接
             let title = this.bargainData.goods.goods_name; //分享的标题
             let desc = this.bargainData.goods.goods_desc; //分享的详情介绍
             let imgUrl = this.lib.APIHOST+this.bargainData.goods.img1_id;
@@ -153,7 +181,7 @@ export default {
             });
             wx.error(function(res) {
                 // window.console.log(res)
-                alert(res.errMsg)
+                alert(res.errMsg+'用户身份校验失败，请刷新后再分享')
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
             });
         },

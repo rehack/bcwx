@@ -51,3 +51,14 @@ location.href.split('#')[0]获取的地址需要带?后的参数，'#'hash部分
 
 4.类似这种错误[Vue warn]: Error in render: "TypeError: Cannot read property 'images' of undefined"
 渲染数据的时候要加v-if="Data.xxx"
+
+
+http://www.cnblogs.com/rainight/p/9342443.html
+
+https://www.jianshu.com/p/1a6db9111463
+https://www.jianshu.com/p/a1a31f9da272
+url不变
+
+手动刷新后就会变
+
+Data.parse()获取时间戳IOS不兼容

@@ -29,11 +29,17 @@ export default {
         }
     },
     created(){
+        if(!window.localStorage.getItem('iosurl')){
+            // alert('no')
+            window.localStorage.setItem('iosurl',1)
+        }
         if(this.isWechat()){
             this.login()
         }else{
             this.message='请在微信中打开...'
         }
+
+        
     },
 
     methods:{
@@ -45,7 +51,7 @@ export default {
         },
         // 微信网页授权
         login(){
-            let appid = 'wx150347fed55855dd';
+            let appid = 'wxc373be0ebd319f82';
             /* let protocol = window.location.protocol
             let host = window.location.host */
             // window.console.log(this.$route)

@@ -10,7 +10,7 @@
         <div class="des" v-html="bargainData.goods.goods_desc"></div>
         <div class="price">原价:￥{{bargainData.goods.original_price}}</div>
         <div class="bargian-monry" v-if="bargainRresult">我帮他砍了：{{bargainRresult.kjmoney}}元</div>
-        <div v-if="bargainRresult">当前价格：￥{{bargainRresult.deal_money}}</div>
+        <!-- <div v-if="bargainRresult">当前价格：￥{{bargainRresult.deal_money}}</div> -->
         <footer>
             <div @click="meto" class="div">我也要参加</div>
             <div @click="doBargain" class="sharebtn">帮TA砍一刀</div>

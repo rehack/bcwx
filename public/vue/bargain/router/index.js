@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home';
-// import GetToken from '@/components/GetToken';
-import Login from '@/components/Login';
-import List from '@/components/List';
-import GoodsDetail from '@/components/GoodsDetail';
-import Dobargain from '@/components/Dobargain';
-import MyBargain from '@/components/MyBargain';
+import Home from '@/pages/Home';
+// import GetToken from '@/pages/GetToken';
+import Login from '@/pages/Login';
+import List from '@/pages/List';
+import GoodsDetail from '@/pages/GoodsDetail';
+import Dobargain from '@/pages/Dobargain';
+import MyBargain from '@/pages/MyBargain';
+import Clear from '@/pages/Clear';
 
 Vue.use(Router)
 
@@ -14,14 +15,14 @@ const router = new Router({
     mode:'history',
     routes:[
         {
-            path:'/',
+            path:'/bargain/',
             component:Home,
             meta: {
                 title: '首页'
             }
         },
         {
-            path:'/login',
+            path:'/bargain/login',
             name:'login',
             component:Login,
             meta: {
@@ -29,7 +30,7 @@ const router = new Router({
             }
         },
         {
-            path:'/list',
+            path:'/bargain/list',
             name:'list',
             component:List,
             meta: {
@@ -37,7 +38,7 @@ const router = new Router({
             }
         },
         {
-            path:'/detail',
+            path:'/bargain/detail',
             name:'detail',
             component:GoodsDetail,
             meta: {
@@ -45,7 +46,7 @@ const router = new Router({
             }
         },
         {
-            path: '/dobargain',
+            path: '/bargain/dobargain',
             name:'dobargain',
             component: Dobargain,
             meta: {
@@ -53,7 +54,15 @@ const router = new Router({
             }
         },
         {
-            path: '/mybargain',
+            path: '/bargain/c',
+            name:'c',
+            component: Clear,
+            meta: {
+                title: 'c'
+            }
+        },
+        {
+            path: '/bargain/mybargain',
             name:'mybargain',
             component: MyBargain,
             meta: {
@@ -65,7 +74,7 @@ const router = new Router({
             path: '*',
             component: List,
             meta: {
-                title: '砍价商品列表'
+                title: '成都贝臣齿科'
             }
         }
     ],
@@ -79,18 +88,18 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     let token = window.localStorage.getItem("user_token")
 
-    if(token || to.path == '/login'){
+    if(token || to.path == '/bargain/login'){
         // 用户已经授权过或正在授权
         next()
     }else{
         // 用户第一次进入
-        next('/login')
+        next('/bargain/login')
         return false
     }
     
-    if((token && to.path == '/login') || (token && to.path == '/')) {
+    if((token && to.path == '/bargain/login') || (token && to.path == '/bargain/')) {
         // 用户使用后退返回到授权页，则默认回到list
-        next('/list')
+        next('/bargain/list')
         return false
     }
     // 设置路由title

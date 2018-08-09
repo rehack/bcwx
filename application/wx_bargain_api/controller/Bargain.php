@@ -278,8 +278,14 @@ class Bargain extends BaseController{
         }
 
         // 当前用户的所有砍价单
-        $bargainOrders = $currentUser->bargainOrders()->with('goods')->select();
+        $bargainOrders = BargainOrderModel::where('uid',$currentUid)->with('helpers,goods')->withSum('helpers','bargain_money')->select();
+
+        /* $bargainOrders = $currentUser->with(['bargainOrders'=>['goods','helpers']])->withAttr('bargainOrders.helpers.bargain_money',function($value, $data){
+            return 'sgh';
+        })->find(); */
+        // 
         if($bargainOrders){
+            // return json($bargainOrders);//追加字段
             return json($bargainOrders->append(['over_time']));//追加字段
         }else{
             throw new BargainException([

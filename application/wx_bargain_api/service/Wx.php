@@ -71,7 +71,10 @@ class Wx{
         $timestamp = time();
         $nonceStr = $this->getRandStr();
         $jsapi_ticket = $this->getJsapiTicket();
-        $url = $currentUrl;//当前前端发起分享的网页
+        $url = urldecode($currentUrl);//当前前端发起分享的网页
+        // $url = $currentUrl;//当前前端发起分享的网页
+
+        // return $url;
 
         $str = "jsapi_ticket={$jsapi_ticket}&noncestr={$nonceStr}&timestamp={$timestamp}&url={$url}";
 
@@ -81,6 +84,7 @@ class Wx{
             'timestamp'=>$timestamp,
             'nonceStr'=>$nonceStr,
             'signature'=>$signature,
+            'url' => $url
             /* 'jsapi_ticket'=>$jsapi_ticket,
             'str'=>$str */
         ];
