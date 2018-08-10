@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.08 (64 bit)
-MySQL - 5.5.53 : Database - bcwx
+MySQL - 5.5.56 : Database - bcwx.rehack.cn
 *********************************************************************
 */
 
@@ -12,9 +12,9 @@ MySQL - 5.5.53 : Database - bcwx
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`bcwx` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`bcwx.rehack.cn` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `bcwx`;
+USE `bcwx.rehack.cn`;
 
 /*Table structure for table `bargain_bargain_order` */
 
@@ -39,11 +39,11 @@ CREATE TABLE `bargain_bargain_order` (
   KEY `product_id` (`goods_id`),
   KEY `user_id` (`uid`),
   KEY `is_addorder` (`is_addorder`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `bargain_bargain_order` */
 
-insert  into `bargain_bargain_order`(`id`,`uid`,`goods_id`,`bargain_sn`,`attr1_id`,`attr2_id`,`bargain_count`,`deal_money`,`is_addorder`,`type`,`create_time`) values (1,1,1,'NFD72018080949541005',0,0,0,'0.00',0,0,1533744001),(2,1,2,'W6VP2018080951541025',0,0,0,'0.00',0,0,1533744115);
+insert  into `bargain_bargain_order`(`id`,`uid`,`goods_id`,`bargain_sn`,`attr1_id`,`attr2_id`,`bargain_count`,`deal_money`,`is_addorder`,`type`,`create_time`) values (1,1,1,'9ZCY2018081010010110',0,0,0,'0.00',0,0,1533895597),(2,2,1,'5FCS2018081099524810',0,0,0,'0.00',0,0,1533895660),(3,3,1,'0MHS2018081010254569',0,0,0,'0.00',0,0,1533895759);
 
 /*Table structure for table `bargain_data` */
 
@@ -60,7 +60,7 @@ CREATE TABLE `bargain_data` (
 
 /*Data for the table `bargain_data` */
 
-insert  into `bargain_data`(`id`,`goods_id`,`p50`,`p100`,`p200`) values (1,1,'51.15,86.33,3.96,103.79,2.03,77.77,108.31,71.32,34.55,1.21,132.1,1.42,2.53,1.28,59.73,1.28,1.24,64.83,66.36,129.84,60.65,9.4,1.19,1.13,1.41,26.4,2.56,1.56,132.67,65.67,6.76,103.09,16.94,109.12,2.23,54.29,85.72,1.56,71.03,45.36,1.12,55.54,67.73,54.95,1.34,1.2,58.23,50.53,84.3,125.29','4.33,1.83,1.84,4.77,48.22,84.78,5.28,1.23,35.90,3.96,1.07,1.24,102.87,2.10,56.47,40.68,1.21,51.99,1.39,46.36,76.17,47.10,86.06,85.66,55.22,2.59,1.22,1.01,1.45,2.87,1.99,85.30,76.40,1.23,1.31,97.68,1.02,1.04,1.33,29.67,34.12,1.17,107.02,101.44,1.01,66.76,67.52,91.14,40.78,35.20','100.19,103.54,1.15,2.56,1.27,1.30,1.40,14.54,115.84,1.25,1.03,84.64,1.21,1.03,47.47,76.25,1.47,1.20,1.15,91.04,63.93,17.75,4.81,1.01,1.39,1.65,52.27,101.64,82.63,83.55,2.17,97.11,1.07,1.16,100.75,1.33,1.19,1.26,1.33,1.08,94.61,1.04,1.06,119.84,1.17,78.51,86.78,29.10,45.20,74.08'),(2,2,'1.01,1.00,1.12,1.03,2.11,1.03,1.00,1.05,22.61,1.03,39.27,1.04,38.97,1.08,2.27,2.34,69.76,19.38,68.58,1.00,3.41,1.00,1.02,66.07,28.95,1.75,1.01,27.77,72.90,66.32,1.01,42.11,1.02,1.02,1.08,7.52,1.04,1.01,1.03,1.08,1.05,30.21,1.00,48.79,63.33,1.02,1.01,1.02,32.82,14.95','1.08,57.04,1.12,1.08,1.13,1.20,10.67,64.77,31.12,1.13,13.72,1.18,3.54,1.16,46.18,35.94,1.18,1.14,45.20,1.14,1.09,1.06,1.03,45.67,19.98,74.38,1.11,1.13,1.78,1.01,1.55,69.70,57.31,1.10,75.45,1.29,1.21,1.03,1.03,65.72,1.18,21.75,1.06,1.11,84.08,84.71,1.19,2.42,1.15,57.00',NULL);
+insert  into `bargain_data`(`id`,`goods_id`,`p50`,`p100`,`p200`) values (1,1,'81.23,1.4,37.66,97.64,55.77,116.76,78.68,46.28,1.43,1.38,1.28,1.44,2.61,1.41,1.6,1.37,130.74,66.52,1.43,51.48,63.12,97.05,1.31,1.42,12.56,82.67,67.31,1.35,127.44,69.02,130.37,80.53,42.65,1.3,85.05,117.58,1.07,131.38,12.74,1.45,1.52,1.36,124.94,112.22,1.41,115.88,1.48,33.18,1.16,1.37','4.33,1.83,1.84,4.77,48.22,84.78,5.28,1.23,35.90,3.96,1.07,1.24,102.87,2.10,56.47,40.68,1.21,51.99,1.39,46.36,76.17,47.10,86.06,85.66,55.22,2.59,1.22,1.01,1.45,2.87,1.99,85.30,76.40,1.23,1.31,97.68,1.02,1.04,1.33,29.67,34.12,1.17,107.02,101.44,1.01,66.76,67.52,91.14,40.78,35.20','100.19,103.54,1.15,2.56,1.27,1.30,1.40,14.54,115.84,1.25,1.03,84.64,1.21,1.03,47.47,76.25,1.47,1.20,1.15,91.04,63.93,17.75,4.81,1.01,1.39,1.65,52.27,101.64,82.63,83.55,2.17,97.11,1.07,1.16,100.75,1.33,1.19,1.26,1.33,1.08,94.61,1.04,1.06,119.84,1.17,78.51,86.78,29.10,45.20,74.08'),(2,2,'50.22,5.17,5.02,3.92,26.5,56.68,43.53,5.4,5.58,5.12,4.92,5.59,9.42,5.11,44.14,5.04,4.8,4.89,5.02,4.81,50.98,43.98,4.93,50.83,5.89,4.59,6.52,5.16,5.06,4.67,40.04,32.2,27.46,4.81,5.12,53.02,5.19,5.26,5.54,4.92,23.1,30.4,5.07,5.06,4.91,5.05,5.91,4.92,5.13,43.4]','1.08,57.04,1.12,1.08,1.13,1.20,10.67,64.77,31.12,1.13,13.72,1.18,3.54,1.16,46.18,35.94,1.18,1.14,45.20,1.14,1.09,1.06,1.03,45.67,19.98,74.38,1.11,1.13,1.78,1.01,1.55,69.70,57.31,1.10,75.45,1.29,1.21,1.03,1.03,65.72,1.18,21.75,1.06,1.11,84.08,84.71,1.19,2.42,1.15,57.00',NULL);
 
 /*Table structure for table `bargain_goods` */
 
@@ -77,6 +77,7 @@ CREATE TABLE `bargain_goods` (
   `bargain_section2` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '砍价区间2【用户线上砍价(新用户砍价区间)】',
   `join_count` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '参与人数',
   `goods_desc` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '活动商品描述',
+  `goods_desc_m` varchar(50) NOT NULL COMMENT '商品简短描述,用于分享出去链接显示',
   `attr1_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'attr1属性',
   `attr2_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'attr2属性',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0是线上，1是地推',
@@ -88,7 +89,7 @@ CREATE TABLE `bargain_goods` (
 
 /*Data for the table `bargain_goods` */
 
-insert  into `bargain_goods`(`id`,`goods_name`,`img1_id`,`img2_id`,`activity_money`,`original_price`,`bargain_section`,`bargain_section2`,`join_count`,`goods_desc`,`attr1_id`,`attr2_id`,`type`) values (1,'隐适美隐形矫正','/static/bargain/images/sm_03.jpg','/static/bargain/images/big_02.jpg','33800.00','39800.00','','',0,'<ul><li><span style=\"font-size: 0.36rem\">Invisalign</span>隐适美系统是一种近乎隐形的创新型治疗方法们</li><li>可以轻柔而持久地矫正你的牙齿。 </li><li>既能满足矫正牙齿的需要，</li><li>又同时避免了传统托槽矫正能看到“钢牙”的缺点。</li><li>又同时避免了传统托槽矫正能看到<em style=\"font-size: 0.36rem;font-style:normal;color: red;\">“钢牙”</em>的缺点。</li><li>就能让牙齿有效、精准的移动。</li></ul>',0,0,0),(2,'进口金属自锁托槽矫正','/static/bargain/images/sm_05.jpg','/static/bargain/images/big_01.jpg','11800.00','13800.00','','',0,'<p style=\"text-indent: 2em;\">自锁正畸托槽是指在正畸治疗中，用一种专用的黏结剂固定在牙齿表面的一种金属或陶瓷等材料制成的装置，用于容纳和固定正畸钢丝，传递矫治力到牙齿，从而达到牙齿矫正的目的。</p>',0,0,0);
+insert  into `bargain_goods`(`id`,`goods_name`,`img1_id`,`img2_id`,`activity_money`,`original_price`,`bargain_section`,`bargain_section2`,`join_count`,`goods_desc`,`goods_desc_m`,`attr1_id`,`attr2_id`,`type`) values (1,'隐适美隐形矫正','/static/bargain/images/sm_03.jpg','/static/bargain/images/big_02.jpg','33800.00','39800.00','','',0,'<ul><li><span style=\"font-size: 0.36rem\">Invisalign</span>隐适美系统是一种近乎隐形的创新型治疗方法,</li><li>可以轻柔而持久地矫正你的牙齿。 </li><li>既能满足矫正牙齿的需要,</li><li>又同时避免了传统托槽矫正能看到<em style=\"font-size: 0.36rem;font-style:normal;color: red;\">“钢牙”</em>的缺点。</li><li>只需佩戴一副透明的牙套，</li><li>就能让牙齿有效、精准的移动。</li></ul>','',0,0,0),(2,'进口金属自锁托槽矫正','/static/bargain/images/sm_05.jpg','/static/bargain/images/big_01.jpg','11800.00','13800.00','','',0,'<p style=\"text-indent: 2em;\">自锁正畸托槽是指在正畸治疗中，用一种专用的黏结剂固定在牙齿表面的一种金属或陶瓷等材料制成的装置，用于容纳和固定正畸钢丝，传递矫治力到牙齿，从而达到牙齿矫正的目的。</p>','',0,0,0);
 
 /*Table structure for table `bargain_helpers` */
 
@@ -136,11 +137,11 @@ CREATE TABLE `bargain_users_info` (
   `update_time` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE` (`openid`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `bargain_users_info` */
 
-insert  into `bargain_users_info`(`id`,`openid`,`nickname`,`sex`,`city`,`province`,`country`,`headimgurl`,`create_time`,`update_time`) values (1,'oNKC-0TJuJ8e_LJhsor1tVzqFHD8','Rehack',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIN6ICAamJIEKIyk9gAllcicicWcp8Ut1NJ5CakaaD29zLSq2HNL5p6FiaxibHC6ZibHydgOBsfn0K5IbQ/132',1533743982,1533743982);
+insert  into `bargain_users_info`(`id`,`openid`,`nickname`,`sex`,`city`,`province`,`country`,`headimgurl`,`create_time`,`update_time`) values (1,'odSvU1Fc02QC5AEFrs1TySUIXHwk','郭先生',1,'福州','福建','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKUmqCkA9u03KIMLjnx03IE8tLmwrLtECFRrRuPoeib9FSRxhfMAsdCbH0Xiad9YGlH34hABvqZgOPg/132',1533895585,1533895585),(2,'odSvU1CFwh5ktKjYR4FUFpLb67cU','李燕青',2,'巴中','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLLeDE4zoVDB5TJ3IvyA5lqkGYaW9Mt4iajJ8ziaB5zr9TT7V36UTpUlePygEJicicG6KY5hrcJRWMmXw/132',1533895647,1533895647),(3,'odSvU1Go42IxypRPnGUuqDpXgOJI','王辉',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/fQaNyoTy6bMJaUrEogTQdUGrBcRkn1ndicVdVLu7RjMXnrWCxBfQFp0gGhaaQ0ibOk00LicygDXWVO6diaVx8uOgUg/132',1533895734,1533895734);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
