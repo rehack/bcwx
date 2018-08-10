@@ -102,7 +102,7 @@ export default {
                     }
                     
                 })
-                .catch(error=>{
+                .catch(()=>{
                     // code不合法等错误（点击返回按钮也会出现）
                     // this.message = error.response.data
                     this.$router.push({name:'list'})

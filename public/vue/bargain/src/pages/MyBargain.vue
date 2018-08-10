@@ -12,10 +12,24 @@
                         <div class="old-price">当前价：￥{{order.goods.original_price-order.helpers_sum}}</div>
                         <div class="order-sn">单号：{{order.bargain_sn}}</div>
                         <div><countdown :endtime='order.over_time'></countdown></div>
-                        <router-link class="link" v-if="(new Date(order.over_time) - Date.parse(new Date()))>0" :to="{path:'/bargain/detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
-                        <div class="link over-link" v-else>当前砍价已结束</div>
+                        <div class="btns">
+                            <div class="link" @click="showRecord(order.bargain_sn)">查看记录</div>
+                            <router-link class="link" v-if="(new Date(order.over_time) - Date.parse(new Date()))>0" :to="{path:'/bargain/detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
+                            <div class="link over-link" v-else>当前砍价已结束</div>
+                        </div>
                     </div>
                 </div>
+                <transition name="fade">
+                    <div class="record" v-show="isShowRecord==order.bargain_sn && flag">
+                        <ul>
+                            <li v-for="user of order.helpers">
+                                <img :src="user.user.headimgurl" alt="">
+                                <p>{{user.user.nickname}}</p>
+                                <span>{{user.bargain_money}}元</span>
+                            </li>
+                        </ul>
+                    </div>
+                </transition>
             </li>
         </ul>
         <footer>
@@ -39,6 +53,8 @@ export default {
         return{
             bargainOrdersData:{},
             istimeover:null,
+            isShowRecord:false,//显示详细砍价记录
+            flag:true
         }
     },
     created() {
@@ -57,7 +73,7 @@ export default {
             .then(response=>{
                 let result = response.data
                 this.bargainOrdersData =result
-                // window.console.log(result)
+                window.console.log(result)
             })
             .catch(error=>{
                 let msg = error.response.data.msg
@@ -71,6 +87,14 @@ export default {
                 }
             })
         },
+
+        // 显示隐藏详细砍价记录
+        showRecord(no){
+            // console.log(e)
+            this.isShowRecord = no
+            this.flag=!this.flag
+            // alert(this.isShowRecord)
+        }
 
         
 
@@ -116,7 +140,12 @@ export default {
 .list li .goods-info .info .goods-name span{
     font-size: 0.18rem;
 }
+.list li .goods-info .info .btns{
+    display: flex;
+    justify-content: space-between;
+}
 .list li .goods-info .info .link{
+    width: 45%;
     border-radius: 5px;
     background: rgb(236, 61, 61);
     color: #fff;
@@ -129,6 +158,28 @@ export default {
 .list li .goods-info .info .over-link{
     background: #ccc;
     color: #000;
+}
+.list .record li{
+    display: flex;
+    border: 1px dotted #eee;
+    align-items: center;
+    margin: 0;
+}
+.list .record li img{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+.list .record li p{
+    margin: 0 12px;
+    width: 33%;
+    text-align: left;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 footer{
     width: 100%;

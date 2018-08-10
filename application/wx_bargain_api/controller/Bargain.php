@@ -278,7 +278,7 @@ class Bargain extends BaseController{
         }
 
         // 当前用户的所有砍价单
-        $bargainOrders = BargainOrderModel::where('uid',$currentUid)->with('helpers,goods')->withSum('helpers','bargain_money')->select();
+        $bargainOrders = BargainOrderModel::where('uid',$currentUid)->with('helpers.user,goods')->withSum('helpers','bargain_money')->select();
 
         /* $bargainOrders = $currentUser->with(['bargainOrders'=>['goods','helpers']])->withAttr('bargainOrders.helpers.bargain_money',function($value, $data){
             return 'sgh';

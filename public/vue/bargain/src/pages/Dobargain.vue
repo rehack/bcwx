@@ -8,8 +8,8 @@
             <span class="tit">{{bargainData.goods.goods_name}}</span>
         </div>
         <div class="des" v-html="bargainData.goods.goods_desc"></div>
-        <div class="price">原价:￥{{bargainData.goods.original_price}}</div>
         <div class="bargian-monry" v-if="kjmoney">我帮TA砍了：{{kjmoney}}元</div>
+        <div class="price">原价:￥{{bargainData.goods.original_price}}</div>
         <!-- <div v-if="bargainRresult">当前价格：￥{{bargainRresult.deal_money}}</div> -->
         <footer>
             <div @click="meto" class="div">我也要参加</div>
