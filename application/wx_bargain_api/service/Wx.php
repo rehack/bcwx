@@ -84,7 +84,7 @@ class Wx{
             'timestamp'=>$timestamp,
             'nonceStr'=>$nonceStr,
             'signature'=>$signature,
-            'url' => $url
+            // 'url' => $url
             /* 'jsapi_ticket'=>$jsapi_ticket,
             'str'=>$str */
         ];

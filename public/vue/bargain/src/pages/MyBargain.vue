@@ -5,7 +5,7 @@
             <li v-for="order in bargainOrdersData" v-bind:key="order.id" >
                 <div class="goods-info">
                     <div class="pic">
-                        <img :src="lib.APIHOST+order.goods.img1_id" alt="">
+                        <img :src="myconf.api_host+order.goods.img1_id" alt="">
                     </div>
                     <div class="info">
                         <p class="goods-name">{{order.goods.goods_name}}<span>(￥{{order.goods.original_price}})</span></p>
@@ -13,7 +13,7 @@
                         <div class="order-sn">单号：{{order.bargain_sn}}</div>
                         <div><countdown :endtime='order.over_time'></countdown></div>
                         <router-link class="link" v-if="(new Date(order.over_time) - Date.parse(new Date()))>0" :to="{path:'/bargain/detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
-                        <div class="link" v-else>当前砍价已结束</div>
+                        <div class="link over-link" v-else>当前砍价已结束</div>
                     </div>
                 </div>
             </li>
@@ -49,7 +49,7 @@ export default {
         getBargainOrders(){
             axios({
                 method:'GET',
-                url:this.lib.APIHOST+"/bargian_api/bargainorders",
+                url:this.myconf.api_host+"/bargian_api/bargainorders",
                 headers:{
                     "Authorization":window.localStorage.getItem('user_token')
                 }
@@ -57,7 +57,7 @@ export default {
             .then(response=>{
                 let result = response.data
                 this.bargainOrdersData =result
-                window.console.log(result)
+                // window.console.log(result)
             })
             .catch(error=>{
                 let msg = error.response.data.msg
@@ -121,10 +121,14 @@ export default {
     background: rgb(236, 61, 61);
     color: #fff;
     /* padding: 3px 7px; */
-    height: 0.4rem;
-    line-height: 0.4rem;
+    height: 0.5rem;
+    line-height: 0.5rem;
     text-align:center;
-    font-size: 0.23rem;
+    font-size: 0.24rem;
+}
+.list li .goods-info .info .over-link{
+    background: #ccc;
+    color: #000;
 }
 footer{
     width: 100%;

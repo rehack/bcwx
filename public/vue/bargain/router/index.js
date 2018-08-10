@@ -87,6 +87,7 @@ const router = new Router({
 // 登陆验证拦截
 router.beforeEach((to, from, next) => {
     let token = window.localStorage.getItem("user_token")
+    // let 
 
     if(token || to.path == '/bargain/login'){
         // 用户已经授权过或正在授权
@@ -97,7 +98,8 @@ router.beforeEach((to, from, next) => {
         return false
     }
     
-    if((token && to.path == '/bargain/login') || (token && to.path == '/bargain/')) {
+    if((token && to.path == '/bargain/login' && !to.query.flag) || (token && to.path == '/bargain/')) {
+        window.console.log('to.query',JSON.stringify(to.query))
         // 用户使用后退返回到授权页，则默认回到list
         next('/bargain/list')
         return false

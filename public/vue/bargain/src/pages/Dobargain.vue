@@ -2,14 +2,14 @@
 
     <div v-if="bargainData.goods" class="main">
         <div class="banner">
-            <img  :src="lib.APIHOST+bargainData.goods.img2_id" alt="">
+            <img  :src="myconf.api_host+bargainData.goods.img2_id" alt="">
         </div>
         <div class="tit-wrap">
             <span class="tit">{{bargainData.goods.goods_name}}</span>
         </div>
         <div class="des" v-html="bargainData.goods.goods_desc"></div>
         <div class="price">原价:￥{{bargainData.goods.original_price}}</div>
-        <div class="bargian-monry" v-if="bargainRresult">我帮他砍了：{{bargainRresult.kjmoney}}元</div>
+        <div class="bargian-monry" v-if="kjmoney">我帮TA砍了：{{kjmoney}}元</div>
         <!-- <div v-if="bargainRresult">当前价格：￥{{bargainRresult.deal_money}}</div> -->
         <footer>
             <div @click="meto" class="div">我也要参加</div>
@@ -29,6 +29,7 @@ export default {
             no:'',
             bargainData:{},
             bargainRresult:null,//砍价结果
+            kjmoney:0
         }
     },
     created() {
@@ -40,9 +41,16 @@ export default {
         getBargain(){
             let no =this.$route.query.no
             this.no = no
+
+            let localData = window.localStorage.getItem(no)
+
+            if(localData){
+                this.kjmoney = localData
+            }
+            
             axios({
                 method:'GET',
-                url:this.lib.APIHOST+'/bargian_api/bargaindetail',
+                url:this.myconf.api_host+'/bargian_api/bargaindetail',
                 params:{no}
             })
             .then(resoponse=>{
@@ -51,7 +59,9 @@ export default {
                 this.bargainData = bargainData
             })
             .catch(error=>{
-                alert(error.resoponse.data.msg)
+                alert(error.response.data.msg)
+                this.$router.push({name:'list'})
+                // window.console.log(JSON.stringify(error))
             })
         },
 
@@ -61,7 +71,7 @@ export default {
             let no = this.no
             axios({
                 method:'POST',
-                url:this.lib.APIHOST+'/bargian_api/dobargain',
+                url:this.myconf.api_host+'/bargian_api/dobargain',
                 headers:{
                     "Authorization":window.localStorage.getItem('user_token')
                 },
@@ -69,8 +79,11 @@ export default {
             })
             .then(resoponse=>{
                 let result = resoponse.data
-                window.console.log(result)
-                this.bargainRresult = result
+                // window.console.log(result)
+                // this.bargainRresult = result
+                window.localStorage.setItem(no,result.kjmoney)
+                this.kjmoney = result.kjmoney
+                
                 alert('您成功帮你的好友砍了'+result.kjmoney+'元!')
                 // 可以继续分享
             })

@@ -51,7 +51,7 @@ export default {
         },
         // 微信网页授权
         login(){
-            let appid = 'wxc373be0ebd319f82';
+            let appid = this.myconf.appid;
             /* let protocol = window.location.protocol
             let host = window.location.host */
             // window.console.log(this.$route)
@@ -82,7 +82,7 @@ export default {
         // 通过code换取token
         getToken(code,from,no){
 
-            let url = this.lib.APIHOST+'/bargian_api/gettoken'
+            let url = this.myconf.api_host+'/bargian_api/gettoken'
            
             axios.get(url,{params: { code: code }})
                 .then(resopnse=>{
@@ -92,6 +92,7 @@ export default {
                         window.localStorage.setItem('user_token',token)
                         // 获取到token后跳转到对应页面
                         if(from == 'share' && no){
+                            // http://192.168.1.253/bargain/login?no=UTFR2018080948575356&flag=share
                             this.$router.push({name:'dobargain',query: { no }})
                         }else{
                             this.$router.push({name:'list'})
@@ -102,7 +103,9 @@ export default {
                     
                 })
                 .catch(error=>{
-                    this.message = error.response.data
+                    // code不合法等错误（点击返回按钮也会出现）
+                    // this.message = error.response.data
+                    this.$router.push({name:'list'})
                     // console.log(error)
                 })
 

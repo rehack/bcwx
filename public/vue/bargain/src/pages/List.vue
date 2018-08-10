@@ -1,23 +1,33 @@
 <template>
     <div class="main">
         <div class="banner">
-            <img :src="this.lib.APIHOST+'/static/bargain/images/banner_01.jpg'" alt="">
+            <img :src="myconf.api_host+'/static/bargain/images/banner_01.jpg'" alt="">
         </div>
         <div class="list">
             <ul>
                 <li v-for="item in listData" :key="item.id">
                     <div class="pic">
-                        <img :src="lib.APIHOST+item.img1_id" alt="">
+                        <img :src="myconf.api_host+item.img1_id" alt="">
                     </div>
                     <div class="info">
                         <span>原价{{item.original_price}}元</span>
-                        <div class="btn" @click="startBargain(item.id)">立即砍价</div>
-
+                        <div class="btn" @click="startBargain(item.id)">发起砍价</div>
                     </div>
                 </li>
             </ul>
         </div>
-        
+        <div class="rules">
+            <fieldset>
+                <legend>活动规则：</legend>
+                <ul>
+                    <li>1.选择砍价商品，点按钮“发起砍价”参加活动；</li>
+                    <li>2.进入商品页面，点击右上角分享出去邀请朋友来为自己砍价；</li>
+                    <li>3.砍价时间为期5天；</li>
+                    <li>4.砍价时间结束后即可到店享受当先价格；</li>
+                    <li>5.兑换地址：锦江区东大街紫东楼35号明宇金融广场25楼。</li>
+                </ul>
+            </fieldset>
+        </div>
     </div>
 
 </template>
@@ -38,9 +48,9 @@ export default {
     methods:{
         getList(){
             axios
-            .get(this.lib.APIHOST+"/bargian_api/goods")
+            .get(this.myconf.api_host+"/bargian_api/goods")
             .then(response => {
-                window.console.log(response.data);
+                // window.console.log(response.data);
                 this.listData = response.data
             })
             .catch(error => {
@@ -51,7 +61,7 @@ export default {
         startBargain(id){
             axios({
                 method:'POST',
-                url:this.lib.APIHOST+'/bargian_api/createbargain',
+                url:this.myconf.api_host+'/bargian_api/createbargain',
                 headers:{
                     "Authorization":window.localStorage.getItem('user_token')
                 },
@@ -59,7 +69,7 @@ export default {
                 
             })
             .then(response=>{
-                window.console.log(response.data)
+                // window.console.log(response.data)
                 let sn = response.data.bargainSn
                 if(sn){
                     /* this.$router.push({
@@ -147,7 +157,30 @@ img{
     border-radius: 5px;
     margin-top: 5px;
 }
-
+.rules{
+    background: #f7f7f7;
+    text-align: left;
+    width: 96%;
+    margin: 30px auto;
+}
+.rules legend{
+    background: #5919be;
+    padding: 5px 15px;
+    margin: 0 20px;
+    background-clip: padding-box;
+    border: 10px solid #f7f7f7;
+    color: #fff;
+    font-size: 0.26rem;
+}
+.rules fieldset{
+    border:2px solid #5919be;
+    border-radius: 5px;
+    padding: 13px;
+}
+.rules fieldset li{
+    line-height: 0.4rem;
+    font-size: 0.22rem;
+}
 
 footer{
     width: 100%;
@@ -168,6 +201,6 @@ footer ul li{
     flex:1;
     text-align: center;
 }
-        
+      
 </style>
 

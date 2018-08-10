@@ -1,27 +1,32 @@
 <template>
     <div v-if="bargainData.goods" class="main">
         <div class="banner">
-            <img  :src="lib.APIHOST+bargainData.goods.img2_id" alt="">
+            <img  :src="myconf.api_host+bargainData.goods.img2_id" alt="">
         </div>
         <div class="tit-wrap">
             <span class="tit">{{bargainData.goods.goods_name}}</span>
         </div>
+        <div @click="share" class="sharebtn">召唤好友帮忙砍价</div>
         <div class="des" v-html="bargainData.goods.goods_desc"></div>
+        <div @click="share" class="sharebtn">召唤好友帮忙砍价</div>
         <div class="price">原价:￥{{bargainData.goods.original_price}}</div>
-        <!-- <img :src="lib.APIHOST+bargainData.goods.images.img_path" alt="">
-        <h2>{{bargainData.goods.goods_name}}￥56.3</h2> -->
+
         <!-- <div>
             <span>已坎3.2</span>
             <span>还差52.6元</span>
         </div>
         <div>还剩1天23：40：02：01过期 快来砍价吧</div> -->
         
-            <div @click="share" class="sharebtn">点击右上角分享出去帮我砍价</div>
+            
         
         <footer>
             <router-link to="/bargain/list">活动商品</router-link>
             <router-link to="/bargain/mybargain">我的砍价</router-link>
         </footer>
+
+        <div id="mcover" v-show="guideShow" @click="hideCover">
+            <img :src="myconf.api_host+'/static/bargain/images/guide.png?v=1'">
+        </div>
     </div>
 
 </template>
@@ -44,7 +49,8 @@ export default {
         return {
             bargainData: {},
             images: {},
-            configData: []
+            configData: [],
+            guideShow:false
         };
     },
     created() {
@@ -65,7 +71,7 @@ export default {
             let no = this.$route.query.no;
             axios({
                 method: "GET",
-                url: this.lib.APIHOST + "/bargian_api/bargaindetail",
+                url: this.myconf.api_host + "/bargian_api/bargaindetail",
                 params: { no }
             })
             .then(response => {
@@ -103,10 +109,10 @@ export default {
             // alert('当前url:'+window.location.href.split('#')[0])
             axios({
                 method: "get",
-                url: this.lib.APIHOST + "/bargian_api/wxshare",
+                url: this.myconf.api_host + "/bargian_api/wxshare",
                 params:{currentUrl}
             }).then(response => {
-                window.console.log(response.data);
+                // window.console.log(response.data);
                 // alert(JSON.stringify(response.data))
                 // alert(response.data)
                 // return false
@@ -126,8 +132,9 @@ export default {
             // let links = window.location.href+'&flag=share'; //分享出去的链接
             let links = window.location.protocol+"//"+window.location.host+'/bargain/login?flag=share&no='+no; //分享出去的链接
             let title = this.bargainData.goods.goods_name; //分享的标题
-            let desc = this.bargainData.goods.goods_desc; //分享的详情介绍
-            let imgUrl = this.lib.APIHOST+this.bargainData.goods.img1_id;
+            // let desc = this.bargainData.goods.goods_desc_m; //分享的简短描述
+            let desc = '砍价活动进行中,快来帮帮TA砍一刀吧！'; //分享的简短描述
+            let imgUrl = this.myconf.api_host+this.bargainData.goods.img1_id;
             wx.config({
                 debug: false,
                 appId: conf.appId,
@@ -189,8 +196,12 @@ export default {
         // 点击分享
         // https://bbs.heirui.cn/thread-16419-1-1.html UI设计参考
         share(){
-            // this.getWxShareParams();
+            // 显示指引弹出层
+            this.guideShow=true
         },
+        hideCover(){
+            this.guideShow=false
+        }
 
         
     }
@@ -225,13 +236,18 @@ export default {
     line-height: 0.5rem;
 }
 .price{
-    font-size: 0.32rem;
-    color: red;
+    color: #666;
     margin: 8px 0;
+    font-size: 0.26rem;
 }
 .sharebtn{
-    font-size: 0.26rem;
-    color: rgb(4, 79, 82);
+    color: #fff;
+    font-size: .32rem;
+    background: red;
+    width: 50%;
+    margin: 14px auto;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 footer{
     width: 100%;
@@ -250,5 +266,24 @@ footer a{
     font-size: 0.26rem;
     border-radius: 5px;
     padding: 5px 10px;
+}
+
+/*分享指引弹出层*/
+#mcover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 20000;
+}
+
+#mcover img {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 999;
 }
 </style>

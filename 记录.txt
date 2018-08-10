@@ -25,6 +25,12 @@
 ##采坑：
 1.前端微信网页授权获取code的过程中使用了router.beforeEach()路由拦截机制，无论使用哪个url进入网站都会先触发router.beforeEach钩子，在router.beforeEach钩子中判断用户当前登录状态，判断window.localStorage.getItem("user_token")，没有就跳转到/login路由，有就进入/list路由。/login路由里面的redirect_uri回调地址最好设置成当前的/login路由地址，否则会出现路由死循环。同时判断/login路由有无code参数，有就取到code，提交给后台，后台拿到code返回token,url没有code参数就打开微信授权接口链接
 
+redirect_uri 参数错误的几种原因：
+A.appid不正确
+B.公众平台配置的OAuth2.0网页授权 授权回调页面域名不正确，不带http，测试号可以带端口可以是ip
+C.redirect_uri回调地址不能正常访问
+
+
 2.采用前后端分离，所以会产生跨域问题，在tp5路由配置里添加allowCrossDomain()，但是发现当前端用axios把token放到headers里面，然后提交给后台的时候还是存在跨域。找到了两种方法解决：A.在nginx里添加
 add_header 'Access-Control-Allow-Headers'  'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With,Access-Token';
 Access-Token就是axios Headers里面的参数
@@ -39,17 +45,25 @@ B.既然Reopnse Headers里面的Access-Control-Allow-Headers不存在Access-Toke
 我的解决办法是采用history模式，但history模式在前后端分离的项目中打包上线后会出现404情况，需要nginx配合
 
 3.调用微信js-sdk分享接口的时候 签名校验失败invalid signature
-微信开发文档里说的是"用location.href.split('#')[0]获取,而且需要encodeURIComponent",而我在vue history模式下使用encodeURIComponent对当前URL编码然后提交给后台，反而出现invalid signature错误
-去掉encodeURIComponent就好了
-location.href.split('#')[0]获取的地址需要带?后的参数，'#'hash部分不需要
+造成这个错误的原因很多(参考附录5https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115)：
+常见的有：
+A.URL造成签名校验失败的可能性最大，此URL指的是当前使用微信sdk的前端页面路径，需要前端传给后台或后台直接获取，然后后台用来生成一些config接口注入权限验证配置参数。
+前端一般通过location.href.split('#')[0]获取当前URL，并encodeURIComponent转码，然后传给后端，后端拿到url也要进行urldecode解码。问题是在iOS上通过$router.push()进行页面切换的时候，页面内容改变了，但是URL地址没有变，更奇怪的是通过location.href.split('#')[0]获取到是url是正确的，然而通过右上角菜单复制出来的URL可以发现，复制出来的url还是最开始进入页面的入口URL，按道理讲只有location.href.split('#')[0]的url地址是正确的，就能校验通过，最后我尝试吧最开始进入页面的URL地址保存起来，拿来做签名的URL，网上很多人是这样做的，但我没有成功。同时我还发现手动刷新一下当前页面，然后复制出来的URL就和location.href.split('#')[0]的值一样了。于是我想到的解决方案就是当进入这个签名页面的时候，先自动刷新一下，让页面url地址正常，或者使用location.href代替$router.push()路由方式进行跳转，这样url地址就不会有问题
 
-清理服务器缓存
+B.前端config 中的 appid 与和后端获取 jsapi_ticket 的 appid不一致
 
-出现invalid signature还有一种情况在测试号管理下的JS接口安全域名一定要带上端口号,vue开启的服务端口号一般是8080，所以js接口域名要配置成192.168.1.253:8080这种
-如果还是签名校验失败就去https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign检测一下生成的signature是否正确，大多数情况都是问题出在url上
+C.access_token和jsapi_ticket没缓存起来
+
+D.JS接口安全域名没有配置正确，测试号管理下的JS接口安全域名是可以带端口的，也可以是本地ip
+
+E.官方提供了一个签名检测工具https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign,也可以用它来排查问题
 
 
-4.类似这种错误[Vue warn]: Error in render: "TypeError: Cannot read property 'images' of undefined"
+
+
+
+
+4.类似这种错误[Vue warn]: Error in render: "TypeError: Cannot read property 'images' of undefined"的原因是data里面确实没有配置相关数据，或者data里面的数据默认格式不正确，和服务器传来的数据格式不一致，比如你配置的是data:null,而服务器返回l
 渲染数据的时候要加v-if="Data.xxx"
 
 
