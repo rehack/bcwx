@@ -13,16 +13,17 @@ Vue.use(Router)
 
 const router = new Router({
     mode:'history',
+    base:'/bargain/',
     routes:[
         {
-            path:'/bargain/',
+            path:'/',
             component:Home,
             meta: {
                 title: '首页'
             }
         },
         {
-            path:'/bargain/login',
+            path:'/login',
             name:'login',
             component:Login,
             meta: {
@@ -30,7 +31,7 @@ const router = new Router({
             }
         },
         {
-            path:'/bargain/list',
+            path:'/list',
             name:'list',
             component:List,
             meta: {
@@ -38,7 +39,7 @@ const router = new Router({
             }
         },
         {
-            path:'/bargain/detail',
+            path:'/detail',
             name:'detail',
             component:GoodsDetail,
             meta: {
@@ -46,7 +47,7 @@ const router = new Router({
             }
         },
         {
-            path: '/bargain/dobargain',
+            path: '/dobargain',
             name:'dobargain',
             component: Dobargain,
             meta: {
@@ -54,7 +55,7 @@ const router = new Router({
             }
         },
         {
-            path: '/bargain/c',
+            path: '/c',//清除本地缓存
             name:'c',
             component: Clear,
             meta: {
@@ -62,7 +63,7 @@ const router = new Router({
             }
         },
         {
-            path: '/bargain/mybargain',
+            path: '/mybargain',
             name:'mybargain',
             component: MyBargain,
             meta: {
@@ -70,7 +71,7 @@ const router = new Router({
             }
         },
         {
-            // 访问路由表中不存在的路由，进入list，默认路由
+            // 访问路由表中不存在的路由，进入list，默认路由 404页面
             path: '*',
             component: List,
             meta: {
@@ -89,19 +90,19 @@ router.beforeEach((to, from, next) => {
     let token = window.localStorage.getItem("user_token")
     // let 
 
-    if(token || to.path == '/bargain/login'){
+    if(token || to.path == '/login'){
         // 用户已经授权过或正在授权
         next()
     }else{
         // 用户第一次进入
-        next('/bargain/login')
+        next('/login')
         return false
     }
     
-    if((token && to.path == '/bargain/login' && !to.query.flag) || (token && to.path == '/bargain/')) {
+    if((token && to.path == '/login' && !to.query.flag) || (token && to.path == '/')) {
         window.console.log('to.query',JSON.stringify(to.query))
         // 用户使用后退返回到授权页，则默认回到list
-        next('/bargain/list')
+        next('/list')
         return false
     }
     // 设置路由title

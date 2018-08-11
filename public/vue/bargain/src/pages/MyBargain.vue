@@ -20,9 +20,9 @@
                     </div>
                 </div>
                 <transition name="fade">
-                    <div class="record" v-show="isShowRecord==order.bargain_sn && flag">
+                    <div class="record" v-show="flag && isShowRecord==order.bargain_sn">
                         <ul>
-                            <li v-for="user of order.helpers">
+                            <li v-for="user of order.helpers" :key="user.id">
                                 <img :src="user.user.headimgurl" alt="">
                                 <p>{{user.user.nickname}}</p>
                                 <span>{{user.bargain_money}}元</span>
@@ -53,7 +53,7 @@ export default {
         return{
             bargainOrdersData:{},
             istimeover:null,
-            isShowRecord:false,//显示详细砍价记录
+            isShowRecord:'',//显示详细砍价记录
             flag:true
         }
     },

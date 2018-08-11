@@ -42,11 +42,42 @@ B.既然Reopnse Headers里面的Access-Control-Allow-Headers不存在Access-Toke
 当采用hash模式的时候，微信重定向到redirect_uri上的时候,redirect_uri路由被破坏，原本的xxx.com:8080/#/login 变成了xxx.com:8080/?code=xxxx&state=xxx#/login
 后面使用this.$router.push()方法的时候，路由地址始终是这样，有个code参数在上面，hash值在所有参数后面，这种链接分享出去不是很友好，在ios下也会出现问题（这种路由中带了参数的url是没法签名校验成功的）
 
-我的解决办法是采用history模式，但history模式在前后端分离的项目中打包上线后会出现404情况，需要nginx配合
+我的解决办法是采用history模式，但history模式在前后端分离的项目中打包上线后会出现404情况，需要nginx配合:
+我vue打包部署在二级目录
 
-3.调用微信js-sdk分享接口的时候 签名校验失败invalid signature
-造成这个错误的原因很多(参考附录5https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115)：
-常见的有：
+location /bargain {
+    #root "E:/mygit/bcwx/public";   //你自己的根目录地址
+
+    # 这里的 /bargain/ 也可以写成/bargain/index.html
+    try_files $uri $uri/ /bargain/;    
+}
+除了要改nginx配置外，还需要修改vue项目中路由相关代码，根目录不再是/ 而是配置的二级目录，路由地址前面都要加上这个目录，虽然在开发模式下不加也没啥问题，为了不在打包上线后一脸懵逼，最好是在开发阶段就加上,router-link和window.location下面的path也要手动改,还有router.beforeEach里面的也要改，
+
+总结来说使用history模式部署在二级目录有三个地方需要配置：
+A.vue.config.js(cli3.0)
+baseUrl:'/xxx',
+B.nginx
+location /bargain {
+    #root "E:/mygit/bcwx/public";   //你自己的根目录地址
+
+    # 这里的 /bargain/ 也可以写成/bargain/index.html
+    try_files $uri $uri/ /bargain/;    
+}
+其他服务端配置参考https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E5%90%8E%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BE%8B%E5%AD%90
+
+
+C.vue路由配置
+const router = new Router({
+    mode:'history',
+    base: '/xxx/',//这个很重要
+    routes
+})
+
+
+
+4.调用微信js-sdk分享接口的时候 签名校验失败invalid signature
+造成这个错误的原因很多(参考附录5https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115),常见的有：
+
 A.URL造成签名校验失败的可能性最大，此URL指的是当前使用微信sdk的前端页面路径，需要前端传给后台或后台直接获取，然后后台用来生成一些config接口注入权限验证配置参数。
 前端一般通过location.href.split('#')[0]获取当前URL，并encodeURIComponent转码，然后传给后端，后端拿到url也要进行urldecode解码。问题是在iOS上通过$router.push()进行页面切换的时候，页面内容改变了，但是URL地址没有变，更奇怪的是通过location.href.split('#')[0]获取到是url是正确的，然而通过右上角菜单复制出来的URL可以发现，复制出来的url还是最开始进入页面的入口URL，按道理讲只有location.href.split('#')[0]的url地址是正确的，就能校验通过，最后我尝试吧最开始进入页面的URL地址保存起来，拿来做签名的URL，网上很多人是这样做的，但我没有成功。同时我还发现手动刷新一下当前页面，然后复制出来的URL就和location.href.split('#')[0]的值一样了。于是我想到的解决方案就是当进入这个签名页面的时候，先自动刷新一下，让页面url地址正常，或者使用location.href代替$router.push()路由方式进行跳转，这样url地址就不会有问题
 
@@ -60,10 +91,7 @@ E.官方提供了一个签名检测工具https://mp.weixin.qq.com/debug/cgi-bin/
 
 
 
-
-
-
-4.类似这种错误[Vue warn]: Error in render: "TypeError: Cannot read property 'images' of undefined"的原因是data里面确实没有配置相关数据，或者data里面的数据默认格式不正确，和服务器传来的数据格式不一致，比如你配置的是data:null,而服务器返回l
+5.类似这种错误[Vue warn]: Error in render: "TypeError: Cannot read property 'images' of undefined"的原因是data里面确实没有配置相关数据，或者data里面的数据默认格式不正确，和服务器传来的数据格式不一致，比如你配置的是data:null,而服务器返回l
 渲染数据的时候要加v-if="Data.xxx"
 
 

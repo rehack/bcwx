@@ -21,7 +21,7 @@
         
         <footer>
             <router-link to="/bargain/list">活动商品</router-link>
-            <router-link to="/bargain/mybargain">我的砍价</router-link>
+            <router-link :to="{name:'mybargain'}">我的砍价</router-link>
         </footer>
 
         <div id="mcover" v-show="guideShow" @click="hideCover">
