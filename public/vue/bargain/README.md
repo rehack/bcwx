@@ -1,4 +1,4 @@
-# cli3
+# bargain
 
 ## Project setup
 ```

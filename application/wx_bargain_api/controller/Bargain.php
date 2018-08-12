@@ -93,7 +93,10 @@ class Bargain extends BaseController{
 
     // 好友帮助砍价
     public function doBargain(){
-
+        /* $bs = new BargainService();
+        return $bs->returnMoney(1,3,4);
+        // echo $bs->returnMoney(1,3,4);
+        exit; */
         
 
         $no = input('post.no');
@@ -118,7 +121,7 @@ class Bargain extends BaseController{
 
         if($bargainOrderId == 44){
             throw new BargainException([
-                'msg' => '当前已经是该产品最底价了，别再砍了!',
+                'msg' => '已经砍到最底价了，别再砍了!',
                 'code' => 403,
                 'errorCode' => 60004
             ]);

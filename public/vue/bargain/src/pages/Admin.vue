@@ -5,7 +5,8 @@
                 <span>{{item.id}}</span>
                 <img :src="item.users_info.headimgurl" alt="">
                 <span>{{item.users_info.nickname}}</span>
-                <span>{{item.goods.original_price}}-{{item.helpers_sum}}={{item.goods.original_price-item.helpers_sum}}</span>
+                <span>({{item.goods.original_price}}-{{item.helpers_sum}}={{item.goods.original_price-item.helpers_sum}})</span>
+                <span>{{item.helpers.length}}</span>
             </li>
         </ul>
 

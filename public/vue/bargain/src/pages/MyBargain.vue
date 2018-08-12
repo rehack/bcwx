@@ -54,7 +54,8 @@ export default {
             bargainOrdersData:{},
             istimeover:null,
             isShowRecord:'',//显示详细砍价记录
-            flag:true
+            flag:true,
+            timedown:0,
         }
     },
     created() {
