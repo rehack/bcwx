@@ -55,7 +55,7 @@ export default {
             })
             .then(resoponse=>{
                 let bargainData = resoponse.data
-                window.console.log(bargainData)
+                // window.console.log(bargainData)
                 this.bargainData = bargainData
             })
             .catch(error=>{

@@ -31,8 +31,8 @@ export default {
             min = min > 9 ? min : '0' + min;
             sec = sec > 9 ? sec : '0' + sec;
 
-            // this.time = day+"天"+hr+"小时"+min+"分"+sec+"秒";
-            this.time = time
+            this.time = day+"天"+hr+"小时"+min+"分"+sec+"秒";
+            // this.time = time
             // this.time = `${day}天${hr}小时${min}分${sec}秒`
         }
     },

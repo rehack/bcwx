@@ -14,7 +14,7 @@
                         <div><countdown :endtime='order.over_time'></countdown></div>
                         <div class="btns">
                             <div class="link" @click="showRecord(order.bargain_sn)">查看记录</div>
-                            <router-link class="link" v-if="(new Date(order.over_time) - Date.parse(new Date()))>0" :to="{path:'/bargain/detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
+                            <router-link class="link" v-if="(new Date(order.over_time) - Date.parse(new Date()))>0" :to="{name:'detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
                             <div class="link over-link" v-else>当前砍价已结束</div>
                         </div>
                     </div>
