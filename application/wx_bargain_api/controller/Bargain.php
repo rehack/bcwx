@@ -116,7 +116,13 @@ class Bargain extends BaseController{
             throw new BargainException();
         }
 
-        
+        if($bargainOrderId == 44 ){
+            throw new BargainException([
+                'msg' => '当前已经是该产品最底价了，别再砍了!',
+                'code' => 403,
+                'errorCode' => 60004
+            ]);
+        }
 
         
 

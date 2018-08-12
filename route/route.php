@@ -54,3 +54,7 @@ Route::get('bargian_api/bargaindetail', 'wx_bargain_api/Bargain/getDetail')
 // 返回微信分享需要的参数
 Route::get('bargian_api/wxshare', 'wx_bargain_api/Wx/wxShare')
 ->allowCrossDomain();
+
+// 后台统计AdminStatistics
+Route::get('bargian_api/admin', 'wx_bargain_api/AdminStatistics/getOrders')
+->allowCrossDomain();

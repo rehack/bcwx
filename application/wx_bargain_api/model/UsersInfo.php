@@ -5,8 +5,11 @@ use think\Model;
 class UsersInfo extends Model{
     protected $autoWriteTimestamp = true;
 
+    protected $hidden = ['id','openid'];
+
     // 一个用户可以发起多个砍价
     public function bargainOrders(){
+        
         return $this->hasMany('BargainOrder','uid');
     }
 

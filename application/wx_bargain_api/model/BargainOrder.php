@@ -25,6 +25,10 @@ class BargainOrder extends Model{
         return $this->belongsTo('Goods','goods_id');
     }
 
+    public function usersInfo(){
+        return $this->belongsTo('UsersInfo','uid');
+    }
+
     public function helpers(){
         return $this->hasMany('Helpers','order_id');
     }

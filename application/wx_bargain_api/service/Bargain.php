@@ -15,7 +15,7 @@ class Bargain{
         $index = $pNum % 50;
         $datas=NULL;
         $money = NULL;//获取砍价金额
-
+        $pNum = 200;
         switch ($goods_id) {
             case 1:
                 $datas = DataModel::where('goods_id',1)->find();
@@ -31,15 +31,15 @@ class Bargain{
         }
         // return $pNum;
         
-        if((int)$pNum<=50){
+        if((int)$pNum<50){
             $str = $datas->p50;
             // return count(explode(',',$str));
             $money = explode(',',$str)[$index];
-        }else if((int)$pNum>50 && (int)$pNum <= 100){
+        }else if((int)$pNum>=50 && (int)$pNum < 100){
             $str = $datas->p100;
             // return count(explode(',',$str));
             $money = explode(',',$str)[$index];
-        }else if((int)$pNum>100 && (int)$pNum <= 200){
+        }else if((int)$pNum>=100 && (int)$pNum < 200){
             $str = $datas->p200;
             if($str){
                 // return count(explode(',',$str));
