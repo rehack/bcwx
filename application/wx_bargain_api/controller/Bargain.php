@@ -121,7 +121,7 @@ class Bargain extends BaseController{
 
         if($bargainOrderId == 44){
             throw new BargainException([
-                'msg' => '已经砍到最底价了，别再砍了!',
+                'msg' => '已经砍到最底价了!',
                 'code' => 403,
                 'errorCode' => 60004
             ]);
@@ -203,7 +203,7 @@ class Bargain extends BaseController{
         if($pNum2 == $pNum1){
             $kjMoney = $kjMoney;
         }else{
-            $kjMoney = $bs->returnMoney($pNum2,$goods_id);
+            $kjMoney = $bs->returnMoney($pNum2,$bargainOrderId,$goods_id);
         }
 
         // return $kjMoney;exit;
