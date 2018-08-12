@@ -8,6 +8,7 @@ import GoodsDetail from '@/pages/GoodsDetail';
 import Dobargain from '@/pages/Dobargain';
 import MyBargain from '@/pages/MyBargain';
 import Clear from '@/pages/Clear';
+import Admin from '@/pages/Admin';
 
 Vue.use(Router)
 
@@ -68,6 +69,14 @@ const router = new Router({
             component: MyBargain,
             meta: {
                 title: '我的砍价单'
+            }
+        },
+        {
+            path: '/skJ0OSKIYUEglH1m',
+            name:'admin',
+            component: Admin,
+            meta: {
+                title: 'admin'
             }
         },
         {
