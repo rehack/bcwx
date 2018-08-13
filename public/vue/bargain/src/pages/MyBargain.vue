@@ -11,10 +11,11 @@
                         <p class="goods-name">{{order.goods.goods_name}}<span>(￥{{order.goods.original_price}})</span></p>
                         <div class="old-price">当前价：￥{{order.goods.original_price-order.helpers_sum}}</div>
                         <div class="order-sn">单号：{{order.bargain_sn}}</div>
-                        <div><countdown :endtime='order.over_time'></countdown></div>
+                        <!-- <div><countdown :endtime='order.over_time' @timeEnd="timeEndHandel(order.bargain_sn)"></countdown></div> -->
+                        <div><countdown :endtime='order.over_time' @timeEnd="isTimeEnd=false"></countdown></div>
                         <div class="btns">
                             <div class="link" @click="showRecord(order.bargain_sn)">查看记录</div>
-                            <router-link class="link" v-if="(new Date(order.over_time) - Date.parse(new Date()))>0" :to="{name:'detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
+                            <router-link class="link" v-if="isTimeEnd" :to="{name:'detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
                             <div class="link over-link" v-else>当前砍价已结束</div>
                         </div>
                     </div>
@@ -56,6 +57,7 @@ export default {
             isShowRecord:'',//显示详细砍价记录
             flag:true,
             timedown:0,
+            isTimeEnd:true
         }
     },
     created() {
@@ -95,6 +97,12 @@ export default {
             this.isShowRecord = no
             this.flag=!this.flag
             // alert(this.isShowRecord)
+        },
+
+        // 倒计时结束处理
+        timeEndHandel(no){
+            // alert('time end')
+            this.isTimeEnd = no
         }
 
         
