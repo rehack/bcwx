@@ -34,8 +34,8 @@
             </li>
         </ul>
         <footer>
-            <router-link to="/bargain/list">活动商品</router-link>
-            <router-link to="/bargain/mybargain">我的砍价</router-link>
+            <router-link to="/list">活动商品</router-link>
+            <router-link to="/mybargain">我的砍价</router-link>
         </footer>
     </div>
 
