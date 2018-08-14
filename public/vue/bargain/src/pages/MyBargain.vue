@@ -2,7 +2,7 @@
     <div class="main">
         <!-- {{bargainOrdersData.bargain_orders}} -->
         <ul class="list">
-            <li v-for="order in bargainOrdersData" v-bind:key="order.id" >
+            <li v-for="(order,index) in bargainOrdersData" v-bind:key="order.id" >
                 <div class="goods-info">
                     <div class="pic">
                         <img :src="myconf.api_host+order.goods.img1_id" alt="">
@@ -11,11 +11,11 @@
                         <p class="goods-name">{{order.goods.goods_name}}<span>(￥{{order.goods.original_price}})</span></p>
                         <div class="old-price">当前价：￥{{order.goods.original_price-order.helpers_sum}}</div>
                         <div class="order-sn">单号：{{order.bargain_sn}}</div>
-                        <!-- <div><countdown :endtime='order.over_time' @timeEnd="timeEndHandel(order.bargain_sn)"></countdown></div> -->
-                        <div><countdown :endtime='order.over_time' @timeEnd="isTimeEnd=false"></countdown></div>
+                        <!-- <div><countdown :endtime='order.over_time' @timeEnd="isTimeEnd[order.id]=false"></countdown></div> -->
+                        <div><countdown :endtime='order.over_time' @timeEnd="timeEndHandel(index)"></countdown></div>
                         <div class="btns">
                             <div class="link" @click="showRecord(order.bargain_sn)">查看记录</div>
-                            <router-link class="link" v-if="isTimeEnd" :to="{name:'detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
+                            <router-link class="link" v-if="isTimeEnd[index] != false" :to="{name:'detail',query:{no:order.bargain_sn}}">继续砍价</router-link>
                             <div class="link over-link" v-else>当前砍价已结束</div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@ export default {
             isShowRecord:'',//显示详细砍价记录
             flag:true,
             timedown:0,
-            isTimeEnd:true
+            isTimeEnd:[]
         }
     },
     created() {
@@ -76,7 +76,7 @@ export default {
             .then(response=>{
                 let result = response.data
                 this.bargainOrdersData =result
-                window.console.log(result)
+                // window.console.log(result)
             })
             .catch(error=>{
                 let msg = error.response.data.msg
@@ -100,9 +100,10 @@ export default {
         },
 
         // 倒计时结束处理
-        timeEndHandel(no){
+        timeEndHandel(index){
             // alert('time end')
-            this.isTimeEnd = no
+            // this.isTimeEnd = no
+            this.$set(this.isTimeEnd, index, false)
         }
 
         
@@ -154,15 +155,14 @@ export default {
     justify-content: space-between;
 }
 .list li .goods-info .info .link{
-    width: 45%;
+    width: 46%;
     border-radius: 5px;
     background: rgb(236, 61, 61);
     color: #fff;
-    /* padding: 3px 7px; */
     height: 0.5rem;
     line-height: 0.5rem;
     text-align:center;
-    font-size: 0.24rem;
+    font-size: 0.23rem;
 }
 .list li .goods-info .info .over-link{
     background: #ccc;
