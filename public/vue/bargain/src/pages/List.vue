@@ -10,7 +10,11 @@
                         <img :src="myconf.api_host+item.img1_id" alt="">
                     </div>
                     <div class="info">
-                        <span>原价{{item.original_price}}元</span>
+                        <div class="prices">
+                            <p>原价：{{item.original_price}}元</p>
+                            <!-- <p>原价：<s>{{item.original_price}}元</s></p> -->
+                            <!-- <p>底价：{{item.activity_money}}元</p> -->
+                        </div>
                         <div class="btn" @click="startBargain(item.id)">发起砍价</div>
                     </div>
                 </li>
@@ -143,9 +147,20 @@ img{
     padding: 10px 0;
     border-right: 3px solid #fff;
 }
-.main .list li .info span{
+.main .list li .info .prices{
+    border: 2px solid #fff;
+    margin: 0 auto;
+    /* p2-5 */
+}
+.main .list li .info .prices p{
     font-size: 0.27rem;
+    font-weight: 600;
     color: #fff600;
+    padding: 3px 0;
+}
+.main .list li .info .prices p:last-child{
+    background: #fff;
+    color: #5919be;
 }
 .main .list li .info .btn{
     color: #ed1d79;
