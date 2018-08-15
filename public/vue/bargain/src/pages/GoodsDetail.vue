@@ -34,15 +34,7 @@
 <script>
 import axios from "axios";
 import wx from 'weixin-js-sdk'
-/* 微信分享
-https://www.imooc.com/article/44083
-https://segmentfault.com/a/1190000014455713
-https://www.cnblogs.com/juewuzhe/p/7234195.html
-配置信息需要后端返回
 
-iso分享问题
-https://github.com/vuejs/vue-router/issues/481
-*/
 export default {
     name: "GoodsDetail",
     data() {
@@ -193,8 +185,7 @@ export default {
             });
         },
 
-        // 点击分享
-        // https://bbs.heirui.cn/thread-16419-1-1.html UI设计参考
+       
         share(){
             // 显示指引弹出层
             this.guideShow=true
