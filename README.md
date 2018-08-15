@@ -48,13 +48,14 @@ Access-Token就是axios Headers里面的参数
 
 我的解决办法是采用history模式，但history模式在前后端分离的项目中打包上线后会出现404情况，需要nginx配合:
 我vue打包部署在二级目录
-
+```
 location /bargain {
     #root "E:/mygit/bcwx/public";   //你自己的根目录地址
 
     # 这里的 /bargain/ 也可以写成/bargain/index.html
     try_files $uri $uri/ /bargain/;    
 }
+```
 除了要改nginx配置外，还需要修改vue项目中路由相关代码，根目录不再是/ 而是配置的二级目录，路由地址前面都要加上这个目录，虽然在开发模式下不加也没啥问题，为了不在打包上线后一脸懵逼，最好是在开发阶段就加上,router-link和window.location下面的path也要手动改,还有router.beforeEach里面的也要改，
 
 总结来说使用history模式部署在二级目录有三个地方需要配置：
@@ -63,12 +64,14 @@ A.vue.config.js(cli3.0)
 baseUrl:'/xxx',
 ```
 B.nginx
+```
 location /bargain {
     #root "E:/mygit/bcwx/public";   //你自己的根目录地址
 
     # 这里的 /bargain/ 也可以写成/bargain/index.html
     try_files $uri $uri/ /bargain/;    
 }
+```
 其他服务端配置参考https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E5%90%8E%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BE%8B%E5%AD%90
 
 
