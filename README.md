@@ -129,10 +129,10 @@ d、在后台再对用于签名的 URL 进行一次解码。
 
 在 iOS 下会发现 vue 的路由跳转后，页面的 URL 没有跟着发生改变，通过右上角菜单把链接复制出来就能发现 url 还是最开始进入页面的 url,但是路由跳转后，页面的内容还是会变，这个问题导致了微信签名校验失败 invalid signature，参考上面`调用微信js-sdk分享接口的时候 签名校验失败invalid signature`
 
-参考链接：
-<https://www.jianshu.com/p/a1a31f9da272>
-<https://github.com/vuejs/vue-router/issues/481>
-<https://zhuanlan.zhihu.com/p/31887792>
+参考链接：<br>
+<https://www.jianshu.com/p/a1a31f9da272><br>
+<https://github.com/vuejs/vue-router/issues/481><br>
+<https://zhuanlan.zhihu.com/p/31887792><br>
 <https://www.jianshu.com/p/a1a31f9da272>
 
 #### iOS 下 Data.parse 和 new Date(time)兼容问题
