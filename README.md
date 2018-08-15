@@ -1,6 +1,6 @@
 # vue2+thinkPHP5.1前后端分离的微信砍价活动
 
-##需求：
+## 需求：
 - 微信公众号网页授权识别用户身份
 - 选择商品进行分享
 - 帮助砍价的用户可以帮助砍价（有活动时间限制，只能帮助同一个人砍价一次，砍价商品有最低价限制，砍多少有一个范围随机的）
@@ -10,20 +10,20 @@
 - 用户帮助砍完价之后，可以继续分享出去
 
 
-##大致流程：
+## 大致流程：
 微信用户点击进入入口链接授权-> 获取openid等用户信息->存入数据库->生成token>把token返回到客户端 -> 展示商品列表-> 选择一个商品进入详情页-> 详情页有一个分享按钮->分享到朋友圈或好友-> 别人进入分享的链接帮忙砍价（也可以自己选择一个商品参与分享砍价）
 
 
 
 
-##技术点：
+## 技术点：
 1. 采用前后端分离模式进行开发，前端采用vue2+vue-cli3,后端采用tp5.1,API采用restfull标准设计，公众号为认证的服务号
 2. 采用token机制来授权接口，用户第一次进入会颁发一个token(同时存入服务端缓存文件)给客户，然后存入客户端，客户每次请求都要带上这个token(放headers里)，服务端拿到token后，从缓存中通过token读取用户信息
 3. 为防止token被盗，所以后端缓存token的过期时间不能设置太长
 4. 分享链接只携带订单编号
 
 
-##采坑：
+## 采坑：
 #### redirect_uri无限跳转
 前端微信网页授权获取code的过程中使用了router.beforeEach()路由拦截机制，无论使用哪个url进入网站都会先触发router.beforeEach钩子，在router.beforeEach钩子中判断用户当前登录状态，判断window.localStorage.getItem("user_token")，没有就跳转到/login路由，有就进入/list路由。/login路由里面的redirect_uri回调地址最好设置成当前的/login路由地址，否则会出现路由死循环。同时判断/login路由有无code参数，有就取到code，提交给后台，后台拿到code返回token,url没有code参数就打开微信授权接口链接
 
@@ -113,12 +113,11 @@ d、在后台再对用于签名的URL进行一次解码。
 
 #### vue路由在iOS下URL不变的问题：
 在iOS下会发现vue的路由跳转后，页面的URL没有跟着发生改变，通过右上角菜单把链接复制出来就能发现url还是最开始进入页面的url,但是路由跳转后，页面的内容还是会变，这个问题导致了微信签名校验失败invalid signature，参考上面`调用微信js-sdk分享接口的时候 签名校验失败invalid signature`
-参考链接： <https://www.jianshu.com/p/a1a31f9da272>
 
+参考链接： 
+<https://www.jianshu.com/p/a1a31f9da272>
 <https://github.com/vuejs/vue-router/issues/481>
-
 <https://zhuanlan.zhihu.com/p/31887792>
-
 <https://www.jianshu.com/p/a1a31f9da272>
 
 
