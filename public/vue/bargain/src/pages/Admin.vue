@@ -107,7 +107,7 @@ export default {
                     border-radius: 100%;
                 p
                     margin: 0 12px;
-                    width: 380%;
+                    width: 40%;
                     text-align: left;
 
 

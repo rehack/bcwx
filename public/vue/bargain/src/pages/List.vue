@@ -11,9 +11,9 @@
                     </div>
                     <div class="info">
                         <div class="prices">
-                            <p>原价：{{item.original_price}}元</p>
-                            <!-- <p>原价：<s>{{item.original_price}}元</s></p> -->
-                            <!-- <p>底价：{{item.activity_money}}元</p> -->
+                            <!-- <p>原价：{{item.original_price}}元</p> -->
+                            <p>原价：<s>{{item.original_price}}元</s></p>
+                            <p>底价：？元</p>
                         </div>
                         <div class="btn" @click="startBargain(item.id)">发起砍价</div>
                     </div>
@@ -150,13 +150,12 @@ img{
 .main .list li .info .prices{
     border: 2px solid #fff;
     margin: 0 auto;
-    /* p2-5 */
 }
 .main .list li .info .prices p{
     font-size: 0.27rem;
     font-weight: 600;
     color: #fff600;
-    padding: 3px 0;
+    padding: 3px 2px;
 }
 .main .list li .info .prices p:last-child{
     background: #fff;
@@ -194,7 +193,7 @@ img{
 }
 .rules fieldset li{
     line-height: 0.4rem;
-    font-size: 0.22rem;
+    font-size: 0.23rem;
 }
 
 footer{
