@@ -141,10 +141,7 @@ iOS 下 Data.parse 和 new Date(time)不能正常的转换时间戳，因为传�
 所以解决方法是:前端用正则替换 time.replace(/-/g, '/'); 或者后端返回 2018/8/14 10:03:45 这种格式的时间
 
 ## 效果截图
-![](./effect-map/1.png =320x)
-
-![](./effect-map/2.png =320x)
-
-![](./effect-map/3.png =320x)
-
-![](./effect-map/4.png =320x)
+<img src="./effect-map/1.png" width=280/>
+<img src="./effect-map/2.png" width=280/>
+<img src="./effect-map/3.png" width=280/>
+<img src="./effect-map/4.png" width=280/>
