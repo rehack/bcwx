@@ -32,6 +32,10 @@
                 </ul>
             </fieldset>
         </div>
+        <footer>
+            <router-link :to="{name:'list'}">活动商品</router-link>
+            <router-link :to="{name:'mybargain'}">我的砍价</router-link>
+        </footer>
     </div>
 
 </template>
@@ -113,6 +117,7 @@ export default {
     max-width: 640px;
     margin: 0 auto;
     overflow: hidden;
+    padding-bottom: 0.8rem;
 }
 img{
     display: block;
@@ -196,25 +201,24 @@ img{
     font-size: 0.23rem;
 }
 
+
 footer{
     width: 100%;
     margin: 0 auto;
+    display: flex;
     position: fixed;
     bottom: 0;
-    background-color: #eee;
-    height: 0.6rem;
-}
-footer ul{
-    height: 100%;
-    display: flex;
-    border-top: 1px solid #666;
+    background: #eee;
     align-items: center;
-    align-content: center;
+    justify-content: space-around;
+    height: 0.8rem;
 }
-footer ul li{
-    flex:1;
-    text-align: center;
+footer a{
+    background: #d7b150;
+    color: #fff;
+    font-size: 0.26rem;
+    border-radius: 5px;
+    padding: 5px 10px;
 }
-      
 </style>
 

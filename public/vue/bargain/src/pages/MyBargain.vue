@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <!-- {{bargainOrdersData.bargain_orders}} -->
-        <ul class="list">
+        <ul class="list" v-if="bargainOrdersData.length>0">
             <li v-for="(order,index) in bargainOrdersData" v-bind:key="order.id" >
                 <div class="goods-info">
                     <div class="pic">
@@ -33,6 +33,7 @@
                 </transition>
             </li>
         </ul>
+        <div v-else>砍价单空空如也，您还没有发起过砍价！</div>
         <footer>
             <router-link to="/list">活动商品</router-link>
             <router-link to="/mybargain">我的砍价</router-link>
@@ -53,16 +54,13 @@ export default {
     data(){
         return{
             bargainOrdersData:{},
-            istimeover:null,
             isShowRecord:'',//显示详细砍价记录
             flag:true,
-            timedown:0,
             isTimeEnd:[]
         }
     },
     created() {
         this.getBargainOrders()
-        this.istimeover = Date.parse(new Date(this.bargainOrdersData.overtime)) - Date.parse(new Date())
     },
     methods:{
         getBargainOrders(){
@@ -76,7 +74,7 @@ export default {
             .then(response=>{
                 let result = response.data
                 this.bargainOrdersData =result
-                // window.console.log(result)
+                window.console.log(result)
             })
             .catch(error=>{
                 let msg = error.response.data.msg
