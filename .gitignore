@@ -5,3 +5,4 @@
 thinkphp
 .env
 runtime
+*/.DS_Store
