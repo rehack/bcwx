@@ -68,14 +68,14 @@ location /bargain {
 A.vue.config.js(cli3.0)
 
 ```javascript
-baseUrl:'/xxx',
+publicPath: '/xxx',
 ```
 
 B.nginx
 
 ```
 location /bargain {
-    #root "E:/mygit/bcwx/public";   //你自己的根目录地址
+    #root "E:/mygit/bcwx/public";   //如果tp5的根目录在public，这里要设置一下
 
     # 这里的 /bargain/ 也可以写成/bargain/index.html
     try_files $uri $uri/ /bargain/;
