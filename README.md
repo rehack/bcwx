@@ -142,3 +142,7 @@ iOS 下 Data.parse 和 new Date(time)不能正常的转换时间戳，因为传�
 
 ## 效果截图
 <img src="./effect-map/1.png" width=280/><img src="./effect-map/2.png" width=280/><img src="./effect-map/3.png" width=280/><img src="./effect-map/4.png" width=280/>
+
+## 项目使用说明
+前端vue项目文件在public/vue文件夹下
+线上测试地址http://wap.cdbcck.com/bargain/
