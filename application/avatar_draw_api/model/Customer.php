@@ -5,7 +5,7 @@ use think\Model;
 class Customer extends Model{
     protected $autoWriteTimestamp = true;
 
-    protected $hidden = ['id','openid'];
+    protected $hidden = ['openid'];
 
 
     public static function getUserByOpenId($openid){

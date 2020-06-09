@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="info">感谢您参与本次抽奖活动，随后将在大屏进行抽奖和公布抽奖结果，您也可以点击下面按钮查询本次抽奖结果！</div>
-    <div class="btn">查询中奖名单</div>
+    <div class="btn">查询是否中奖</div>
     <div>
         <!-- 抱歉您未中奖 -->
     </div>
