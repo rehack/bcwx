@@ -3,9 +3,9 @@
         <div class="logo"><img src="../assets/images/logo.png"></div>
         <div v-if="show">
             <div class="customer">
-                <span v-for="item in customer" :key="item.headimgurl"><img :src="item.headimgurl"></span>
+                <span v-for="item in customer" :key="item.id"><img :src="item.headimgurl"></span>
             </div>
-            <div class="lun-tit">第{{this.lun+1}}轮：{{this.luckyItem[this.lun].name}}</div>
+            <div v-if="lun>=0" class="lun-tit">第{{luckyItem[lun].lun}}轮：{{luckyItem[lun].name}}</div>
             <p v-if="winPrize.length>0" style="font-size:32px;color:#fff;">恭喜以下中奖人员</p>
             <div class="winner" ref="winwrap">
                 <span v-for="item in winPrize[lun]" :key="item.headimgurl">
@@ -17,7 +17,7 @@
         <div v-else class="result">
             <p>恭喜本次活动所有中奖者</p>
             <div v-for="(item,index) in winPrize" :key="index">
-                <span>第{{index+1}}轮：{{luckyItem[index].name}}<i v-for="(c,i) in item" :key="i"><img :src="c.headimgurl" alt=""></i></span>
+                <span>第{{index+1}}轮：{{luckyItem[index].name}}<i v-for="(c,i) in item" :key="i"><img :src="c.headimgurl"></i></span>
             </div>
         </div>
     </div>
@@ -30,24 +30,8 @@ export default {
     data() {
         return {
             customer: [],
-            luckyItem:[
-                {
-                    lun: 1,
-                    name:'美白880元',
-                    num: 10
-                },
-                {
-                    lun: 2,
-                    name:'美白980元',
-                    num: 6
-                },
-                {
-                    lun: 3,
-                    name:'美白1080元',
-                    num: 3
-                }
-            ],
-            lun: 0,//轮次序号
+            luckyItem:[],
+            lun: -1,//轮次序号
             // 中奖结果
             winPrize: [],
             timer:null,
@@ -55,12 +39,15 @@ export default {
         }
     },
     mounted(){
+        console.log(process.env.BASE_URL)
+        this.getLuckyItem()
         this.getCustomer()
     },
     created() {
         let _this = this;
         document.onkeydown = function(e) {
-            let key = window.event.keyCode;
+            let oEvent = e || window.event
+            let key = oEvent.keyCode
             switch (key) {
                 case 39: //右箭头
                     if(_this.lun+1 == _this.luckyItem.length){
@@ -76,10 +63,13 @@ export default {
                         _this.lun -= 1
                     }
                     break;
-                case 38:
-                    _this.show = false
+                case 38: //上箭头
+                   _this.showResult() //显示全部抽奖结果
                 case 32: //空格
                     _this.beginDraw()
+                    break;
+                case 90 | oEvent.ctrlKey: //ctrl+z初始化数据
+                    _this.initData()
                     break;
                 default:
                     break;
@@ -87,13 +77,26 @@ export default {
         };
     },
     methods: {
+        // 获取抽奖项目
+        getLuckyItem(){
+            axios({
+                url:  process.env.VUE_APP_SERVER_URL+'/avatardraw/luckyitem',
+                method:'get',
+            }).then(res=>{
+                this.luckyItem = res.data
+            })
+        },
+        // 获取参与抽奖的人员
         getCustomer(){
-            let url = 'http://bcwx.com/avatardraw/customer'
-           
+            let url =  process.env.VUE_APP_SERVER_URL+'/avatardraw/customer'
             axios.get(url)
             .then(resopnse=>{
                 // console.log(resopnse.data)
                 this.customer = resopnse.data
+                // 递归轮询 10秒
+                setTimeout(() => {
+                    this.getCustomer()
+                }, 15000);
             })
         },
         // 开始抽奖
@@ -117,14 +120,16 @@ export default {
                 if(this.winPrize[this.lun].length==num){
                     clearInterval(this.timer);
                 }
-                if(this.winPrize[this.lun].length==num){
-                    this.updateLuckyList()
+                if(this.winPrize[this.lun].length==num){//本轮抽完后提交到数据库和本地存储
+                    let commitData = {
+                        lucky_item_name : this.luckyItem[this.lun].name,//中奖项目名称
+                        win_prize : this.winPrize[this.lun]
+                    }
+                    this.updateLuckyList(commitData)
+                    window.localStorage.setItem(this.lun,JSON.stringify(this.winPrize[this.lun]))
                 }
                 
             }, 1000)
-            if(this.winPrize[this.lun].length==num){
-                this.updateLuckyList()
-            }
             // console.log(this.winPrize)
 
         
@@ -137,19 +142,35 @@ export default {
             return Math.random() * arr.length | 0
         },
         //更新数据库中奖者
-        updateLuckyList(){
-            let url = 'http://bcwx.com/avatardraw/updatelucky'
+        updateLuckyList(data){
+            let url =  process.env.VUE_APP_SERVER_URL+'/avatardraw/updatelucky'
             axios({
                 method: 'post',
-                url: 'http://bcwx.com/avatardraw/updatelucky',
+                url:  process.env.VUE_APP_SERVER_URL+'/avatardraw/updatelucky',
                 data: {
-                    lucky: this.winPrize[this.lun]
+                    lucky: data
                 }
             }).then(res=>{
                 console.log(res)
             })
+        },
+        // 显示全部抽奖结果
+        showResult(){
+            this.show = false
+            if(this.winPrize.length == 0) {
+                for(let i=0;i<this.luckyItem.length;i++){
+                    this.winPrize[i] = JSON.parse(window.localStorage.getItem(i))
+                }
+            }
+        },
+        // 初始化数据
+        initData(){
+            window.localStorage.clear()
+            axios({
+                method:'post',
+                url: process.env.VUE_APP_SERVER_URL+'/avatardraw/init'
+            })
         }
-        // 结束抽奖
     }
 }
 </script>

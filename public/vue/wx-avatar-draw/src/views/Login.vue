@@ -38,7 +38,7 @@ export default {
         // 微信网页授权，获取code
         login(){
             // let appid = this.myconf.appid;
-            let appid = 'wx5bc046f53b031061'
+            let appid = process.env.VUE_APP_WX_APPID
             /* let protocol = window.location.protocol
             let host = window.location.host */
             // window.console.log(this.$route)
@@ -70,7 +70,7 @@ export default {
         getToken(code,from,no){
 
             // let url = this.myconf.api_host+'/bargian_api/gettoken'
-            let url = 'http://bcwx.com/wx_api/gettoken'
+            let url = process.env.VUE_APP_SERVER_URL+'/wx_api/gettoken'
            
             axios.get(url,{params: { code: code }})
                 .then(resopnse=>{
