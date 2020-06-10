@@ -27,7 +27,7 @@ class Customer extends BaseController{
 
     // 初始化数据，所有变成未中奖状态
     public function initData(){
-        CustomerModel::where('isprize',1)->update(['isprize' => 0]);
+        CustomerModel::where('1=1')->update(['isprize' => 0,'prize_item'=>NULL]);
     }
 
     // 查询自己是否中奖

@@ -163,7 +163,7 @@ export default {
                 }
             }
         },
-        // 初始化数据
+        // 初始化数据,此操作有风险，需谨慎操作，抽奖开始后不能进行此操作
         initData(){
             window.localStorage.clear()
             axios({

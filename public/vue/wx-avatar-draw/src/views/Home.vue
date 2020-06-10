@@ -41,8 +41,9 @@ export default {
                     this.query()
                 }, 5000);
             }).catch(err=>{
-                console.log(err)
-                alert(err)
+                // console.log(err)
+                // alert(err)
+                window.localStorage.clear()
             })
         }
     }
