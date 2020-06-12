@@ -93,8 +93,9 @@ export default {
         },
         // 获取本轮参与抽奖的人员
         getCustomer(){
+            this.customer = []
             let url =  process.env.VUE_APP_SERVER_URL+'/avatardraw/customer'
-            let lun = this.lun+1
+            // let lun = this.lun+1
             axios({
                 url:url,
                 method:'get',
