@@ -10,9 +10,18 @@ class Customer extends BaseController{
     public function getLuckyItem(){
         return LuckyItemModel::order('lun')->select();
     }
-    // 所有参与抽奖人员
+
+    // 设置抽奖轮次
+    public function setLun(){
+        $lun = input('post.lun');
+        $uid = UserToken::getCurrentVarByToken('uid');
+        CustomerModel::where('id', $uid)
+        ->update(['lun' => $lun]);
+    }
+    // 所有本轮参与抽奖人员
     public function getAllCustomer(){
-        $res = CustomerModel::where('isprize',0)->select();
+        $lun = input('get.lun');
+        $res = CustomerModel::where('isprize',0)->where('lun',$lun)->select();
         return $res;
     }
 
@@ -38,4 +47,5 @@ class Customer extends BaseController{
         return json($c);
         
     }
+
 }

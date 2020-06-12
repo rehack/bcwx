@@ -1,14 +1,14 @@
 <template>
     <div class="home">
         <div class="user">
-            <img :src="user.headimgurl" alt="">
-            <p>{{user.nickname}}</p>
+            <!-- <img :src="user.headimgurl" alt=""> -->
+            <!-- <p>{{user.nickname}}</p> -->
         </div>
-        <div class="info">感谢您参与本次贝臣口腔发布的抽奖活动，随后将在大屏进行抽奖和公布抽奖结果，您也可以实时关注下方抽奖状态！</div>
+        <div class="info">感谢您参与本次贝臣口腔发布的抽奖活动，随后将在大屏进行抽奖和公布抽奖结果!</div>
         <!-- <div class="btn" @click="query">查询是否中奖</div> -->
         <div class="status">
-            <span v-if="user && user.isprize == 1">中奖状态：恭喜您中奖({{user.prize_item}})</span>
-            <span v-else>中奖状态：未中奖</span>
+            <!-- <span v-if="user && user.isprize == 1">中奖状态：恭喜您中奖({{user.prize_item}})</span> -->
+            <!-- <span v-else>中奖状态：未中奖</span> -->
         </div>
     </div>
 </template>
@@ -24,9 +24,31 @@ export default {
         }
     },
     mounted(){
+        this.join()//参与抽奖，设置他的抽奖轮次
         this.query()
     },
     methods: {
+        join(){
+            let lun = window.localStorage.getItem('lun')
+            axios({
+                url: process.env.VUE_APP_SERVER_URL+'/avatardraw/setlun',
+                method:'post',
+                headers:{
+                    Authorization: window.localStorage.getItem('user_token')
+                },
+                data:{
+                    lun
+                }
+            }).then(res=>{
+                console.log(res.data)
+                this.user = res.data
+                window.localStorage.removeItem('user_token')
+            }).catch(err=>{
+                // console.log(err)
+                // alert(err)
+                window.localStorage.removeItem('user_token')
+            })
+        },
         query() {
             axios({
                 url: process.env.VUE_APP_SERVER_URL+'/avatardraw/isprize',
@@ -37,13 +59,13 @@ export default {
             }).then(res=>{
                 console.log(res.data)
                 this.user = res.data
-                setTimeout(() => {
-                    this.query()
-                }, 5000);
+                // setTimeout(() => {
+                //     this.query()
+                // }, 5000);
             }).catch(err=>{
                 // console.log(err)
                 // alert(err)
-                window.localStorage.clear()
+                window.localStorage.removeItem('user_token')
             })
         }
     }

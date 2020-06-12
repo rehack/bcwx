@@ -37,6 +37,7 @@ export default {
         },
         // 微信网页授权，获取code
         login(){
+            // window.localStorage.removeItem('user_token')
             // let appid = this.myconf.appid;
             let appid = process.env.VUE_APP_WX_APPID
             /* let protocol = window.location.protocol
@@ -55,11 +56,11 @@ export default {
             // let code = this.getUrlParam('code');
             let code = this.$route.query.code
             let from = this.$route.query.flag//判断是否来自分享页
-            let no = this.$route.query.no
+            let lun = this.$route.query.lun //参与的是那一轮抽奖，来源于不同的二维码
             // http://192.168.1.253:8080/login?flag=share&no=FI8V2018080710154975
             if(code){
                 // alert('code:'+code)
-                this.getToken(code,from,no)
+                this.getToken(code,from,lun)
             }else{
                 // alert('nocode')
                 window.location.href=url;
@@ -67,20 +68,32 @@ export default {
         },
 
         // 通过code换取token
-        getToken(code,from,no){
+        getToken(code,from,lun){
 
             // let url = this.myconf.api_host+'/bargian_api/gettoken'
             let url = process.env.VUE_APP_SERVER_URL+'/wx_api/gettoken'
-           
+            console.log(lun)
+            // window.localStorage.removeItem('lun')
+            // window.localStorage.setItem('lun',lun)
             axios.get(url,{params: { code: code }})
                 .then(resopnse=>{
                     // window.console.log(resopnse)
                     let token = resopnse.data.token
                     if(token){
                         window.localStorage.setItem('user_token',token)
+                        // if(!window.localStorage.getItem('lun') || window.localStorage.getItem('lun') != lun){
+                        //     window.localStorage.setItem('lun',lun) //参与的轮次
+                        // }else{
+                        //     window.localStorage.removeItem('lun')
+                        //     window.localStorage.setItem('lun',lun) //参与的轮次
+                        // }
+                        window.localStorage.removeItem('lun')
+                        window.localStorage.setItem('lun',lun) //参与的轮次
+                        // console.log(window.localStorage.getItem('user_token'))
                         // 获取到token后跳转到对应页面
                         this.$router.push({name:'Home'})
                     }else{
+                        // console.log('no token')
                         this.message = resopnse.data
                     }
                     
@@ -88,7 +101,7 @@ export default {
                 .catch(()=>{
                     // code不合法等错误（点击返回按钮也会出现）
                     // this.message = error.response.data
-                    this.$router.push({name:'Home'})
+                    // this.$router.push({name:'Home'})
                     // console.log(error)
                 })
 

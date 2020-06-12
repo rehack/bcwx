@@ -5,7 +5,7 @@
             <div class="customer">
                 <span v-for="item in customer" :key="item.id"><img :src="item.headimgurl"></span>
             </div>
-            <div v-if="lun>=0" class="lun-tit">第{{luckyItem[lun].lun}}轮：{{luckyItem[lun].name}}</div>
+            <div v-if="lun>=0 && luckyItem.length>0" class="lun-tit">第{{luckyItem[lun].lun}}轮：{{luckyItem[lun].name}}</div>
             <p v-if="winPrize.length>0" style="font-size:32px;color:#fff;">恭喜以下中奖人员</p>
             <div class="winner" ref="winwrap">
                 <span v-for="item in winPrize[lun]" :key="item.headimgurl">
@@ -20,6 +20,8 @@
                 <span>第{{index+1}}轮：{{luckyItem[index].name}}<i v-for="(c,i) in item" :key="i"><img :src="c.headimgurl"></i></span>
             </div>
         </div>
+        <audio ref="runMusic" id="play-music" @play="playMusic" @pause="pauseMusic" src="../assets/music/run.mp3" loop></audio>
+        <!-- <audio id="stop-music" src="../assets/music/stop.mp3"></audio> -->
     </div>
 </template>
 
@@ -31,15 +33,16 @@ export default {
         return {
             customer: [],
             luckyItem:[],
-            lun: -1,//轮次序号
+            lun: 0,//轮次序号
             // 中奖结果
             winPrize: [],
             timer:null,
-            show:true
+            show:true,
+            audio:null
         }
     },
     mounted(){
-        console.log(process.env.BASE_URL)
+        // console.log(process.env.BASE_URL)
         this.getLuckyItem()
         this.getCustomer()
     },
@@ -55,6 +58,7 @@ export default {
                     }else{
                         _this.lun += 1
                     }
+                    _this.getCustomer()
                     break;
                 case 37: //左箭头
                     if(_this.lun == 0){
@@ -62,6 +66,7 @@ export default {
                     }else{
                         _this.lun -= 1
                     }
+                    _this.getCustomer()
                     break;
                 case 38: //上箭头
                    _this.showResult() //显示全部抽奖结果
@@ -86,18 +91,32 @@ export default {
                 this.luckyItem = res.data
             })
         },
-        // 获取参与抽奖的人员
+        // 获取本轮参与抽奖的人员
         getCustomer(){
             let url =  process.env.VUE_APP_SERVER_URL+'/avatardraw/customer'
-            axios.get(url)
-            .then(resopnse=>{
-                // console.log(resopnse.data)
+            let lun = this.lun+1
+            axios({
+                url:url,
+                method:'get',
+                params:{
+                    lun: this.lun+1
+                }
+            }).then(resopnse=>{
                 this.customer = resopnse.data
                 // 递归轮询 10秒
                 setTimeout(() => {
                     this.getCustomer()
                 }, 15000);
             })
+            // axios.get(url)
+            // .then(resopnse=>{
+            //     // console.log(resopnse.data)
+            //     this.customer = resopnse.data
+            //     // 递归轮询 10秒
+            //     setTimeout(() => {
+            //         this.getCustomer()
+            //     }, 15000);
+            // })
         },
         // 开始抽奖
         beginDraw(){
@@ -112,6 +131,7 @@ export default {
             this.winPrize[this.lun] = []
 
             clearInterval(this.timer)
+            this.playMusic()
             this.timer = setInterval(()=> {
                 let curLucky = this.customer[this.randomIndex(this.customer)]
                 // console.log(curLucky)
@@ -127,6 +147,7 @@ export default {
                     }
                     this.updateLuckyList(commitData)
                     window.localStorage.setItem(this.lun,JSON.stringify(this.winPrize[this.lun]))
+                    this.pauseMusic()
                 }
                 
             }, 1000)
@@ -137,8 +158,6 @@ export default {
         },
         // 从数组随机抽取一个元素函数
         randomIndex(arr){
-            // console.log(Math.random() * arr.length | 0)
-            // return arr[Math.random() * arr.length | 0];
             return Math.random() * arr.length | 0
         },
         //更新数据库中奖者
@@ -170,6 +189,13 @@ export default {
                 method:'post',
                 url: process.env.VUE_APP_SERVER_URL+'/avatardraw/init'
             })
+        },
+        playMusic(){
+            this.$refs['runMusic'].play()
+            
+        },
+        pauseMusic(){
+            this.$refs['runMusic'].pause()
         }
     }
 }
@@ -180,7 +206,7 @@ export default {
     height: 100vh;
     background: url(~@/assets/images/bg.jpg) no-repeat 0 0;
     .logo{
-        padding: 50px 0;
+        padding: 30px 0;
     }
     .customer{
         text-align: left;
@@ -188,8 +214,8 @@ export default {
             margin: 10px;
         }
         img{
-            width: 75px;
-            height: 75px;
+            width: 60px;
+            height: 60px;
             border-radius: 100%;
         }
         
@@ -205,7 +231,7 @@ export default {
         justify-content: center;
         flex-wrap: wrap;
         text-align: center;
-        font-size: 38px;
+        font-size: 34px;
         color: #fff;
         span{
             // border: 1px solid #fff;
@@ -217,8 +243,8 @@ export default {
             }
         }
         img{
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             border-radius: 100%;
         }
     }

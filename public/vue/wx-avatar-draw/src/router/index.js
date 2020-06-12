@@ -20,7 +20,7 @@ Vue.use(VueRouter)
     name: 'Login',
     component: Login,
     meta: {
-        title: '...'
+        title: '贝臣口腔'
     }
   },
   {

@@ -5,9 +5,9 @@
 # https://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 8.0.17)
+# Host: 127.0.0.1 (MySQL 8.0.20)
 # Database: bcwx
-# Generation Time: 2020-06-09 16:04:39 +0000
+# Generation Time: 2020-06-12 13:39:12 +0000
 # ************************************************************
 
 
@@ -27,77 +27,77 @@ SET NAMES utf8mb4;
 DROP TABLE IF EXISTS `avatardraw_customer`;
 
 CREATE TABLE `avatardraw_customer` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `openid` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nickname` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '微信号昵称',
-  `sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '性别1男',
-  `city` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '市级',
-  `province` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '省级',
-  `country` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '国家',
-  `headimgurl` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '头像地址',
-  `isprize` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否中奖(0未中)',
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `openid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nickname` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '微信号昵称',
+  `sex` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '性别1男',
+  `city` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '市级',
+  `province` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '省级',
+  `country` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '国家',
+  `headimgurl` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '头像地址',
+  `isprize` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '是否中奖(0未中)',
+  `lun` tinyint unsigned DEFAULT NULL COMMENT '参与的是那一轮抽奖，来源于不同的二维码',
   `prize_item` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '中奖项目',
-  `create_time` int(11) NOT NULL DEFAULT '0',
-  `update_time` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQUE` (`openid`)
+  `create_time` int NOT NULL DEFAULT '0',
+  `update_time` int NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `avatardraw_customer` WRITE;
 /*!40000 ALTER TABLE `avatardraw_customer` DISABLE KEYS */;
 
-INSERT INTO `avatardraw_customer` (`id`, `openid`, `nickname`, `sex`, `city`, `province`, `country`, `headimgurl`, `isprize`, `prize_item`, `create_time`, `update_time`)
+INSERT INTO `avatardraw_customer` (`id`, `openid`, `nickname`, `sex`, `city`, `province`, `country`, `headimgurl`, `isprize`, `lun`, `prize_item`, `create_time`, `update_time`)
 VALUES
-	(1,'oGzBL6fOqo6bAofN1bejgIKrU2ng','Rehack',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIOeF6uZ6fu13zGcPEJEpl7I0EicNPwAjR3QdZqEaZgDH4Q3g6Ubvb9A2p12kwjqtC9OG2ZITkUZjQ/132',0,'美白980元',1591632138,1591632138),
-	(217,'odSvU1OkMaXOB1AqM61cQVlzNOqA','你炷哥',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/iaTB6vDMeSvp5Z4wuvodAdI8Yj4hMI60ia6bSCKgw2d7EBJfoxwUd0wxhBx6USl7vta5U2Ao7bU4GTpQDUWDvrqw/132',0,'美白880元',1533965997,1533965997),
-	(218,'odSvU1JxXWpxPMmbMhm3VNrf0XzY','韩大姑娘',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/7gHWDI8TEn33v2ibHQgwrzHhoqFwQ4In90zC7qsibibWEKGSxagCAM4RiaDeE3Vkf7Tynj9cNTyqbx42U9rCO7Toyg/132',0,NULL,1533966023,1533966023),
-	(219,'odSvU1I4VlHP0LUkVSMLKr7T0C1A','seven',2,'','','摩洛哥','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er3gltia4Mto7sNCUibJSCvAFcpHZibQDicALicTNuewNic4T61iaFomuZSAs7icE6DC4GX3ia3RszZlnJSagQ/132',0,'美白880元',1533966097,1533966097),
-	(220,'odSvU1ATzw7bCymG7K3jg8-dNX84','赵伊萌',2,'唐山','河北','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/rBWxKCd5zkONaMGmCTk4icyYPcWCZhOTlkPdEBYIPFibHTA27eXwjkDpdzbTCibPlmV3DXsI4Huibwr30wAAaQvOicg/132',0,'美白1080元',1533966109,1533966109),
-	(221,'odSvU1FSxqfDs6dn-6thBa8B7_NQ','GGbong',1,'达州','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/dGGx1XP9f5NnBYs2fhUxbVL98xibvT0t52EzceicE1ZlF92HA2WrARyN4p8rMUzWib0Egib1C5icQtT24ibrotiasqozg/132',0,'美白980元',1533966193,1533966193),
-	(222,'odSvU1DbQmwQ5I_AYh-RI0Emb980','杏仁',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/gMLtpsVMemYzl9aVyrgACXnYq7VnM7qeKeJvjIMWKR4icsfU6dib3fDcSccAriacILx3h81XjgOVazibg2esLPM5xw/132',0,'美白880元',1533966210,1533966210),
-	(223,'odSvU1OMLizbvkFaZF2kG-fgVNos','哈哈哈',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/bAmSv5ypia0Y7GiaSRlx8j0A1dmS4arloDfpxwyd5DTa1wvnTuEF7xZYLTU3wouAdia2OZEQuZRIuedeMxNIPecQA/132',0,'美白880元',1533966283,1533966283),
-	(224,'odSvU1OXoQvOdvOaIbUTnYmG4ERo','琪琪格ma',2,'','克莱尔','爱尔兰','http://thirdwx.qlogo.cn/mmopen/vi_32/C0gibpeJwLDB4J1ibRQvObk5XX48kkHbSRg2rj3KPE5w2icIyzP1K6MAdGSnVibNZGWZ6f2b7V4lZHUqTs2J1MxZHA/132',0,'美白880元',1533966338,1533966338),
-	(225,'odSvU1LvlHApeQVg7cHI7RjgqG-8','Cantabile',2,'广安','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/33AAspqrCQxlUB5T1stKgW8o2qLgia7ZnXtAnKTrLC6TQBJ0Gt54RjRnW3EbWJ9KOlnSFPqkbtgwYomNYFMfcYg/132',0,'美白880元',1533966340,1533966340),
-	(226,'odSvU1HRUf2Zn2Pio-r52InR9ejc','鹊桥仙',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/5icsJibet91SjjHlcpMWibKQtdhibCEdJtdXKWViah528GQqfgcGmqUUKuQsYetS3pMSHEV0rfSalbYu5M1OpxZcQsw/132',0,'美白880元',1533966379,1533966379),
-	(227,'odSvU1NwEGkZqjihuKF-3TjmneYc','王薏茹',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/SGzNYWbXePEaaQe5EbHUueIt1uicvspMQ0UvBVM3oyAgEP1BMpqRLmpCia0cI1rNQhnOAFBEtNfpoRbc7bVRBRGg/132',0,'美白880元',1533966427,1533966427),
-	(228,'odSvU1EzHcPzr-pgw4wSLDnqbaww','胡光荣',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/uXa0GrFk7OM70PkWysIwJWngdMOvsQnmc2xhfnD5DsQ6I4At3nMLX5N0buM09yicx8CNrYQG310lfErc0ghQibxg/132',0,'美白880元',1533966449,1533966449),
-	(229,'odSvU1Hr2n_pCKxUFxXA0BkxKfOs','请秒回谢谢',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLAwpKtfRxsWEgR3NiacCu5nHrXL6EFFHtJop7rp8oaj7HzsUomK0iaGF7j3FoviabMG0NtIUlxhAWDw/132',0,'美白980元',1533966611,1533966611),
-	(230,'odSvU1Dd6hxaB0ofrnaaoryfHG-c','二丁目',2,'遂宁','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/TD1EjukhSIqTBoucVF2lTRl3WW3pz9JwicICQZibn58rPwibicQ8fdc6fht6x1I5TvsjrewDDjibpZbrgB8ePT84naw/132',0,'美白880元',1533966619,1533966619),
-	(231,'odSvU1GhL3KE5PLoOFUN8ny5974c','池鱼',2,'兰州市','甘肃','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eowjunkLicCxLibpsMwawE52kg8C7kMzEqBgwvjJauCoibFS0CuOTJ4QicyrxGUBHO3icYS3SOtfE5Rnrg/132',0,'美白880元',1533966721,1533966721),
-	(232,'odSvU1FAWx7qOxEKGD3Budc5ddKo','小野丽莎',2,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLouQYlvh96dfKPbpbicN4aicQiaY6Qenel4UgJ0WP676UADBTLuliav7N3YBO1GRbxCMEhiaTdF9g9IDA/132',0,'美白880元',1533966750,1533966750),
-	(233,'odSvU1JS-aJumwHq8Edwzu6-M26U','enchanted',2,'','','希腊','http://thirdwx.qlogo.cn/mmopen/vi_32/ba9OlIzaefNIJhgibbjJrrjXmTyWq5r123JsBLFOpoHAzcLsvLX6bNt7VrbeiaWYKHQMD5EhUlLoLAemMzKQnXUQ/132',0,'美白880元',1533966856,1533966856),
-	(234,'odSvU1DQBayOpQy7aMr_gr1ZAxFU','18',2,'','','RS','http://thirdwx.qlogo.cn/mmopen/vi_32/7dYZGFppYoyChbcWFy0KFtPqvHbHzS7gFaVCwgWX45eNjia8BlUIGPsZ9ulg06M6J00uLzlDBTDV3915l9j0LFw/132',0,NULL,1533966943,1533966943),
-	(235,'odSvU1IhyGyBuPZaISnk7ZsoHQEk','川',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/KnZce8Od0Cicnmnms6NgpBS8EpqwObMic01nNbWQjvlnG65LGxb0X4paPVNmZ7wRVlRrrcVA4nU6GYB0op6rr74A/132',0,NULL,1533966952,1533966952),
-	(236,'odSvU1J4YFQQtKIkDv1E-uTcPoYM','鹿十八吖',1,'','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqzX3IicttnFj3vX1Uc1aGQr4TjqZUUkuibGDWkaEstuvDnPE8LpjaBEmXdR2t6wZQ8VE4e2VpU3fVQ/132',0,'美白880元',1533967274,1533967274),
-	(237,'odSvU1KFKb1tFFCZ8GNJy86gpd-M','郑',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJxruabicOupGHYGQb1MCZcl8KPDKgLGGYKeL6OM3rEOibJr5vtHVbAO9Wf3WsoGZxNhgTub8bBkkPQ/132',0,'美白980元',1533967317,1533967317),
-	(238,'odSvU1Gi-soN6newaIRTItfFAEJw','萧定',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/1iaB0D6ZEwxAMsibpAo2ktp2UQibVHwGAp4k39a1Ev4ibI6iafObFpicu1ibHibs7AszYPVqKXGShmKW15G26NyWguMgLw/132',0,'美白880元',1533967457,1533967457),
-	(240,'odSvU1IFBkQjJijdRd1cNaxozMhM','永不沉静!',1,'遂宁','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/UIG6ibh0IfaCyYbcLKBVjIk8ibia9QyIrVM6FHnCrBFFxlnxDUMaXibuyopSeqEmcNLAKDgXnXg3ia8Yk9oS0O4FYUg/132',0,'美白980元',1533967926,1533967926),
-	(241,'odSvU1HaOyJenEcRutR2dsea5QNc','.',2,'宜宾','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/ECWOhkaPEe0jnuFpiaGdCRSkK94GEJv5rW2zqCudMicDjrzVjkx9YbVj0KukpXxWKvO46qlpgCVt5Y0wGNyAhwcw/132',0,'美白980元',1533967986,1533967986),
-	(242,'odSvU1DkeomqHKoslouMSH6kQXes','小十八！',2,'','','阿尔巴尼亚','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLkb1NqZ7EITmKlQ2KE9UBAnVmacYibNayOkxvibS8PhH1KwGoUic2NBB5aFScfjqNU1hcXyeaemticpQ/132',0,'美白980元',1533968101,1533968101),
-	(243,'odSvU1EMnElMeHtmBoPWXeA4DzdY','Victoria',2,'阿坝','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/YBWr6vCc8vTtkZDgoDq71vd4hduFfqtMHTotDhCzcibuh2CbogfawibzKyATYia7e2442SESXyMUZRlGSh6RCic2lg/132',0,'美白880元',1533968108,1533968108),
-	(244,'odSvU1FLrdrNI_VN-HLca-nvLbGs','幸福污糟猫',1,'广州','广东','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/XqlDI7Rt2cu4kLjiaOd5JKeEoEGAiaFL9Env0ibdBjQ0wHV7b3dU2S2RPwibiabGZATJf9sZHfG2zlpXTqH2iccVxkibQ/132',0,'美白980元',1533968119,1533968119),
-	(245,'odSvU1ExRTtErnTFyf61dSlv-t3Q','玥',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJD9Lx934berFXDdT91yqNdXSH6UwV8oZV9vKwicVd1YSyEPsbfao0aX3wXPALseAYdia2KHt9na0jQ/132',0,'美白980元',1533968173,1533968173),
-	(246,'odSvU1G5GlF7GWxfn60IFEva3cmU','major',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/BtRVDBicKzhaQeQh7t35ETNCIN4sYGpxXbJVsyx5uprWNs38h9PhaKbHygUsqyzPngsGrcz8cLm3zsxMXSYSEYg/132',0,'美白880元',1533968322,1533968322),
-	(247,'odSvU1GZ5H-rGDsCWjPDVxrtel8Y','629',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoJ7px4seGZ310bEYZuVA5twIib8LDeibRywdFIuic8Z2Flp7UHicvlXRtULlY147zx1G5atXyDNT1GXQ/132',0,'美白980元',1533968325,1533968325),
-	(248,'odSvU1I3i6SzeoZoYTqWOvzERQFM','谁伴我闯荡',1,'泸州','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/icAUbUcCD44lyVP3cadB2yvrUWMqic8KT4SBzGxrgCNFAJNTsMkVUQzeiadoTDeHBOy1YlIuYZzecFiaYbcZ3Vv90Q/132',0,'美白880元',1533968348,1533968348),
-	(249,'odSvU1KBQ2TiHLMxG0zdHS2anRYA','伶',2,'广安','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/tOABRRNFOngmsYGS3VYuaMbEaibXLV9eyqY6Te1NwdrsyLZsmcLWiafwGuNblxKqJAAyGrFNBa3oXicQTGNaKC5JQ/132',0,'美白880元',1533968460,1533968460),
-	(250,'odSvU1G48Rn-BJMyQg2QGTLzgXJQ','塔',2,'','','阿尔巴尼亚','http://thirdwx.qlogo.cn/mmopen/vi_32/5DLfKbm02KwbakauGxSCRdx8ibswlmwybs5Z6KVy8asC9EJuQEFjZGdN3KpULuXUSNg0y68meibsRBIJdxBjAw3g/132',0,NULL,1533968529,1533968529),
-	(251,'odSvU1AkSkhab4s_aazNTFD3am3s','L',1,'拉萨','西藏','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/RNJfsfhsEic2Up6odFGwbV3MOo9jicpwL2VSpw81UicQ3Dra8PBey86MIRtzfVKiaFIAjsgS3XMpuGF1fLbW5s7ddw/132',0,'美白880元',1533968716,1533968716),
-	(252,'odSvU1K9jdT4P6316XPCSSUYn0bI','Duang！',2,'','','安道尔','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI2fKnvjE9qL5ps6LYOL2kiaU7o4KGtibxo5oulEn9LBiap5icwBt6WHosSO3LTOJOmYBbCkACwhzo7Iw/132',0,'美白980元',1533968827,1533968827),
-	(253,'odSvU1F1O_wQNMOxpFaNmOPgljJc','吗啡不痛',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/1VLWDibHEJOkMRnQSLicqMiatf0gqvibQic00tud4tSvF5eEehOBwywiblgqRhCiaiaIeSBbcWEcWBfTXRkdU2DuygP4iaA/132',0,'美白980元',1533968997,1533968997),
-	(254,'odSvU1P2VLRTM7_tYtH3qE8XkVTQ','A',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/XGKxls3v8iamZmcjEegdQsMW0DviaFg6ny5NfvojRVsGBoqEbcW0bEfmXJFbRlg4bNIOiaStLzulOTKPYlLl3EsgA/132',0,'美白980元',1533969043,1533969043),
-	(255,'odSvU1DKNl1zaf_3BGkWMC1rXdTE','罗蔺',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI0mVIO7OT1HZRsqsEPXmRr1icDCxrknCYfLibUoIn9T7cicG9ibiaa2Cw92GHOThOWaJu6L6ias1Zeb0Rg/132',0,'美白880元',1533969049,1533969049),
-	(256,'odSvU1PlUHVZkEaj-Vcf7FrgoKRU','惘',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLp3YCDNQ2wgcVlrVo27EEwmeiaNXQB2iasRczIyaBpuQ8gWbrSHyiccjQN7vt4qhbz4X6BoXpNwWVQA/132',0,'美白880元',1533969110,1533969110),
-	(257,'odSvU1IQjS-gCODT_HU88Fmip4nM','丶梦豪君',1,'雅安','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/iaYnqRev5Kgics9ZszcajRjemoicvllmfRDdlZ4c2KnhlnJjk8ya9O33G3USGBPHCL2eAA8RwzVOF5ib1VpDIMnwvg/132',0,'美白880元',1533969149,1533969149),
-	(259,'odSvU1HT9iKYOrdas9coGAjGEOeI','Bobo',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epZnG62cq5Ixgpn6ex2qmwRMPGsTmAJiatCXiaz7zr6ddzaMpJmz8n9bKPASjFmdhAzHOuic0peJxXiag/132',0,'美白880元',1533969203,1533969203),
-	(260,'odSvU1ATiq1nzzFyeuD6zu6KAVD0','温暖Sunny',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIzPR12npAHArquHw9FADIMdcL5CqGoB1k08Y2NuLkX6vPX3q5TIzWT1iaMn7UefqyTkibPibiauWwtLw/132',0,NULL,1533969228,1533969228),
-	(261,'odSvU1JEMYwd32-vyeb7Z6B5O-FU','WK',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epu7p4vxbXA4dmibozCmAwf87IzxB48iaQuBsicVlibPuxl5fqfRq1JpRfByrTwWwsvao0KVsReA2Nkgw/132',0,'美白980元',1533969248,1533969248),
-	(262,'odSvU1BULKvu0sDAOYpNQPZOCYEM','记得。',1,'','基尔代尔','爱尔兰','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTL9w62WZAuXhTxxEPN4LNKwVsvoUW0yxsZRSrToW4KoaMoMLEw3uicicNqXbgSKPcxb5FmicrroI6vEQ/132',0,'美白880元',1533969475,1533969475),
-	(263,'odSvU1DIDdRxRLb1rtjDjfxNo7qM','陈俊杉',1,'','','克罗地亚','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep4Tto8hNtCaFgnpkAE6gPIciciaeJ0SiaXmo6UsiaoKJcL3ibibnpg0vF1Nia3icJKFHAlWeetufsibVicS1IQ/132',0,'美白880元',1533969476,1533969476),
-	(264,'odSvU1JLx1ZGmHwN1P87YTBfYLG0','一个土豆',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/swfssd4AgxaYrjKvpTyal3Q58Vu2EkWibp5zKqAhribPsMplR7KOpYcawbQKiahfIiaQz7vwRUD5RYnibBmZ2uXpTVA/132',0,'美白980元',1533969480,1533969480),
-	(265,'odSvU1Pr2P0yWsgtBufKQz9vq4_Y','爽爷',1,'泸州','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/ajNVdqHZLLBrvG3L4w2QRXYBRu3iauDOxvW57ic1Vrnk7GgEHZmlMq5s8R6yReygyHGmsBXtHs1doia2TohlMe5Ow/132',0,NULL,1533969564,1533969564),
-	(266,'odSvU1F4qAO3uew2t5yUTJfCNvZs','爱歌唱的小螃蟹',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eowy4ibe7kT3CbySNAs0GAShjSnkJqiagGdrsplgbgz6CKSHhY4qKyoLq7bLaRicMcuJZvjWJoibb33Ng/132',0,'美白1080元',1533969576,1533969576),
-	(267,'odSvU1POzobdMHWlxzxmrie3sZ4A','Vincent Lawrence',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/qEbHIAvg4F7Q6cKXRLloPtAP2lS9jojkibTkLf0gxhibVMATgkYHNnEdaVFWh6x1ZTwPQ5MAI0EG7T8BcWKa2tAg/132',0,'美白980元',1533969751,1533969751);
+	(1,'oGzBL6fOqo6bAofN1bejgIKrU2ng','Rehack',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIOeF6uZ6fu13zGcPEJEpl7I0EicNPwAjR3QdZqEaZgDH4Q3g6Ubvb9A2p12kwjqtC9OG2ZITkUZjQ/132',0,3,NULL,1591632138,1591632138),
+	(217,'odSvU1OkMaXOB1AqM61cQVlzNOqA','你炷哥',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/iaTB6vDMeSvp5Z4wuvodAdI8Yj4hMI60ia6bSCKgw2d7EBJfoxwUd0wxhBx6USl7vta5U2Ao7bU4GTpQDUWDvrqw/132',0,2,NULL,1533965997,1533965997),
+	(218,'odSvU1JxXWpxPMmbMhm3VNrf0XzY','韩大姑娘',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/7gHWDI8TEn33v2ibHQgwrzHhoqFwQ4In90zC7qsibibWEKGSxagCAM4RiaDeE3Vkf7Tynj9cNTyqbx42U9rCO7Toyg/132',0,3,NULL,1533966023,1533966023),
+	(219,'odSvU1I4VlHP0LUkVSMLKr7T0C1A','seven',2,'','','摩洛哥','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er3gltia4Mto7sNCUibJSCvAFcpHZibQDicALicTNuewNic4T61iaFomuZSAs7icE6DC4GX3ia3RszZlnJSagQ/132',0,NULL,NULL,1533966097,1533966097),
+	(220,'odSvU1ATzw7bCymG7K3jg8-dNX84','赵伊萌',2,'唐山','河北','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/rBWxKCd5zkONaMGmCTk4icyYPcWCZhOTlkPdEBYIPFibHTA27eXwjkDpdzbTCibPlmV3DXsI4Huibwr30wAAaQvOicg/132',0,NULL,NULL,1533966109,1533966109),
+	(221,'odSvU1FSxqfDs6dn-6thBa8B7_NQ','GGbong',1,'达州','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/dGGx1XP9f5NnBYs2fhUxbVL98xibvT0t52EzceicE1ZlF92HA2WrARyN4p8rMUzWib0Egib1C5icQtT24ibrotiasqozg/132',0,NULL,NULL,1533966193,1533966193),
+	(222,'odSvU1DbQmwQ5I_AYh-RI0Emb980','杏仁',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/gMLtpsVMemYzl9aVyrgACXnYq7VnM7qeKeJvjIMWKR4icsfU6dib3fDcSccAriacILx3h81XjgOVazibg2esLPM5xw/132',0,NULL,NULL,1533966210,1533966210),
+	(223,'odSvU1OMLizbvkFaZF2kG-fgVNos','哈哈哈',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/bAmSv5ypia0Y7GiaSRlx8j0A1dmS4arloDfpxwyd5DTa1wvnTuEF7xZYLTU3wouAdia2OZEQuZRIuedeMxNIPecQA/132',0,NULL,NULL,1533966283,1533966283),
+	(224,'odSvU1OXoQvOdvOaIbUTnYmG4ERo','琪琪格ma',2,'','克莱尔','爱尔兰','http://thirdwx.qlogo.cn/mmopen/vi_32/C0gibpeJwLDB4J1ibRQvObk5XX48kkHbSRg2rj3KPE5w2icIyzP1K6MAdGSnVibNZGWZ6f2b7V4lZHUqTs2J1MxZHA/132',0,NULL,NULL,1533966338,1533966338),
+	(225,'odSvU1LvlHApeQVg7cHI7RjgqG-8','Cantabile',2,'广安','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/33AAspqrCQxlUB5T1stKgW8o2qLgia7ZnXtAnKTrLC6TQBJ0Gt54RjRnW3EbWJ9KOlnSFPqkbtgwYomNYFMfcYg/132',0,NULL,NULL,1533966340,1533966340),
+	(226,'odSvU1HRUf2Zn2Pio-r52InR9ejc','鹊桥仙',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/5icsJibet91SjjHlcpMWibKQtdhibCEdJtdXKWViah528GQqfgcGmqUUKuQsYetS3pMSHEV0rfSalbYu5M1OpxZcQsw/132',0,NULL,NULL,1533966379,1533966379),
+	(227,'odSvU1NwEGkZqjihuKF-3TjmneYc','王薏茹',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/SGzNYWbXePEaaQe5EbHUueIt1uicvspMQ0UvBVM3oyAgEP1BMpqRLmpCia0cI1rNQhnOAFBEtNfpoRbc7bVRBRGg/132',0,NULL,NULL,1533966427,1533966427),
+	(228,'odSvU1EzHcPzr-pgw4wSLDnqbaww','胡光荣',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/uXa0GrFk7OM70PkWysIwJWngdMOvsQnmc2xhfnD5DsQ6I4At3nMLX5N0buM09yicx8CNrYQG310lfErc0ghQibxg/132',0,NULL,NULL,1533966449,1533966449),
+	(229,'odSvU1Hr2n_pCKxUFxXA0BkxKfOs','请秒回谢谢',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLAwpKtfRxsWEgR3NiacCu5nHrXL6EFFHtJop7rp8oaj7HzsUomK0iaGF7j3FoviabMG0NtIUlxhAWDw/132',0,NULL,NULL,1533966611,1533966611),
+	(230,'odSvU1Dd6hxaB0ofrnaaoryfHG-c','二丁目',2,'遂宁','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/TD1EjukhSIqTBoucVF2lTRl3WW3pz9JwicICQZibn58rPwibicQ8fdc6fht6x1I5TvsjrewDDjibpZbrgB8ePT84naw/132',0,3,NULL,1533966619,1533966619),
+	(231,'odSvU1GhL3KE5PLoOFUN8ny5974c','池鱼',2,'兰州市','甘肃','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eowjunkLicCxLibpsMwawE52kg8C7kMzEqBgwvjJauCoibFS0CuOTJ4QicyrxGUBHO3icYS3SOtfE5Rnrg/132',0,NULL,NULL,1533966721,1533966721),
+	(232,'odSvU1FAWx7qOxEKGD3Budc5ddKo','小野丽莎',2,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLouQYlvh96dfKPbpbicN4aicQiaY6Qenel4UgJ0WP676UADBTLuliav7N3YBO1GRbxCMEhiaTdF9g9IDA/132',0,NULL,NULL,1533966750,1533966750),
+	(233,'odSvU1JS-aJumwHq8Edwzu6-M26U','enchanted',2,'','','希腊','http://thirdwx.qlogo.cn/mmopen/vi_32/ba9OlIzaefNIJhgibbjJrrjXmTyWq5r123JsBLFOpoHAzcLsvLX6bNt7VrbeiaWYKHQMD5EhUlLoLAemMzKQnXUQ/132',0,NULL,NULL,1533966856,1533966856),
+	(234,'odSvU1DQBayOpQy7aMr_gr1ZAxFU','18',2,'','','RS','http://thirdwx.qlogo.cn/mmopen/vi_32/7dYZGFppYoyChbcWFy0KFtPqvHbHzS7gFaVCwgWX45eNjia8BlUIGPsZ9ulg06M6J00uLzlDBTDV3915l9j0LFw/132',0,NULL,NULL,1533966943,1533966943),
+	(235,'odSvU1IhyGyBuPZaISnk7ZsoHQEk','川',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/KnZce8Od0Cicnmnms6NgpBS8EpqwObMic01nNbWQjvlnG65LGxb0X4paPVNmZ7wRVlRrrcVA4nU6GYB0op6rr74A/132',0,NULL,NULL,1533966952,1533966952),
+	(236,'odSvU1J4YFQQtKIkDv1E-uTcPoYM','鹿十八吖',1,'','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqzX3IicttnFj3vX1Uc1aGQr4TjqZUUkuibGDWkaEstuvDnPE8LpjaBEmXdR2t6wZQ8VE4e2VpU3fVQ/132',0,NULL,NULL,1533967274,1533967274),
+	(237,'odSvU1KFKb1tFFCZ8GNJy86gpd-M','郑',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJxruabicOupGHYGQb1MCZcl8KPDKgLGGYKeL6OM3rEOibJr5vtHVbAO9Wf3WsoGZxNhgTub8bBkkPQ/132',0,NULL,NULL,1533967317,1533967317),
+	(238,'odSvU1Gi-soN6newaIRTItfFAEJw','萧定',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/1iaB0D6ZEwxAMsibpAo2ktp2UQibVHwGAp4k39a1Ev4ibI6iafObFpicu1ibHibs7AszYPVqKXGShmKW15G26NyWguMgLw/132',0,NULL,NULL,1533967457,1533967457),
+	(240,'odSvU1IFBkQjJijdRd1cNaxozMhM','永不沉静!',1,'遂宁','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/UIG6ibh0IfaCyYbcLKBVjIk8ibia9QyIrVM6FHnCrBFFxlnxDUMaXibuyopSeqEmcNLAKDgXnXg3ia8Yk9oS0O4FYUg/132',0,NULL,NULL,1533967926,1533967926),
+	(241,'odSvU1HaOyJenEcRutR2dsea5QNc','.',2,'宜宾','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/ECWOhkaPEe0jnuFpiaGdCRSkK94GEJv5rW2zqCudMicDjrzVjkx9YbVj0KukpXxWKvO46qlpgCVt5Y0wGNyAhwcw/132',0,NULL,NULL,1533967986,1533967986),
+	(242,'odSvU1DkeomqHKoslouMSH6kQXes','小十八！',2,'','','阿尔巴尼亚','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLkb1NqZ7EITmKlQ2KE9UBAnVmacYibNayOkxvibS8PhH1KwGoUic2NBB5aFScfjqNU1hcXyeaemticpQ/132',0,1,NULL,1533968101,1533968101),
+	(243,'odSvU1EMnElMeHtmBoPWXeA4DzdY','Victoria',2,'阿坝','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/YBWr6vCc8vTtkZDgoDq71vd4hduFfqtMHTotDhCzcibuh2CbogfawibzKyATYia7e2442SESXyMUZRlGSh6RCic2lg/132',0,NULL,NULL,1533968108,1533968108),
+	(244,'odSvU1FLrdrNI_VN-HLca-nvLbGs','幸福污糟猫',1,'广州','广东','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/XqlDI7Rt2cu4kLjiaOd5JKeEoEGAiaFL9Env0ibdBjQ0wHV7b3dU2S2RPwibiabGZATJf9sZHfG2zlpXTqH2iccVxkibQ/132',0,NULL,NULL,1533968119,1533968119),
+	(245,'odSvU1ExRTtErnTFyf61dSlv-t3Q','玥',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJD9Lx934berFXDdT91yqNdXSH6UwV8oZV9vKwicVd1YSyEPsbfao0aX3wXPALseAYdia2KHt9na0jQ/132',0,NULL,NULL,1533968173,1533968173),
+	(246,'odSvU1G5GlF7GWxfn60IFEva3cmU','major',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/BtRVDBicKzhaQeQh7t35ETNCIN4sYGpxXbJVsyx5uprWNs38h9PhaKbHygUsqyzPngsGrcz8cLm3zsxMXSYSEYg/132',0,NULL,NULL,1533968322,1533968322),
+	(247,'odSvU1GZ5H-rGDsCWjPDVxrtel8Y','629',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoJ7px4seGZ310bEYZuVA5twIib8LDeibRywdFIuic8Z2Flp7UHicvlXRtULlY147zx1G5atXyDNT1GXQ/132',0,NULL,NULL,1533968325,1533968325),
+	(248,'odSvU1I3i6SzeoZoYTqWOvzERQFM','谁伴我闯荡',1,'泸州','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/icAUbUcCD44lyVP3cadB2yvrUWMqic8KT4SBzGxrgCNFAJNTsMkVUQzeiadoTDeHBOy1YlIuYZzecFiaYbcZ3Vv90Q/132',0,2,NULL,1533968348,1533968348),
+	(249,'odSvU1KBQ2TiHLMxG0zdHS2anRYA','伶',2,'广安','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/tOABRRNFOngmsYGS3VYuaMbEaibXLV9eyqY6Te1NwdrsyLZsmcLWiafwGuNblxKqJAAyGrFNBa3oXicQTGNaKC5JQ/132',0,NULL,NULL,1533968460,1533968460),
+	(250,'odSvU1G48Rn-BJMyQg2QGTLzgXJQ','塔',2,'','','阿尔巴尼亚','http://thirdwx.qlogo.cn/mmopen/vi_32/5DLfKbm02KwbakauGxSCRdx8ibswlmwybs5Z6KVy8asC9EJuQEFjZGdN3KpULuXUSNg0y68meibsRBIJdxBjAw3g/132',0,NULL,NULL,1533968529,1533968529),
+	(251,'odSvU1AkSkhab4s_aazNTFD3am3s','L',1,'拉萨','西藏','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/RNJfsfhsEic2Up6odFGwbV3MOo9jicpwL2VSpw81UicQ3Dra8PBey86MIRtzfVKiaFIAjsgS3XMpuGF1fLbW5s7ddw/132',0,NULL,NULL,1533968716,1533968716),
+	(252,'odSvU1K9jdT4P6316XPCSSUYn0bI','Duang！',2,'','','安道尔','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI2fKnvjE9qL5ps6LYOL2kiaU7o4KGtibxo5oulEn9LBiap5icwBt6WHosSO3LTOJOmYBbCkACwhzo7Iw/132',0,NULL,NULL,1533968827,1533968827),
+	(253,'odSvU1F1O_wQNMOxpFaNmOPgljJc','吗啡不痛',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/1VLWDibHEJOkMRnQSLicqMiatf0gqvibQic00tud4tSvF5eEehOBwywiblgqRhCiaiaIeSBbcWEcWBfTXRkdU2DuygP4iaA/132',0,NULL,NULL,1533968997,1533968997),
+	(254,'odSvU1P2VLRTM7_tYtH3qE8XkVTQ','A',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/XGKxls3v8iamZmcjEegdQsMW0DviaFg6ny5NfvojRVsGBoqEbcW0bEfmXJFbRlg4bNIOiaStLzulOTKPYlLl3EsgA/132',0,NULL,NULL,1533969043,1533969043),
+	(255,'odSvU1DKNl1zaf_3BGkWMC1rXdTE','罗蔺',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI0mVIO7OT1HZRsqsEPXmRr1icDCxrknCYfLibUoIn9T7cicG9ibiaa2Cw92GHOThOWaJu6L6ias1Zeb0Rg/132',0,2,NULL,1533969049,1533969049),
+	(256,'odSvU1PlUHVZkEaj-Vcf7FrgoKRU','惘',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLp3YCDNQ2wgcVlrVo27EEwmeiaNXQB2iasRczIyaBpuQ8gWbrSHyiccjQN7vt4qhbz4X6BoXpNwWVQA/132',0,NULL,NULL,1533969110,1533969110),
+	(257,'odSvU1IQjS-gCODT_HU88Fmip4nM','丶梦豪君',1,'雅安','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/iaYnqRev5Kgics9ZszcajRjemoicvllmfRDdlZ4c2KnhlnJjk8ya9O33G3USGBPHCL2eAA8RwzVOF5ib1VpDIMnwvg/132',0,NULL,NULL,1533969149,1533969149),
+	(259,'odSvU1HT9iKYOrdas9coGAjGEOeI','Bobo',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epZnG62cq5Ixgpn6ex2qmwRMPGsTmAJiatCXiaz7zr6ddzaMpJmz8n9bKPASjFmdhAzHOuic0peJxXiag/132',0,1,NULL,1533969203,1533969203),
+	(260,'odSvU1ATiq1nzzFyeuD6zu6KAVD0','温暖Sunny',0,'','','','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIzPR12npAHArquHw9FADIMdcL5CqGoB1k08Y2NuLkX6vPX3q5TIzWT1iaMn7UefqyTkibPibiauWwtLw/132',0,NULL,NULL,1533969228,1533969228),
+	(261,'odSvU1JEMYwd32-vyeb7Z6B5O-FU','WK',2,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epu7p4vxbXA4dmibozCmAwf87IzxB48iaQuBsicVlibPuxl5fqfRq1JpRfByrTwWwsvao0KVsReA2Nkgw/132',0,NULL,NULL,1533969248,1533969248),
+	(262,'odSvU1BULKvu0sDAOYpNQPZOCYEM','记得。',1,'','基尔代尔','爱尔兰','http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTL9w62WZAuXhTxxEPN4LNKwVsvoUW0yxsZRSrToW4KoaMoMLEw3uicicNqXbgSKPcxb5FmicrroI6vEQ/132',0,NULL,NULL,1533969475,1533969475),
+	(263,'odSvU1DIDdRxRLb1rtjDjfxNo7qM','陈俊杉',1,'','','克罗地亚','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep4Tto8hNtCaFgnpkAE6gPIciciaeJ0SiaXmo6UsiaoKJcL3ibibnpg0vF1Nia3icJKFHAlWeetufsibVicS1IQ/132',0,NULL,NULL,1533969476,1533969476),
+	(264,'odSvU1JLx1ZGmHwN1P87YTBfYLG0','一个土豆',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/swfssd4AgxaYrjKvpTyal3Q58Vu2EkWibp5zKqAhribPsMplR7KOpYcawbQKiahfIiaQz7vwRUD5RYnibBmZ2uXpTVA/132',0,NULL,NULL,1533969480,1533969480),
+	(265,'odSvU1Pr2P0yWsgtBufKQz9vq4_Y','爽爷',1,'泸州','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/ajNVdqHZLLBrvG3L4w2QRXYBRu3iauDOxvW57ic1Vrnk7GgEHZmlMq5s8R6yReygyHGmsBXtHs1doia2TohlMe5Ow/132',0,NULL,NULL,1533969564,1533969564),
+	(266,'odSvU1F4qAO3uew2t5yUTJfCNvZs','爱歌唱的小螃蟹',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eowy4ibe7kT3CbySNAs0GAShjSnkJqiagGdrsplgbgz6CKSHhY4qKyoLq7bLaRicMcuJZvjWJoibb33Ng/132',0,NULL,NULL,1533969576,1533969576),
+	(267,'odSvU1POzobdMHWlxzxmrie3sZ4A','Vincent Lawrence',1,'成都','四川','中国','http://thirdwx.qlogo.cn/mmopen/vi_32/qEbHIAvg4F7Q6cKXRLloPtAP2lS9jojkibTkLf0gxhibVMATgkYHNnEdaVFWh6x1ZTwPQ5MAI0EG7T8BcWKa2tAg/132',0,NULL,NULL,1533969751,1533969751);
 
 /*!40000 ALTER TABLE `avatardraw_customer` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -109,9 +109,9 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `avatardraw_lucky_item`;
 
 CREATE TABLE `avatardraw_lucky_item` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `lun` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '轮次抽奖',
-  `num` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '抽奖数量',
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `lun` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '轮次抽奖',
+  `num` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '抽奖数量',
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '抽奖项目',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -135,17 +135,17 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `bargain_bargain_order`;
 
 CREATE TABLE `bargain_bargain_order` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '砍价商品发起的用户ID',
-  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '参与活动的商品',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `uid` int unsigned NOT NULL DEFAULT '0' COMMENT '砍价商品发起的用户ID',
+  `goods_id` int unsigned NOT NULL DEFAULT '0' COMMENT '参与活动的商品',
   `bargain_sn` varchar(20) NOT NULL COMMENT '砍价订单编号',
-  `attr1_id` smallint(5) unsigned NOT NULL COMMENT 'attr1属性id',
-  `attr2_id` smallint(5) unsigned NOT NULL COMMENT 'attr2属性id',
-  `bargain_count` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '被砍价次数',
+  `attr1_id` smallint unsigned NOT NULL COMMENT 'attr1属性id',
+  `attr2_id` smallint unsigned NOT NULL COMMENT 'attr2属性id',
+  `bargain_count` smallint unsigned NOT NULL DEFAULT '0' COMMENT '被砍价次数',
   `deal_money` decimal(7,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '最终交易价格',
   `is_addorder` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否下单购买(0:未下单，1已下单)',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0是线上，1是地推',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发起时间',
+  `create_time` int unsigned NOT NULL DEFAULT '0' COMMENT '发起时间',
   PRIMARY KEY (`id`),
   KEY `activity_bargain_id` (`bargain_sn`),
   KEY `attr1_id` (`attr1_id`),
@@ -266,8 +266,8 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `bargain_data`;
 
 CREATE TABLE `bargain_data` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `goods_id` int(11) NOT NULL COMMENT '对应商品id',
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `goods_id` int NOT NULL COMMENT '对应商品id',
   `p50` varchar(500) NOT NULL COMMENT '1-50人',
   `p100` varchar(500) DEFAULT NULL COMMENT '50-100人',
   `p200` varchar(700) DEFAULT NULL COMMENT '100-200人',
@@ -292,7 +292,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `bargain_goods`;
 
 CREATE TABLE `bargain_goods` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `goods_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '商品名称',
   `img1_id` varchar(50) NOT NULL DEFAULT '0' COMMENT '商品图片缩略图id',
   `img2_id` varchar(50) NOT NULL DEFAULT '0' COMMENT '商品图片大图id',
@@ -300,11 +300,11 @@ CREATE TABLE `bargain_goods` (
   `original_price` decimal(7,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '原价',
   `bargain_section` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '砍价区间',
   `bargain_section2` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '砍价区间2【用户线上砍价(新用户砍价区间)】',
-  `join_count` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '参与人数',
+  `join_count` smallint unsigned NOT NULL DEFAULT '0' COMMENT '参与人数',
   `goods_desc` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '活动商品描述',
   `goods_desc_m` varchar(50) NOT NULL COMMENT '商品简短描述,用于分享出去链接显示',
-  `attr1_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'attr1属性',
-  `attr2_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'attr2属性',
+  `attr1_id` smallint unsigned NOT NULL DEFAULT '0' COMMENT 'attr1属性',
+  `attr2_id` smallint unsigned NOT NULL DEFAULT '0' COMMENT 'attr2属性',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0是线上，1是地推',
   PRIMARY KEY (`id`),
   KEY `attr2_id` (`attr2_id`),
@@ -330,10 +330,10 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `bargain_helpers`;
 
 CREATE TABLE `bargain_helpers` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `helper_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '帮助者ID',
-  `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发起者订单主键id',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '参与时间',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `helper_id` int unsigned NOT NULL DEFAULT '0' COMMENT '帮助者ID',
+  `order_id` int unsigned NOT NULL DEFAULT '0' COMMENT '发起者订单主键id',
+  `create_time` int unsigned NOT NULL DEFAULT '0' COMMENT '参与时间',
   `bargain_money` decimal(5,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '砍掉价格',
   PRIMARY KEY (`id`),
   KEY `assistor_id` (`helper_id`),
@@ -642,7 +642,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `bargain_images`;
 
 CREATE TABLE `bargain_images` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `img_path` varchar(100) NOT NULL COMMENT '图片路径',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -655,16 +655,16 @@ CREATE TABLE `bargain_images` (
 DROP TABLE IF EXISTS `bargain_users_info`;
 
 CREATE TABLE `bargain_users_info` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `openid` varchar(50) NOT NULL,
   `nickname` varchar(20) NOT NULL COMMENT '微信号昵称',
-  `sex` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '性别1男',
+  `sex` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '性别1男',
   `city` varchar(10) NOT NULL COMMENT '市级',
   `province` varchar(10) NOT NULL COMMENT '省级',
   `country` varchar(10) NOT NULL COMMENT '国家',
   `headimgurl` varchar(300) NOT NULL COMMENT '头像地址',
-  `create_time` int(11) NOT NULL DEFAULT '0',
-  `update_time` int(11) NOT NULL,
+  `create_time` int NOT NULL DEFAULT '0',
+  `update_time` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE` (`openid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -1152,15 +1152,15 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `lucky_customes`;
 
 CREATE TABLE `lucky_customes` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL COMMENT '姓名',
   `phone` varchar(15) NOT NULL COMMENT '手机号',
-  `is_lucky` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '是否参与抽奖1参与2不参与',
-  `lucky_status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '中奖状态1未中奖2中奖',
-  `create_time` int(10) unsigned NOT NULL,
-  `update_time` int(10) unsigned NOT NULL,
+  `is_lucky` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '是否参与抽奖1参与2不参与',
+  `lucky_status` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '中奖状态1未中奖2中奖',
+  `create_time` int unsigned NOT NULL,
+  `update_time` int unsigned NOT NULL,
   `lucky_item` varchar(30) NOT NULL COMMENT '中奖项目',
-  `is_receive` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '是否领取奖品，1未领取2领取',
+  `is_receive` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '是否领取奖品，1未领取2领取',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE` (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1173,9 +1173,9 @@ CREATE TABLE `lucky_customes` (
 DROP TABLE IF EXISTS `lucky_items`;
 
 CREATE TABLE `lucky_items` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `item` varchar(20) DEFAULT NULL COMMENT '奖项',
-  `count` int(11) DEFAULT NULL COMMENT '个数',
+  `count` int DEFAULT NULL COMMENT '个数',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
