@@ -107,7 +107,7 @@ export default {
                 // 递归轮询 10秒
                 setTimeout(() => {
                     this.getCustomer()
-                }, 15000);
+                }, 25000);
             })
             // axios.get(url)
             // .then(resopnse=>{
