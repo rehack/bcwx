@@ -1,7 +1,8 @@
 <?php
 namespace app\wx_public_api\controller;
 use app\wx_public_api\service\Wx as WxService;
-
+use app\wx_public_api\service\wxBizDataCrypt;
+use think\facade\Request;
 
 class Wx{
     /* public function getjt(){
@@ -21,5 +22,19 @@ class Wx{
         // $data = $wx->wxShareParams($currentUrl);
         $data = $wx->wxShareParams($currentUrl);
         return json_encode($data,true);
+    }
+
+    // 获取session_key和openid
+    private function sessionkeyopenid($appid,$app_secret,$code){
+        $api = 'https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code';
+        $url = sprintf($api,$appid,$app_secret,$code);
+        $wxResult = http_curl($url,'get','array');
+        return $wxResult;
+    }
+    public function getPhoneNumber(){
+        $data = Request::param();
+        halt($data);
+        $this->sessionkeyopenid($data['appsecret']);
+        $pc = new wxBizDataCrypt;
     }
 }
